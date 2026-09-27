@@ -23,10 +23,12 @@
   --ok:#11994C; --ok-soft:#DDF4E7; --ok-ink:#0A6B34;
   --no:#D63A3A; --no-soft:#FCE3E3; --no-ink:#A82222;
   --new-soft:#ECEEF6; --new-ink:#4C5374;
+  --vio:#7B3FE4; --vio-soft:#EFE7FF; --vio-ink:#5A22B8; --vio-on:#fff;
   --shadow:0 1px 0 rgba(27,34,80,.05),0 8px 20px -14px rgba(27,34,80,.45);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --vio:#A57BFF; --vio-soft:#2E1F55; --vio-ink:#D2BDFF; --vio-on:#1A0B3D;
   --desk:#0D1130; --slip:#171D45; --ink:#EDEFFF; --muted:#A0A6CF; --line:#2B3266;
   --brand:#6474FF; --brand-soft:#232C6B;
   --way-soft:#3A2D10; --way-ink:#FFD27E;
@@ -37,6 +39,7 @@
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
+  --vio:#A57BFF; --vio-soft:#2E1F55; --vio-ink:#D2BDFF; --vio-on:#1A0B3D;
   --desk:#0D1130; --slip:#171D45; --ink:#EDEFFF; --muted:#A0A6CF; --line:#2B3266;
   --brand:#6474FF; --brand-soft:#232C6B;
   --way-soft:#3A2D10; --way-ink:#FFD27E;
@@ -191,6 +194,16 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .orow[data-st=assigned]{--bar:var(--brand)}.orow[data-st=on_way]{--bar:var(--way)}.orow[data-st=delivered]{--bar:var(--ok)}.orow[data-st=cancelled]{--bar:var(--no)}
 .orow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--bar)}
 .orow.sel{box-shadow:inset 0 0 0 2px var(--brand),var(--shadow)}
+/* skladda mahsulot yetmaydi: binafsha fon, chiziqli belgi */
+.orow.short{background:var(--vio-soft)}
+.orow.short::before{width:6px;background:repeating-linear-gradient(135deg,var(--vio) 0 5px,transparent 5px 9px)}
+.orow-short{display:flex;align-items:flex-start;gap:6px;margin-top:6px;font-size:13px;font-weight:700;color:var(--vio-ink);line-height:1.35}
+.orow-short svg.i{width:16px;height:16px;margin-top:1px}
+.shortbar{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 0;padding:11px 14px;border:0;border-radius:14px;background:var(--vio-soft);color:var(--vio-ink);text-align:left;box-shadow:inset 0 0 0 1.5px var(--vio)}
+.shortbar[aria-pressed=true]{background:var(--vio);color:var(--vio-on)}
+.shortbar>span{display:grid;gap:1px}
+.shortbar small{font-size:13px;font-weight:600;opacity:.85}
+.warnbox.v{display:flex;gap:10px;align-items:flex-start;background:var(--vio-soft);color:var(--vio-ink)}
 .orow-main{flex:1;min-width:0}
 .orow-l1{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .orow-l1 .nm{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:700}
@@ -274,10 +287,25 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .coname{margin:0;font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-.015em;overflow-wrap:anywhere}
 .cocard-top .link-btn{flex:none;padding:4px 0;font-size:14px}
 .costat{margin:-6px 0 0;font-size:14px;color:var(--muted)}
-.coprod{display:flex;align-items:baseline;gap:10px;padding:10px 12px;border-radius:12px;background:var(--desk);font-size:14px;font-weight:600}
-.coprod span{flex:1;min-width:0;overflow-wrap:anywhere}
-.coprod span.none{font-weight:500;color:var(--muted)}
-.coprod .link-btn{flex:none;padding:0;font-size:14px}
+.coprod{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;border-radius:12px;background:var(--desk);text-align:left}
+.coprod.none{color:var(--muted);font-weight:600}.coprod.none span{flex:1}
+.coprod>b{flex:none;color:var(--brand);font-weight:700;font-size:14px}
+.sk-list{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px}
+.sk{display:inline-flex;align-items:center;gap:6px;padding:4px 4px 4px 9px;border-radius:9px;background:var(--slip);font-size:13px;font-weight:700}
+.sk b{min-width:26px;padding:1px 6px;border-radius:7px;background:var(--ok-soft);color:var(--ok-ink);text-align:center;font-variant-numeric:tabular-nums}
+.sk.zero b{background:var(--vio);color:var(--vio-on)}
+.sk.off{color:var(--muted)}.sk.off b{background:var(--new-soft);color:var(--muted)}
+/* sklad oynasi */
+.stk{display:grid;gap:8px}
+.stk-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:8px;padding:10px 6px 10px 12px;border-radius:14px;background:var(--desk)}
+.stk-n{display:grid;min-width:0}
+.stk-n b{overflow-wrap:anywhere}
+.stk-n span{font-size:13px;color:var(--muted)}
+.stk-q{min-width:44px;font-size:24px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;color:var(--ok-ink)}
+.stk-row.zero .stk-q{color:var(--vio-ink)}.stk-row.off .stk-q{color:var(--muted)}
+.stk-row.zero{box-shadow:inset 0 0 0 1.5px var(--vio)}
+.btn.stk-in{min-height:40px;padding:0 12px;font-size:14px;gap:6px;border-radius:11px}
+.btn.stk-in svg.i{width:17px;height:17px}
 .co-act{margin-top:2px}
 .co-act .btn{padding:0 10px;font-size:15px}
 .cocard>.link-btn{justify-self:start;display:inline-flex;align-items:center;gap:6px;padding:2px 0;font-size:14px}
@@ -298,6 +326,9 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .nogap .onway>*+*{margin-left:8px}
 .nogap .btn>*+*{margin-left:9px}
 .nogap .fchips>*+*{margin-left:6px}
+.nogap .shortbar>*+*,.nogap .coprod>*+*{margin-left:10px}
+.nogap .orow-short>*+*,.nogap .sk>*+*,.nogap .btn.stk-in>*+*{margin-left:6px}
+.nogap .sk-list{margin-bottom:-6px}.nogap .sk-list>*{margin:0 6px 6px 0}
 .nogap .fchip>*+*{margin-left:8px}
 .nogap .search>*+*{margin-left:8px}
 .nogap .list-head>*+*{margin-left:10px}
@@ -415,8 +446,8 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: '',   // masalan: https://abcdefghijkl.supabase.co
+  SUPABASE_KEY: '',   // Project Settings → API Keys → publishable (yoki anon) key
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
@@ -583,6 +614,34 @@ const Companies = {
 const parseQty = v => { const n = parseFloat(String(nn(v, '')).replace(',', '.').replace(/[^\d.]/g, '')); return isFinite(n) && n > 0 ? Math.min(999, Math.round(n)) : 0; };
 const slugOf = s => norm(s).replace(/\s+/g, '-') || 'kompaniya';
 
+/* ---------------- mahsulot va sklad ---------------- */
+const pkey = s => String(nn(s, '')).trim().replace(/\s+/g, ' ').toUpperCase();
+const stockKey = (co, p) => pkey(co) + '|' + pkey(p);
+/* Buyurtmadagi mahsulotlar: [{n:'ABIHAYAT', q:2}]. items boʻlmasa "ABIHAYAT × 2, TRIO × 1" matnidan olinadi.
+   Xuddi shu qoida serverdagi izi_items() funksiyasida ham bor. */
+function itemsOf(o) {
+  if (Array.isArray(o.items) && o.items.length) {
+    return o.items.map(x => ({ n: String(nn(x.n, '')).trim(), q: Math.max(0, parseInt(x.q, 10) || 0) })).filter(x => x.n && x.q);
+  }
+  const s = String(nn(o.product, '')).trim();
+  if (!s) return [];
+  const parts = s.split(/\s*,\s*/), out = [];
+  for (const x of parts) {
+    const m = x.match(/^(.*?\S)\s*×\s*(\d+)$/) || x.match(/^(.*?\S)\s+[xX*]\s*(\d+)$/);
+    if (m) out.push({ n: m[1].trim(), q: Math.min(999, +m[2]) });
+  }
+  if (out.length === parts.length) return out;
+  return [{ n: s, q: parseQty(o.qty) || 1 }];
+}
+function needOf(o) {
+  const m = new Map();
+  for (const it of itemsOf(o)) {
+    const k = stockKey(o.company, it.n), x = m.get(k);
+    if (x) x.q += it.q; else m.set(k, { n: it.n, q: it.q });
+  }
+  return m;
+}
+
 /* ---------------- raqamlar va ovoz matni ---------------- */
 const ONES = ['', 'bir', 'ikki', 'uch', 'toʻrt', 'besh', 'olti', 'yetti', 'sakkiz', 'toʻqqiz'];
 const TENS = ['', 'oʻn', 'yigirma', 'oʻttiz', 'qirq', 'ellik', 'oltmish', 'yetmish', 'sakson', 'toʻqson'];
@@ -733,6 +792,8 @@ const remote = {
   myOrders: t => remote.rpc('izi_my_orders', { p_token: t }),
   setStatus: (t, id, status, reason, comment) => remote.rpc('izi_set_status', { p_token: t, p_id: id, p_status: status, p_reason: reason, p_comment: comment }),
   history: (t, id) => remote.rpc('izi_order_history', { p_token: t, p_id: id }),
+  stockSave: (t, company, product, qty, mode) => remote.rpc('izi_stock_save', { p_token: t, p_company: company, p_product: product, p_qty: +qty, p_mode: mode }),
+  stockDelete: (t, company, product) => remote.rpc('izi_stock_delete', { p_token: t, p_company: company, p_product: product || null }),
 };
 
 /* ---------------- API: demo (xuddi shu funksiyalar, brauzer ichida) ---------------- */
@@ -746,7 +807,7 @@ const demo = (() => {
     const users = [['ADMIN', 'admin', null], ['B-1', 'courier', 'Buxoro'], ['B-2', 'courier', 'Buxoro'], ['B-3', 'courier', 'Buxoro'],
       ['K-1', 'courier', 'Qashqadaryo'], ['K-2', 'courier', 'Qashqadaryo'], ['K-3', 'courier', 'Qashqadaryo'], ['K-4', 'courier', 'Qashqadaryo'], ['K-5', 'courier', 'Qashqadaryo']]
       .map(([code, role, region]) => ({ code, role, region, active: true }));
-    return { v: 2, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 } };
+    return { v: 3, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 }, stock: [] };
   }
   /* Eski versiya oʻzi yaratgan 14 ta namunaviy (random) buyurtma. Brauzerda qolgan boʻlsa, bir marta oʻchiriladi;
      siz yuklagan buyurtmalarga tegilmaydi. */
@@ -763,6 +824,8 @@ const demo = (() => {
       db.v = 2;
       store.set(KEY, db);
     }
+    if (db.v < 3) { db.stock = db.stock || []; db.v = 3; store.set(KEY, db); }
+    if (!Array.isArray(db.stock)) db.stock = [];
     return db;
   };
   const save = db => store.set(KEY, db);
@@ -774,6 +837,24 @@ const demo = (() => {
     .slice(-limit)
     .map(e => { const o = db.orders.find(x => x.id === e.order_id) || {}; return { ...e, order_no: o.order_no, customer: o.customer, amount: o.amount, address: o.address }; });
   const addEv = (db, e) => { db.seq.event++; db.events.push({ id: db.seq.event, reason: null, comment: null, created_at: nowIso(), ...e }); if (db.events.length > 3000) db.events.splice(0, db.events.length - 3000); };
+  /* sklad: buyurtma kuryerga berilganda ayriladi, bekor/qaytarib olinganda qaytadi */
+  const stockRow = (db, co, pr) => db.stock.find(x => stockKey(x.company, x.product) === stockKey(co, pr));
+  const takeStock = (db, o) => {
+    const rows = [];
+    for (const it of needOf(o).values()) {
+      const r = stockRow(db, o.company, it.n);
+      if (!r) continue;                         /* qoldiq kiritilmagan mahsulot nazorat qilinmaydi */
+      if (r.qty < it.q) return false;
+      rows.push([r, it]);
+    }
+    const ts = nowIso();
+    o.stock_taken = rows.length ? rows.map(([r, it]) => { r.qty -= it.q; r.updated_at = ts; return { n: r.product, q: it.q }; }) : null;
+    return true;
+  };
+  const giveBack = (db, o) => {
+    for (const it of o.stock_taken || []) { const r = stockRow(db, o.company, it.n); if (r) { r.qty += it.q; r.updated_at = nowIso(); } }
+    o.stock_taken = null;
+  };
   return {
     async login(code, pass) {
       await wait(); const db = load(); const c = normCode(code);
@@ -791,12 +872,12 @@ const demo = (() => {
       await wait(); const db = load(); adm(db, t);
       const lim = Date.now() - days * 864e5;
       return clone({ orders: db.orders.filter(o => ['new', 'assigned', 'on_way'].includes(o.status) || parseTs(o.updated_at) > lim).sort((a, b) => b.id - a.id),
-        events: evRows(db, 0, 150), users: pubUsers(db), next_since: iso(Date.now() - 15000), server_time: nowIso() });
+        events: evRows(db, 0, 150), users: pubUsers(db), stock: db.stock, next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async adminChanges(t, since) {
       const db = load(); adm(db, t);
       const s = parseTs(since) || Date.now() - 60000;
-      return clone({ orders: db.orders.filter(o => parseTs(o.updated_at) > s), events: evRows(db, s, 500), next_since: iso(Date.now() - 15000), server_time: nowIso() });
+      return clone({ orders: db.orders.filter(o => parseTs(o.updated_at) > s), events: evRows(db, s, 500), stock: db.stock, next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async importRows(t, rows) {
       await wait(); const db = load(); adm(db, t);
@@ -806,11 +887,15 @@ const demo = (() => {
         if (no && db.orders.some(o => o.order_no === no)) { skip++; continue; }
         let c = r.courier ? normCode(r.courier) : null;
         if (c && !db.users.some(u => u.code === c && u.role === 'courier' && u.active)) c = null;
+        const items = Array.isArray(r.items) ? r.items.map(x => ({ n: String(x.n || '').trim(), q: Math.max(0, parseInt(x.q, 10) || 0) })).filter(x => x.n && x.q) : [];
         const ts = nowIso(); db.seq.order++;
-        db.orders.push({ id: db.seq.order, order_no: no || null, customer: r.customer || null, phone: r.phone || null, region: r.region || null, district: r.district || null,
+        const o = { id: db.seq.order, order_no: no || null, customer: r.customer || null, phone: r.phone || null, region: r.region || null, district: r.district || null,
           address: r.address || null, landmark: r.landmark || null, product: r.product || null, qty: r.qty || null, amount: +r.amount || 0, note: r.note || null,
-          company: r.company || null, src: r.src || null,
-          courier: c, status: c ? 'assigned' : 'new', cancel_reason: null, courier_comment: null, created_at: ts, assigned_at: c ? ts : null, on_way_at: null, done_at: null, updated_at: ts });
+          company: r.company || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
+          courier: null, status: 'new', cancel_reason: null, courier_comment: null, created_at: ts, assigned_at: null, on_way_at: null, done_at: null, updated_at: ts };
+        /* Excelda kuryer yozilgan boʻlsa: skladda yetsa darhol beriladi, yetmasa «berilmagan» boʻlib qoladi */
+        if (c && takeStock(db, o)) Object.assign(o, { courier: c, status: 'assigned', assigned_at: ts });
+        db.orders.push(o);
         ins++;
       }
       save(db);
@@ -820,20 +905,23 @@ const demo = (() => {
       await wait(); const db = load(); const u = adm(db, t);
       const c = courier ? normCode(courier) : null;
       if (c && !db.users.some(x => x.code === c && x.role === 'courier' && x.active)) throw new ApiError('BAD_COURIER');
-      const set = new Set(ids.map(Number)); let n = 0;
+      const set = new Set(ids.map(Number)); let n = 0; const short = [];
       for (const o of db.orders) {
         if (!set.has(o.id) || o.status === 'delivered') continue;
+        if (c && !o.stock_taken && !takeStock(db, o)) { short.push(o.id); continue; }   /* skladda yetmaydi */
+        if (!c && o.stock_taken) giveBack(db, o);
         const ts = nowIso();
         Object.assign(o, { courier: c, status: c ? 'assigned' : 'new', assigned_at: c ? ts : null, on_way_at: null, done_at: null, cancel_reason: null, courier_comment: null, updated_at: ts });
         addEv(db, { order_id: o.id, courier: c, type: c ? 'assigned' : 'unassigned', actor: u.code });
         n++;
       }
       save(db);
-      return { updated: n };
+      return { updated: n, short: short.length, short_ids: short };
     },
     async deleteOrders(t, ids) {
       await wait(); const db = load(); adm(db, t);
       const set = new Set(ids.map(Number)), before = db.orders.length;
+      for (const o of db.orders) if (set.has(o.id) && o.stock_taken && o.status !== 'delivered') giveBack(db, o);
       db.orders = db.orders.filter(o => !set.has(o.id));
       db.events = db.events.filter(e => !set.has(e.order_id));
       save(db);
@@ -873,6 +961,7 @@ const demo = (() => {
       if (status === 'cancelled' && (!cm || cm.length < 2)) throw new ApiError('NEED_COMMENT');
       const ts = nowIso();
       if (status === 'on_way') o.on_way_at = ts; else o.done_at = ts;
+      if (status === 'cancelled' && o.stock_taken) giveBack(db, o);   /* bekor qilingan tovar skladga qaytadi */
       o.status = status;
       o.cancel_reason = status === 'cancelled' ? String(reason || '').slice(0, 200) : null;
       o.courier_comment = cm;
@@ -885,6 +974,25 @@ const demo = (() => {
       const db = load(); const u = who(db, t);
       if (u.role === 'courier' && !db.orders.some(o => o.id === +id && o.courier === u.code)) throw new ApiError('NOT_FOUND');
       return clone(db.events.filter(e => e.order_id === +id));
+    },
+    async stockSave(t, company, product, qty, mode) {
+      await wait(); const db = load(); adm(db, t);
+      const pr = cleanProducts([product])[0], co = String(company || '').trim();
+      if (!pr || !co) throw new ApiError('BAD_PRODUCT');
+      const q = parseInt(qty, 10);
+      if (!isFinite(q) || q < 0 || q > 1e6 || (mode === 'add' && q === 0)) throw new ApiError('BAD_QTY');
+      let r = stockRow(db, co, pr);
+      if (!r) { r = { company: co, product: pr, qty: 0, updated_at: nowIso() }; db.stock.push(r); }
+      r.qty = mode === 'add' ? r.qty + q : q;
+      r.updated_at = nowIso();
+      save(db);
+      return clone({ stock: db.stock });
+    },
+    async stockDelete(t, company, product) {
+      await wait(); const db = load(); adm(db, t);
+      db.stock = db.stock.filter(x => stockKey(x.company, x.product) !== stockKey(company, product || x.product));
+      save(db);
+      return clone({ stock: db.stock });
     },
     reset() { store.del(KEY); },
     accounts() { return load().users.filter(u => u.active).map(u => u.code); },
@@ -906,11 +1014,13 @@ const ERRS = [
   ['BAD_CODE', 'Login lotin harf, raqam va chiziqchadan iborat boʻlsin, masalan B-4.'],
   ['SHORT_PASS', 'Parol kamida 4 belgidan iborat boʻlsin.'],
   ['BAD_INPUT', 'Maʼlumot formati notoʻgʻri.'],
+  ['BAD_PRODUCT', 'Mahsulot nomini yozing.'],
+  ['BAD_QTY', 'Sonini toʻgʻri kiriting: 0 yoki undan katta butun son.'],
 ];
 function errText(e) {
   const c = (e && (e.code || e.message)) || '';
   for (const [k, t] of ERRS) if (c.includes(k)) return t;
-  if (/Could not find the function|HTTP_404/i.test(c)) return 'Bazada IZI funksiyalari topilmadi. Supabase’da setup.sql ni ishga tushiring.';
+  if (/Could not find the function|HTTP_404/i.test(c)) return 'Bazada IZI funksiyalari topilmadi yoki eski. Supabase’da yangi setup.sql ni qayta ishga tushiring.';
   if (/API key|apikey|JWT/i.test(c)) return 'Supabase kaliti notoʻgʻri. index.html dagi IZI_CONFIG ni tekshiring.';
   return 'Xatolik: ' + c;
 }
@@ -925,6 +1035,7 @@ const S = {
   days: store.get('izi_days', 3), online: true,
   soundOn: store.get('izi_sound', true), wake: store.get('izi_wake', true), audioOk: false,
   theme: store.get('izi_theme', 'auto'),
+  stock: new Map(), prodList: [], stkEdit: null,
   notifiedAt: 0, readAt: 0, hlFrom: 0,
 };
 
@@ -1186,22 +1297,54 @@ function courierStats(code) {
   }
   return r;
 }
+/* Berilmagan buyurtmalardan qaysilariga hozirgi qoldiq yetmaydi: shular binafsha rangda turadi
+   va kuryerga berilmaydi. Qoldigʻi kiritilmagan mahsulot tekshirilmaydi. */
+let SHORT = null;
+function shortMap() {
+  const map = new Map();
+  for (const o of S.orders.values()) {
+    if (o.status !== 'new' || o.stock_taken) continue;
+    const miss = [];
+    for (const [k, it] of needOf(o)) { const r = S.stock.get(k); if (r && r.qty < it.q) miss.push({ n: it.n, need: it.q, have: Math.max(0, r.qty) }); }
+    if (miss.length) map.set(o.id, miss);
+  }
+  return map;
+}
+/* Bir nechtasini birdan berishda: eng eski buyurtmadan boshlab ayriladi (server ham shunday qiladi),
+   qoldiq tugagach qolganlari berilmaydi. Oyna shuni oldindan aytadi. */
+function simShort(ids) {
+  const left = new Map([...S.stock].map(([k, r]) => [k, r.qty]));
+  let n = 0;
+  for (const o of ids.map(id => S.orders.get(+id)).filter(Boolean).sort((a, b) => a.id - b.id)) {
+    if (o.status === 'delivered' || o.stock_taken) continue;
+    const need = needOf(o);
+    let ok = true;
+    for (const [k, it] of need) if (left.has(k) && left.get(k) < it.q) ok = false;
+    if (!ok) { n++; continue; }
+    for (const [k, it] of need) if (left.has(k)) left.set(k, left.get(k) - it.q);
+  }
+  return n;
+}
+const missText = miss => miss.map(m => `${m.n}: kerak ${m.need}, skladda ${m.have}`).join('; ');
 function filteredOrders() {
   const q = norm(S.q), qd = S.q.replace(/\D/g, ''), keys = regionKeys();
   let list = [...S.orders.values()];
-  if (S.filter !== 'all') list = list.filter(o => o.status === S.filter);
+  if (S.filter === 'short') { SHORT = SHORT || shortMap(); list = list.filter(o => SHORT.has(o.id)); }
+  else if (S.filter !== 'all') list = list.filter(o => o.status === S.filter);
   if (S.fCourier) list = list.filter(o => S.fCourier === '-' ? !o.courier : o.courier === S.fCourier);
   if (S.fRegion) list = list.filter(o => (detectRegion(o, keys) || '-') === S.fRegion);
   if (S.fCompany) list = list.filter(o => S.fCompany === '-' ? !o.company : o.company === S.fCompany);
   if (q) list = list.filter(o => norm([o.order_no, o.customer, o.address, o.district, o.region, o.landmark, o.product, o.courier, o.company].join(' ')).includes(q)
     || (qd.length >= 3 && String(o.phone || '').replace(/\D/g, '').includes(qd)));
   const recent = o => Math.max(parseTs(o.updated_at), parseTs(o.created_at));
-  return list.sort((a, b) => S.filter === 'new' ? a.id - b.id : recent(b) - recent(a) || b.id - a.id);
+  return list.sort((a, b) => S.filter === 'new' || S.filter === 'short' ? a.id - b.id : recent(b) - recent(a) || b.id - a.id);
 }
 function adminOrders() {
   const cnt = { all: S.orders.size };
   for (const k in ST) cnt[k] = 0;
   for (const o of S.orders.values()) cnt[o.status]++;
+  SHORT = shortMap();
+  if (S.filter === 'short' && !SHORT.size) S.filter = 'new';
   const couriers = S.users.filter(u => u.role === 'courier');
   const meta = regionMeta();
   const cos = Companies.list().map(c => c.name);
@@ -1213,6 +1356,7 @@ function adminOrders() {
       <button class="btn btn-ghost" data-act="export" aria-label="Hisobot (Excel)">${ico('download')}<span class="hide-s">Hisobot</span></button>
     </section>
     <div class="fchips" role="tablist">${FILTERS.map(([k, l]) => `<button class="fchip" role="tab" data-act="filter" data-v="${k}" aria-selected="${S.filter === k}">${l}<em>${cnt[k] || 0}</em></button>`).join('')}</div>
+    ${SHORT.size ? `<button class="shortbar" data-act="filter" data-v="short" aria-pressed="${S.filter === 'short'}">${ico('box')}<span><b>${SHORT.size} ta buyurtmaga mahsulot yetarli emas</b><small>${S.filter === 'short' ? 'Faqat shular koʻrsatilmoqda. Qoldiqni kompaniyaning «Sklad» oynasida toʻldiring.' : 'Koʻrish uchun bosing'}</small></span></button>` : ''}
     <div class="fline">
       <label class="search">${ico('search')}<input id="q" type="search" placeholder="Ism, telefon, manzil yoki №" value="${esc(S.q)}" autocomplete="off"></label>
       <select id="fCompany" aria-label="Kompaniya"><option value="">Kompaniya</option>${cos.map(n => `<option value="${esc(n)}" ${S.fCompany === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}${noCo || S.fCompany === '-' ? `<option value="-" ${S.fCompany === '-' ? 'selected' : ''}>Kompaniyasiz</option>` : ''}</select>
@@ -1222,6 +1366,7 @@ function adminOrders() {
     <div id="olistWrap">${listBlock()}</div>`;
 }
 function listBlock() {
+  SHORT = shortMap();
   const list = filteredOrders(), shown = list.slice(0, S.limit);
   const emptyAll = !S.orders.size;
   return `<div class="list-head"><span>${S.selMode ? 'Buyurtmalarni belgilang' : `${list.length} ta buyurtma`}</span>
@@ -1233,16 +1378,17 @@ function listBlock() {
     ${list.length > shown.length ? `<button class="btn btn-ghost btn-block more" data-act="more">Yana koʻrsatish (${list.length - shown.length})</button>` : ''}`;
 }
 function orderRow(o) {
-  const sel = S.sel.has(o.id), rk = regionOf(o);
+  const sel = S.sel.has(o.id), rk = regionOf(o), miss = SHORT && SHORT.get(o.id);
   const place = [o.district || o.region, o.address].filter(Boolean).join(', ');
   const t = o.status === 'delivered' || o.status === 'cancelled' ? o.done_at : o.status === 'on_way' ? o.on_way_at : '';
-  return `<article class="orow ${sel ? 'sel' : ''}" data-st="${o.status}" data-act="${S.selMode ? 'sel' : 'open'}" data-id="${o.id}" tabindex="0">
+  return `<article class="orow ${sel ? 'sel' : ''} ${miss ? 'short' : ''}" data-st="${o.status}" data-act="${S.selMode ? 'sel' : 'open'}" data-id="${o.id}" tabindex="0">
     ${S.selMode ? `<span class="cbox" aria-hidden="true">${sel ? ico('check') : ''}</span>` : ''}
     <div class="orow-main">
       <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${money(o.amount)}</b></div>
       <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
       <div class="orow-l3"><span class="pr">${o.company && !S.fCompany ? `<span class="co">${esc(o.company)}</span>` : ''}${esc(o.product || '')}${o.qty ? ' × ' + esc(o.qty) : ''}</span>
         <span class="orow-st">${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}<span class="st ${ST[o.status].cls}">${ST[o.status].label}</span>${t ? `<time>${esc(when(t))}</time>` : ''}</span></div>
+      ${miss ? `<div class="orow-short">${ico('box')}<span>Mahsulot yetarli emas. ${esc(missText(miss))}</span></div>` : ''}
     </div></article>`;
 }
 function selBar() {
@@ -1332,6 +1478,29 @@ function companyStats(name) {
   }
   return r;
 }
+/* kompaniya mahsulotlari: roʻyxatdagilar + skladda qoldigʻi borlar */
+function coProducts(name) {
+  const list = [...Companies.products(name)], seen = new Set(list.map(pkey));
+  for (const r of S.stock.values()) if (pkey(r.company) === pkey(name) && !seen.has(pkey(r.product))) { list.push(r.product); seen.add(pkey(r.product)); }
+  return list;
+}
+/* hozir kuryerlar qoʻlidagi (berilgan yoki yoʻldagi) mahsulotlar */
+function onCouriers(name) {
+  const m = new Map();
+  for (const o of S.orders.values()) {
+    if (pkey(o.company) !== pkey(name) || !(o.status === 'assigned' || o.status === 'on_way')) continue;
+    for (const it of o.stock_taken || []) m.set(pkey(it.n), (m.get(pkey(it.n)) || 0) + (+it.q || 0));
+  }
+  return m;
+}
+function stockStrip(name) {
+  const prods = coProducts(name), n = esc(name);
+  if (!prods.length) return `<button class="coprod none" data-act="co-prod" data-co="${n}">${ico('box')}<span>Mahsulotlar kiritilmagan</span><b>Qoʻshish</b></button>`;
+  return `<button class="coprod" data-act="co-prod" data-co="${n}" aria-label="${n}: mahsulotlar va sklad">
+    <span class="sk-list">${prods.map(p => { const r = S.stock.get(stockKey(name, p));
+      return `<span class="sk ${r ? (r.qty <= 0 ? 'zero' : '') : 'off'}">${esc(p)}<b>${r ? r.qty : '—'}</b></span>`; }).join('')}</span>
+    <b class="sk-go">Sklad</b></button>`;
+}
 function adminCompanies() {
   const list = Companies.list();
   return `<section class="toolbar"><button class="btn btn-go" data-act="co-add">${ico('plus')}Kompaniya qoʻshish</button></section>
@@ -1343,7 +1512,7 @@ function adminCompanies() {
       return `<section class="cocard" aria-label="${n}">
         <div class="cocard-top"><h2 class="coname">${n}</h2>${s.total ? `<button class="link-btn" data-act="co-orders" data-co="${n}">${s.total} ta buyurtma</button>` : ''}</div>
         <p class="costat">${esc(cap(stat))}</p>
-        <div class="coprod">${c.products.length ? `<span>${esc(c.products.join(', '))}</span>` : '<span class="none">Mahsulotlar hali kiritilmagan</span>'}<button class="link-btn" data-act="co-prod" data-co="${n}">${c.products.length ? 'Tahrirlash' : 'Kiritish'}</button></div>
+        ${stockStrip(c.name)}
         <div class="btn-row co-act">
           <button class="btn btn-go" data-act="co-excel" data-co="${n}">${ico('upload')}Excel orqali yuklash</button>
           <button class="btn" data-act="co-manual" data-co="${n}">${ico('edit')}Qoʻlda kiritish</button>
@@ -1374,6 +1543,9 @@ async function removeCompany(name) {
   const used = [...S.orders.values()].filter(o => o.company === name).length;
   if (used) { toast(`${name}: ${used} ta buyurtma bor, shuning uchun oʻchirilmaydi.`, 'no'); return; }
   if (!(await ask({ title: `${name} oʻchirilsinmi?`, text: 'Kompaniya va uning mahsulotlar roʻyxati oʻchadi. Buyurtmalarga taʼsir qilmaydi.', ok: 'Oʻchirish', kind: 'no-solid' }))) return;
+  if ([...S.stock.values()].some(r => pkey(r.company) === pkey(name))) {
+    try { const r = await api.stockDelete(S.sess.token, name, null); setStock(r.stock); } catch (e) { onErr(e); return; }
+  }
   Companies.remove(name);
   closeSheet();
   render();
@@ -1390,7 +1562,9 @@ const addedText = o => o.src === 'manual' ? 'Qoʻlda kiritildi' : o.src === 'exc
 async function openOrder(id) {
   const o = S.orders.get(+id);
   if (!o) { toast('Bu buyurtma roʻyxatda yoʻq: eski yoki oʻchirilgan.'); return; }
-  const sheet = openSheet(`<article class="slip flat">
+  const miss = shortMap().get(o.id);
+  const sheet = openSheet(`${miss ? `<p class="warnbox v">${ico('box')}<span><b>Mahsulot yetarli emas.</b> ${esc(missText(miss))}. Kuryerga berish uchun avval skladga kirim qiling.</span></p>` : ''}
+    <article class="slip flat">
       <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}${o.courier ? ' · ' + esc(o.courier) : ''}</span></div>
       ${slipBody(o)}${outcome(o)}
     </article>
@@ -1406,7 +1580,9 @@ async function openOrder(id) {
 }
 function openAssign(ids) {
   S.assignIds = ids;
+  const sh = simShort(ids);
   openSheet(`<h2 class="sh-title">${ids.length} ta buyurtmani kimga berasiz?</h2>
+    ${sh ? `<p class="warnbox v">${ico('box')}<span>${sh === ids.length ? 'Bu buyurtmalarga' : `Ulardan ${sh} tasiga`} skladda mahsulot yetmaydi. ${sh === ids.length ? 'Ular' : 'Bu buyurtmalar'} kuryerga berilmaydi.</span></p>` : ''}
     ${courierPick('assign-many', null)}
     <button class="btn btn-ghost btn-block" data-act="assign-many" data-code="">Kuryerdan qaytarib olish</button>
     <button class="link-btn danger" data-act="del-sel">Tanlanganlarni oʻchirish</button>`, { label: 'Kuryerga berish' });
@@ -1523,15 +1699,15 @@ async function saveManual(again) {
   const name = S.manualCo, val = id => (($('#' + id) || {}).value || '').trim();
   const err = $('#mf-err'), say = (m, id) => { if (err) err.textContent = m; const f = id && $('#' + id); if (f) f.focus(); };
   const prods = Companies.products(name), items = [], learn = [];
-  if (prods.length) prods.forEach((p, i) => { const q = parseQty(val('mq-' + i)); if (q) items.push(`${p} × ${q}`); });
-  else if (val('mf-prod')) { const p = cleanProducts([val('mf-prod')])[0]; items.push(`${p} × ${parseQty(val('mf-qty')) || 1}`); learn.push(p); }
+  if (prods.length) prods.forEach((p, i) => { const q = parseQty(val('mq-' + i)); if (q) items.push({ n: p, q }); });
+  else if (val('mf-prod')) { const p = cleanProducts([val('mf-prod')])[0]; items.push({ n: p, q: parseQty(val('mf-qty')) || 1 }); learn.push(p); }
   const customer = cleanName(val('mf-name')), sum = val('mf-sum'), address = val('mf-addr');
   if (!customer) return say('Mijoz ismini yozing.', 'mf-name');
   if (!items.length) return say(prods.length ? 'Kamida bitta mahsulot sonini kiriting.' : 'Mahsulot nomini yozing.', prods.length ? 'mq-0' : 'mf-prod');
   if (!/\d/.test(sum)) return say('Summani kiriting. Toʻlov olinmasa, 0 yozing.', 'mf-sum');
   if (address.length < 5) return say('Yashash manzilini toʻliq yozing.', 'mf-addr');
-  const row = { order_no: '', customer, phone: normPhone(val('mf-phone')), region: '', district: '', address, landmark: '', product: items.join(', '), qty: '',
-    amount: parseAmount(sum), note: val('mf-note'), courier: '', company: name, src: 'manual' };
+  const row = { order_no: '', customer, phone: normPhone(val('mf-phone')), region: '', district: '', address, landmark: '', product: items.map(x => `${x.n} × ${x.q}`).join(', '), qty: '',
+    items, amount: parseAmount(sum), note: val('mf-note'), courier: '', company: name, src: 'manual' };
   const btns = [...document.querySelectorAll('#manualForm button')];
   btns.forEach(b => { b.disabled = true; });
   try {
@@ -1550,23 +1726,87 @@ async function saveManual(again) {
 }
 
 /* ---------- kompaniya mahsulotlari ---------- */
+/* ---------- Mahsulotlar va sklad ----------
+   Qoldiq kiritilgan mahsulot nazorat qilinadi: buyurtma kuryerga berilganda ayriladi,
+   kuryer bekor qilsa yoki admin qaytarib olsa, qayta qoʻshiladi. */
 function openProducts(name) {
   S.prodCo = name;
+  const prods = coProducts(name), oc = onCouriers(name);
+  S.prodList = prods;
   openSheet(`<h2 class="sh-title">${esc(name)}</h2>
-    <p class="sh-text">Mahsulotlarni vergul bilan yoki har birini yangi qatorga yozing. Qoʻlda kiritishda shular chiqadi. Excel yuklanganda yangi mahsulot ustunlari roʻyxatga oʻzi qoʻshiladi.</p>
+    <p class="sh-text">Kuryerlar skladidagi mahsulotlar. Buyurtma kuryerga berilganda qoldiqdan ayriladi, bekor qilinsa qaytib qoʻshiladi.</p>
+    <div class="stk">${prods.length ? prods.map((p, i) => { const r = S.stock.get(stockKey(name, p)), c = oc.get(pkey(p)) || 0;
+      return `<div class="stk-row ${r ? (r.qty <= 0 ? 'zero' : '') : 'off'}">
+        <div class="stk-n"><b>${esc(p)}</b><span>${r ? (c ? `Kuryerlarda: ${c} ta` : 'Skladda') : 'Qoldiq kiritilmagan, nazorat qilinmaydi'}</span></div>
+        <div class="stk-q" aria-label="Skladda">${r ? r.qty : '—'}</div>
+        <button class="btn stk-in" data-act="stk-in" data-i="${i}">${ico('plus')}Kirim</button>
+        <button class="icon-btn" data-act="stk-edit" data-i="${i}" aria-label="${esc(p)}: qoldiqni tuzatish yoki oʻchirish">${ico('edit')}</button>
+      </div>`; }).join('') : '<p class="hint">Hali mahsulot yoʻq. Quyida qoʻshing.</p>'}</div>
+    <h3 class="h3">Mahsulot qoʻshish</h3>
     <form id="prodForm" class="form" novalidate>
-      <label class="fld"><span>Mahsulotlar</span><textarea id="pf-list" rows="5" placeholder="masalan: ABIHAYAT, TRIO">${esc(Companies.products(name).join('\n'))}</textarea></label>
-      <button class="btn btn-go btn-block" type="submit">Saqlash</button>
-      <button class="btn btn-ghost btn-block" type="button" data-act="sheet-close">Orqaga</button>
-      <button class="link-btn danger" type="button" data-act="co-del" data-co="${esc(name)}">Kompaniyani oʻchirish</button>
-    </form>`, { label: 'Mahsulotlar' });
+      <div class="mapgrid"><label class="fld"><span>Nomi</span><input id="pf-name" autocomplete="off" placeholder="masalan, ABIHAYAT"></label>
+        <label class="fld"><span>Skladda, dona</span><input id="pf-qty" inputmode="numeric" autocomplete="off" placeholder="0"></label></div>
+      <p class="form-err" id="pf-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">${ico('plus')}Qoʻshish</button>
+    </form>
+    <button class="btn btn-ghost btn-block" data-act="sheet-close">Yopish</button>
+    <button class="link-btn danger" data-act="co-del" data-co="${esc(name)}">Kompaniyani oʻchirish</button>`, { label: 'Mahsulotlar' });
 }
-function saveProducts() {
-  const list = cleanProducts(String(($('#pf-list') || {}).value || '').split(/[,;\n]+/));
-  Companies.setProducts(S.prodCo, list);
-  closeSheet();
-  toast(list.length ? `${S.prodCo}: ${list.length} ta mahsulot saqlandi` : `${S.prodCo}: mahsulotlar roʻyxati tozalandi`, 'ok');
-  render();
+function openStockEdit(i, mode) {
+  const name = S.prodCo, p = S.prodList[+i];
+  if (!p) return;
+  const r = S.stock.get(stockKey(name, p));
+  S.stkEdit = { p, mode };
+  openSheet(`<h2 class="sh-title">${esc(p)}</h2>
+    <p class="sh-text">${esc(name)}. Hozir skladda: <b>${r ? r.qty + ' ta' : 'kiritilmagan'}</b></p>
+    <form id="stkForm" class="form" novalidate>
+      <label class="fld"><span>${mode === 'add' ? 'Nechta keldi' : 'Skladda aslida nechta bor'}</span><input id="sk-q" inputmode="numeric" autocomplete="off" placeholder="${mode === 'add' ? 'masalan, 20' : r ? r.qty : '0'}"></label>
+      <p class="hint">${mode === 'add' ? 'Kiritgan soningiz qoldiqqa qoʻshiladi.' : 'Qoldiq aynan shu songa oʻrnatiladi (sanoqdan keyin tuzatish uchun).'}</p>
+      <p class="form-err" id="sk-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">Saqlash</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="co-prod" data-co="${esc(name)}">Orqaga</button>
+      ${mode === 'set' ? `<button class="link-btn danger" type="button" data-act="stk-del">Mahsulotni oʻchirish</button>` : ''}
+    </form>`, { label: 'Sklad' });
+  setTimeout(() => { const f = $('#sk-q'); if (f) f.focus(); }, 300);
+}
+async function saveStock() {
+  const { p, mode } = S.stkEdit || {}, err = $('#sk-err'), raw = (($('#sk-q') || {}).value || '').trim();
+  if (!p) return;
+  if (!/^\d{1,7}$/.test(raw) || (mode === 'add' && +raw === 0)) { if (err) err.textContent = mode === 'add' ? 'Kelgan sonini yozing, masalan 20.' : 'Sonini yozing: 0 yoki undan katta.'; return; }
+  try {
+    const r = await api.stockSave(S.sess.token, S.prodCo, p, +raw, mode);
+    setStock(r.stock);
+    toast(mode === 'add' ? `${p}: +${raw} ta kirim qilindi` : `${p}: qoldiq ${raw} ta`, 'ok');
+    render();
+    openProducts(S.prodCo);
+  } catch (e) { if (err) err.textContent = errText(e); }
+}
+async function addProduct() {
+  const err = $('#pf-err'), name = cleanProducts([(($('#pf-name') || {}).value || '')])[0], raw = (($('#pf-qty') || {}).value || '').trim() || '0';
+  if (!name) { if (err) err.textContent = 'Mahsulot nomini yozing.'; return; }
+  if (!/^\d{1,7}$/.test(raw)) { if (err) err.textContent = 'Sonini raqam bilan yozing.'; return; }
+  if (S.stock.has(stockKey(S.prodCo, name))) { if (err) err.textContent = 'Bu mahsulot allaqachon bor. Roʻyxatdan «Kirim» ni bosing.'; return; }
+  try {
+    const r = await api.stockSave(S.sess.token, S.prodCo, name, +raw, 'set');
+    Companies.addProducts(S.prodCo, [name]);
+    setStock(r.stock);
+    toast(`${name} qoʻshildi: skladda ${raw} ta`, 'ok');
+    render();
+    openProducts(S.prodCo);
+  } catch (e) { if (err) err.textContent = errText(e); }
+}
+async function deleteProduct() {
+  const { p } = S.stkEdit || {}, name = S.prodCo;
+  if (!p) return;
+  if (!(await ask({ title: `${p} oʻchirilsinmi?`, text: 'Mahsulot roʻyxatdan va skladdan oʻchadi. Mavjud buyurtmalarga taʼsir qilmaydi.', ok: 'Oʻchirish', kind: 'no-solid' }))) { openProducts(name); return; }
+  try {
+    const r = await api.stockDelete(S.sess.token, name, p);
+    Companies.setProducts(name, Companies.products(name).filter(x => pkey(x) !== pkey(p)));
+    setStock(r.stock);
+    toast(`${p} oʻchirildi`);
+    render();
+    openProducts(name);
+  } catch (e) { onErr(e); }
 }
 
 /* ---------- Excel ---------- */
@@ -1687,9 +1927,10 @@ function buildRows() {
     if (prods.length) {
       /* har bir mahsulot alohida ustunda: "ABIHAYAT × 2, TRIO × 1"; jami SONI mahsulotlardan kelib chiqadi */
       const items = prods.map(p => [p.name, parseQty(r[p.ci])]).filter(([, q]) => q > 0);
-      if (items.length) o.product = items.map(([n, q]) => `${n} × ${q}`).join(', ');
+      if (items.length) { o.product = items.map(([n, q]) => `${n} × ${q}`).join(', '); o.items = items.map(([n, q]) => ({ n, q })); }
       if (items.length || !o.product) o.qty = '';
     }
+    if (!o.items && o.product) o.items = itemsOf(o);
     if (!o.customer && !o.phone && !o.address && !o.product) continue;
     if (/^(jami|итого|всего|total)$/i.test(norm(o.customer))) continue;
     out.push(o);
@@ -1876,6 +2117,20 @@ function mergeOrders(list) {
   }
   return ch;
 }
+/* sklad qoldiqlari serverdan keladi: kuryer bekor qilsa ham admin ekranida darhol yangilanadi */
+const stockSig = () => [...S.stock.values()].map(r => stockKey(r.company, r.product) + '=' + r.qty).sort().join('|');
+function setStock(rows) {
+  if (!Array.isArray(rows)) return false;
+  const before = stockSig();
+  S.stock = new Map(rows.map(r => [stockKey(r.company, r.product), { company: r.company, product: r.product, qty: +r.qty || 0 }]));
+  /* boshqa qurilmada qoʻshilgan mahsulot va kompaniyalar bu yerda ham koʻrinsin */
+  for (const r of S.stock.values()) {
+    let c = Companies.list().find(x => pkey(x.name) === pkey(r.company));
+    if (!c) { Companies.add(r.company); c = Companies.list().find(x => pkey(x.name) === pkey(r.company)); }
+    if (c && !Companies.products(c.name).some(p => pkey(p) === pkey(r.product))) Companies.addProducts(c.name, [r.product]);
+  }
+  return before !== stockSig();
+}
 async function adminFull() {
   const initial = !S.loadedOnce;
   const r = await api.adminLoad(S.sess.token, S.days);
@@ -1883,21 +2138,22 @@ async function adminFull() {
   const st = parseTs(r.server_time) || Date.now();
   if (!S.notifiedAt) { S.notifiedAt = st; store.set('izi_notified_at', st); }
   if (!S.readAt) { S.readAt = st; store.set('izi_read_at', st); }
-  const before = S.loadedOnce ? sigOf(S.orders) + '|' + S.users.map(u => u.code + u.active).join(',') : null;
+  const before = S.loadedOnce ? sigOf(S.orders) + '|' + S.users.map(u => u.code + u.active).join(',') + '|' + stockSig() : null;
   S.orders = new Map((r.orders || []).map(o => [o.id, o]));
   S.users = r.users || [];
+  setStock(r.stock);
   S.since = r.next_since;
   for (const id of [...S.sel]) if (!S.orders.has(id)) S.sel.delete(id);
   const fresh = takeEvents(r.events, initial);
   S.loadedOnce = true;
-  const after = sigOf(S.orders) + '|' + S.users.map(u => u.code + u.active).join(',');
+  const after = sigOf(S.orders) + '|' + S.users.map(u => u.code + u.active).join(',') + '|' + stockSig();
   if (before === null || before !== after || fresh.length) render();
   if (fresh.length) announce(fresh);
 }
 async function adminChanges() {
   const r = await api.adminChanges(S.sess.token, S.since);
   S.since = r.next_since;
-  const ch = mergeOrders(r.orders);
+  const ch = mergeOrders(r.orders) | setStock(r.stock);
   const fresh = takeEvents(r.events, false);
   if (ch || fresh.length) {
     if (S.tab === 'orders' && document.activeElement && document.activeElement.id === 'q') renderList();
@@ -1997,7 +2253,9 @@ async function runAssign(ids, code) {
   closeSheet();
   try {
     const r = await api.assign(S.sess.token, ids, code || null);
-    toast(code ? `${r.updated} ta buyurtma ${code} kuryerga berildi` : `${r.updated} ta buyurtma kuryerdan qaytarib olindi`, 'go');
+    const msg = code ? `${r.updated} ta buyurtma ${code} kuryerga berildi` : `${r.updated} ta buyurtma kuryerdan qaytarib olindi`;
+    if (r.short) toast(r.updated ? `${msg}. ${r.short} tasiga mahsulot yetmadi, ular berilmadi.` : 'Skladda mahsulot yetarli emas, buyurtma kuryerga berilmadi. Avval kirim qiling.', 'no');
+    else toast(msg, 'go');
     S.selMode = false; S.sel.clear();
     await refreshAdmin();
     render();
@@ -2008,8 +2266,9 @@ async function runAuto() {
   closeSheet();
   let n = 0;
   try {
-    for (const p of plan) { const r = await api.assign(S.sess.token, p.orders.map(o => o.id), p.code); n += r.updated; }
-    toast(`Taqsimlandi: ${n} ta buyurtma`, 'ok');
+    let sh = 0;
+    for (const p of plan) { const r = await api.assign(S.sess.token, p.orders.map(o => o.id), p.code); n += r.updated; sh += r.short || 0; }
+    toast(`Taqsimlandi: ${n} ta buyurtma${sh ? `. ${sh} tasiga mahsulot yetmadi` : ''}`, sh ? 'no' : 'ok');
     S.selMode = false; S.sel.clear(); S.filter = 'assigned';
   } catch (e) { onErr(e); }
   await refreshAdmin();
@@ -2022,6 +2281,7 @@ async function deleteIds(ids) {
     const r = await api.deleteOrders(S.sess.token, ids);
     ids.forEach(id => { S.orders.delete(id); S.sel.delete(id); });
     if (!S.sel.size) S.selMode = false;
+    await refreshAdmin();   /* skladga qaytgan tovar darhol koʻrinsin */
     render();
     toast(`${r.deleted} ta buyurtma oʻchirildi`);
   } catch (e) { onErr(e); }
@@ -2115,6 +2375,9 @@ const ACT = {
     courierSet(+el.dataset.id, 'cancelled', r ? r.value : REASONS[0], note);
   },
   'sheet-close': () => closeSheet(),
+  'stk-in': el => openStockEdit(el.dataset.i, 'add'),
+  'stk-edit': el => openStockEdit(el.dataset.i, 'set'),
+  'stk-del': () => deleteProduct(),
   'import-go': () => runImport(),
 };
 document.addEventListener('click', e => {
@@ -2148,7 +2411,8 @@ document.addEventListener('submit', e => {
   if (e.target.id === 'loginForm') { e.preventDefault(); doLogin($('#lg-code').value, $('#lg-pass').value); }
   else if (e.target.id === 'userForm') { e.preventDefault(); saveUser(); }
   else if (e.target.id === 'manualForm') { e.preventDefault(); saveManual(false); }
-  else if (e.target.id === 'prodForm') { e.preventDefault(); saveProducts(); }
+  else if (e.target.id === 'prodForm') { e.preventDefault(); addProduct(); }
+  else if (e.target.id === 'stkForm') { e.preventDefault(); saveStock(); }
   else if (e.target.id === 'coForm') { e.preventDefault(); saveCompany(); }
 });
 document.addEventListener('keydown', e => {
@@ -2175,7 +2439,7 @@ if (S.sess) {
     startSession();
   })();
 }
-window.IZI = { S, api, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday };
+window.IZI = { S, api, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
 })();
 </script>
 </body>
