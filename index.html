@@ -427,6 +427,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .empty .empty-t{font-size:18px;font-weight:800;color:var(--ink)}
 
 @media (prefers-reduced-motion:reduce){.stamp.land{animation:none}.sheet,.backdrop,.toast{transition:none}}
+.archive-card{max-width:1050px;margin:auto}.archive-controls,.archive-actions{display:flex;gap:12px;flex-wrap:wrap}.archive-controls .fld{flex:1;min-width:140px}.archive-actions{margin:14px 0}.archive-card .search{margin:14px 0}.archive-card .orow{cursor:pointer}
 </style>
 </head>
 <body>
@@ -783,6 +784,7 @@ const remote = {
   logout: t => remote.rpc('izi_logout', { p_token: t }),
   adminLoad: (t, days) => remote.rpc('izi_admin_load', { p_token: t, p_days: days }),
   adminChanges: (t, since) => remote.rpc('izi_admin_changes', { p_token: t, p_since: since }),
+  archive: (t, from, to, query, offset) => remote.rpc('izi_archive', { p_token: t, p_from: from, p_to: to, p_query: query, p_offset: offset }),
   /* rows ichida company va src ham bor: eski setup.sql ularni eʼtiborsiz qoldiradi,
      Supabase ulanganda saqlanishi uchun izi_import ga shu ikki ustun qoʻshiladi. */
   importRows: (t, rows) => remote.rpc('izi_import', { p_token: t, p_rows: rows }),
@@ -843,7 +845,7 @@ const demo = (() => {
     const rows = [];
     for (const it of needOf(o).values()) {
       const r = stockRow(db, o.company, it.n);
-      if (!r) continue;                         /* qoldiq kiritilmagan mahsulot nazorat qilinmaydi */
+      if (!r) return false;                       /* kiritilmagan mahsulot qoldigʻi nol */
       if (r.qty < it.q) return false;
       rows.push([r, it]);
     }
@@ -879,19 +881,25 @@ const demo = (() => {
       const s = parseTs(since) || Date.now() - 60000;
       return clone({ orders: db.orders.filter(o => parseTs(o.updated_at) > s), events: evRows(db, s, 500), stock: db.stock, next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
+    async archive(t, from, to, query, offset) {
+      const db = load(); adm(db, t); const q = norm(query || '');
+      const rows = db.orders.filter(o => ['delivered', 'cancelled'].includes(o.status) && dayKey(parseTs(o.done_at)) >= from && dayKey(parseTs(o.done_at)) <= to && (!q || norm([o.order_no, o.order_ids, o.specialist, o.customer, o.phone, o.region, o.district, o.address, o.landmark, o.product, o.company, o.courier, o.note, o.cancel_reason, o.courier_comment, o.amount].join(' ')).includes(q))).sort((a,b) => parseTs(b.done_at)-parseTs(a.done_at) || b.id-a.id);
+      return clone({orders: rows.slice(offset, offset+500), total: rows.length});
+    },
     async importRows(t, rows) {
       await wait(); const db = load(); adm(db, t);
       let ins = 0, skip = 0;
       for (const r of rows) {
         const no = String(r.order_no || '').trim();
-        if (no && db.orders.some(o => o.order_no === no)) { skip++; continue; }
+        const ids = String(r.order_ids || no).split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean);
+        if (ids.length && db.orders.some(o => String(o.company || '') === String(r.company || '') && String(o.order_ids || o.order_no || '').split(/[,;\/\n]+/).some(x => ids.includes(x.trim())))) { skip++; continue; }
         let c = r.courier ? normCode(r.courier) : null;
         if (c && !db.users.some(u => u.code === c && u.role === 'courier' && u.active)) c = null;
         const items = Array.isArray(r.items) ? r.items.map(x => ({ n: String(x.n || '').trim(), q: Math.max(0, parseInt(x.q, 10) || 0) })).filter(x => x.n && x.q) : [];
         const ts = nowIso(); db.seq.order++;
         const o = { id: db.seq.order, order_no: no || null, customer: r.customer || null, phone: r.phone || null, region: r.region || null, district: r.district || null,
           address: r.address || null, landmark: r.landmark || null, product: r.product || null, qty: r.qty || null, amount: +r.amount || 0, note: r.note || null,
-          company: r.company || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
+          company: r.company || null, order_ids: ids.join(', '), specialist: r.specialist || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
           courier: null, status: 'new', cancel_reason: null, courier_comment: null, created_at: ts, assigned_at: null, on_way_at: null, done_at: null, updated_at: ts };
         /* Excelda kuryer yozilgan boʻlsa: skladda yetsa darhol beriladi, yetmasa «berilmagan» boʻlib qoladi */
         if (c && takeStock(db, o)) Object.assign(o, { courier: c, status: 'assigned', assigned_at: ts });
@@ -1035,7 +1043,7 @@ const S = {
   days: store.get('izi_days', 3), online: true,
   soundOn: store.get('izi_sound', true), wake: store.get('izi_wake', true), audioOk: false,
   theme: store.get('izi_theme', 'auto'),
-  stock: new Map(), prodList: [], stkEdit: null,
+  stock: new Map(), prodList: [], stkEdit: null, archiveRows: [], archiveTotal: 0, archiveFrom: dayKey(Date.now()), archiveTo: dayKey(Date.now()), archiveQ: '', archiveOffset: 0, archiveBusy: false, archiveDateCustom: false,
   notifiedAt: 0, readAt: 0, hlFrom: 0,
 };
 
@@ -1277,9 +1285,9 @@ function slipCourier(o) {
 }
 
 /* ---------- admin ---------- */
-const NAV = [['orders', 'list', 'Buyurtmalar'], ['companies', 'store', 'Kompaniyalar'], ['couriers', 'truck', 'Kuryerlar'], ['alerts', 'bell', 'Xabarlar'], ['settings', 'sliders', 'Sozlamalar']];
+const NAV = [['orders', 'list', 'Buyurtmalar'], ['archive', 'box', 'Arxiv'], ['companies', 'store', 'Kompaniyalar'], ['couriers', 'truck', 'Kuryerlar'], ['alerts', 'bell', 'Xabarlar'], ['settings', 'sliders', 'Sozlamalar']];
 function viewAdmin() {
-  const body = S.tab === 'companies' ? adminCompanies() : S.tab === 'couriers' ? adminCouriers() : S.tab === 'alerts' ? adminAlerts() : S.tab === 'settings' ? adminSettings() : adminOrders();
+  const body = S.tab === 'companies' ? adminCompanies() : S.tab === 'couriers' ? adminCouriers() : S.tab === 'alerts' ? adminAlerts() : S.tab === 'settings' ? adminSettings() : S.tab === 'archive' ? adminArchive() : adminOrders();
   const unread = unreadCount();
   return `${topbar()}<main class="wrap wide">${body}</main>
     <div id="selbarBox">${selBar()}</div>
@@ -1305,7 +1313,7 @@ function shortMap() {
   for (const o of S.orders.values()) {
     if (o.status !== 'new' || o.stock_taken) continue;
     const miss = [];
-    for (const [k, it] of needOf(o)) { const r = S.stock.get(k); if (r && r.qty < it.q) miss.push({ n: it.n, need: it.q, have: Math.max(0, r.qty) }); }
+    for (const [k, it] of needOf(o)) { const r = S.stock.get(k); if (!r || r.qty < it.q) miss.push({ n: it.n, need: it.q, have: r ? Math.max(0, r.qty) : 0 }); }
     if (miss.length) map.set(o.id, miss);
   }
   return map;
@@ -1319,7 +1327,7 @@ function simShort(ids) {
     if (o.status === 'delivered' || o.stock_taken) continue;
     const need = needOf(o);
     let ok = true;
-    for (const [k, it] of need) if (left.has(k) && left.get(k) < it.q) ok = false;
+    for (const [k, it] of need) if (!left.has(k) || left.get(k) < it.q) ok = false;
     if (!ok) { n++; continue; }
     for (const [k, it] of need) if (left.has(k)) left.set(k, left.get(k) - it.q);
   }
@@ -1334,7 +1342,7 @@ function filteredOrders() {
   if (S.fCourier) list = list.filter(o => S.fCourier === '-' ? !o.courier : o.courier === S.fCourier);
   if (S.fRegion) list = list.filter(o => (detectRegion(o, keys) || '-') === S.fRegion);
   if (S.fCompany) list = list.filter(o => S.fCompany === '-' ? !o.company : o.company === S.fCompany);
-  if (q) list = list.filter(o => norm([o.order_no, o.customer, o.address, o.district, o.region, o.landmark, o.product, o.courier, o.company].join(' ')).includes(q)
+  if (q) list = list.filter(o => norm([o.order_no, o.order_ids, o.specialist, o.customer, o.phone, o.address, o.district, o.region, o.landmark, o.product, o.courier, o.company, o.note, o.amount].join(' ')).includes(q)
     || (qd.length >= 3 && String(o.phone || '').replace(/\D/g, '').includes(qd)));
   const recent = o => Math.max(parseTs(o.updated_at), parseTs(o.created_at));
   return list.sort((a, b) => S.filter === 'new' || S.filter === 'short' ? a.id - b.id : recent(b) - recent(a) || b.id - a.id);
@@ -1386,8 +1394,8 @@ function orderRow(o) {
     <div class="orow-main">
       <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${money(o.amount)}</b></div>
       <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
-      <div class="orow-l3"><span class="pr">${o.company && !S.fCompany ? `<span class="co">${esc(o.company)}</span>` : ''}${esc(o.product || '')}${o.qty ? ' × ' + esc(o.qty) : ''}</span>
-        <span class="orow-st">${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}<span class="st ${ST[o.status].cls}">${ST[o.status].label}</span>${t ? `<time>${esc(when(t))}</time>` : ''}</span></div>
+      <div class="orow-l3"><span class="pr">${o.company && !S.fCompany ? `<span class="co">${esc(o.company)}</span>` : ''}${esc(o.product || '')}${o.order_ids && o.order_ids !== o.order_no ? ` · ID: ${esc(o.order_ids)}` : ''}${o.qty ? ' × ' + esc(o.qty) : ''}</span>
+        <span class="orow-st">${o.specialist ? `<span class="co">${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}<span class="st ${ST[o.status].cls}">${ST[o.status].label}</span>${t ? `<time>${esc(when(t))}</time>` : ''}</span></div>
       ${miss ? `<div class="orow-short">${ico('box')}<span>Mahsulot yetarli emas. ${esc(missText(miss))}</span></div>` : ''}
     </div></article>`;
 }
@@ -1466,6 +1474,44 @@ function adminSettings() {
     </section>`;
 }
 
+/* Arxivdagi yakunlangan buyurtmalar serverda doimiy saqlanadi. Sana Toshkent vaqti bilan. */
+function adminArchive() {
+  return `<section class="card archive-card"><h2 class="h2">Buyurtmalar arxivi</h2>
+    <p class="hint">Yakunlangan buyurtmalar shu yerda saqlanadi. Sana tanlamasangiz, ID yoki boshqa matn bilan barcha eski kunlardan qidiriladi.</p>
+    <div class="archive-controls"><label class="fld"><span>Boshlanish</span><input id="archiveFrom" type="date" value="${esc(S.archiveFrom)}"></label>
+    <label class="fld"><span>Tugash</span><input id="archiveTo" type="date" value="${esc(S.archiveTo)}"></label></div>
+    <label class="search">${ico('search')}<input id="archiveQ" type="search" placeholder="ID, mutaxassis, telefon, manzil..." value="${esc(S.archiveQ)}"></label>
+    <div class="archive-actions"><button class="btn btn-go" data-act="archive-search">Qidirish</button><button class="btn" data-act="archive-export">${ico('download')}Excel yuklash</button></div>
+    <p class="hint" aria-live="polite">${S.archiveBusy ? 'Yuklanmoqda…' : S.archiveTotal + ' ta buyurtma topildi'}</p>
+    <div class="olist">${S.archiveRows.map(o => `<article class="orow" data-act="archive-open" data-id="${o.id}" tabindex="0"><div class="orow-main"><div class="orow-l1"><b class="nm">${esc(o.customer || 'Mijoz')}</b><b class="am">${money(o.amount)}</b></div><div class="orow-l2">ID: ${esc(o.order_ids || o.order_no || '—')} · ${esc(o.specialist || 'Mutaxassis koʻrsatilmagan')}</div><div class="orow-l3"><span class="pr">${esc(o.company || '')} · ${esc(o.product || '')}</span><span class="orow-st"><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span><time>${esc(when(o.done_at))}</time></span></div></div></article>`).join('') || '<div class="empty">Bu sana va filtrda yakunlangan buyurtma yoʻq.</div>'}</div>
+    ${S.archiveRows.length < S.archiveTotal ? '<button class="btn btn-ghost btn-block" data-act="archive-more">Yana koʻrsatish</button>' : ''}</section>`;
+}
+async function loadArchive(reset) {
+  if (!S.sess || S.archiveBusy) return;
+  if (!S.archiveFrom || !S.archiveTo || S.archiveFrom > S.archiveTo) { toast('Sana oraligʻini toʻgʻri tanlang.', 'no'); return; }
+  S.archiveBusy = true; if (S.tab === 'archive') render();
+  try {
+    const offset = reset ? 0 : S.archiveRows.length;
+    const from = S.archiveQ.trim() && !S.archiveDateCustom ? '2000-01-01' : S.archiveFrom;
+    const r = await api.archive(S.sess.token, from, S.archiveTo, S.archiveQ.trim(), offset);
+    S.archiveRows = reset ? (r.orders || []) : S.archiveRows.concat(r.orders || []);
+    S.archiveTotal = r.total || 0;
+  } catch (e) { onErr(e); }
+  finally { S.archiveBusy = false; if (S.tab === 'archive') render(); }
+}
+async function exportArchive() {
+  if (!S.archiveFrom || !S.archiveTo || S.archiveFrom > S.archiveTo) { toast('Sana oraligʻini toʻgʻri tanlang.', 'no'); return; }
+  const rows = []; let total = 0;
+  try {
+    do {
+      const from = S.archiveQ.trim() && !S.archiveDateCustom ? '2000-01-01' : S.archiveFrom;
+      const r = await api.archive(S.sess.token, from, S.archiveTo, S.archiveQ.trim(), rows.length);
+      rows.push(...(r.orders || [])); total = r.total || 0;
+      if (!(r.orders || []).length) break;
+    } while (rows.length < total);
+    await exportXlsx(rows, { totals: true, sheet: 'Arxiv', file: `izi-arxiv-${S.archiveFrom}-${S.archiveTo}.xlsx` });
+  } catch (e) { onErr(e); }
+}
 /* ---------- admin: kompaniyalar ---------- */
 function companyStats(name) {
   const r = { total: 0, fresh: 0, active: 0, ok: 0 };
@@ -1812,6 +1858,8 @@ async function deleteProduct() {
 /* ---------- Excel ---------- */
 const FIELDS = [
   { k: 'order_no', label: 'Buyurtma №', syn: ['id', '№', 'no', '#', 'nomer', 'raqam', 'buyurtma raqami', 'buyurtma №', 'buyurtma id', 'zakaz', 'nomer zakaza', 'номер заказа', 'заказ', 'номер', 'order', 'order id', 'kod', 'код'] },
+  { k: 'order_ids', label: 'Qoʻshimcha buyurtma ID', syn: ['buyurtma id 2', 'ikkinchi id', 'id 2', 'id2', 'order id 2'] },
+  { k: 'specialist', label: 'Mutaxassis', syn: ['mutaxassis', 'mutaxasis', 'специалист', 'specialist'] },
   { k: 'customer', label: 'Mijoz', syn: ['mijoz', 'mijoz ismi', 'ism', 'ismi', 'ism familiya', 'familiya ism', 'fio', 'ф.и.о', 'фио', 'имя', 'клиент', 'customer', 'name', 'xaridor', 'qabul qiluvchi', 'получатель'] },
   { k: 'phone', label: 'Telefon', syn: ['telefon', 'tel', 'tel raqam', 'telefon raqami', 'телефон', 'тел', 'phone', 'mobil', 'номер телефона', 'контакт', 'aloqa'] },
   { k: 'region', label: 'Viloyat', syn: ['viloyat', 'viloyati', 'вилоят', 'область', 'region', 'hudud'] },
@@ -1921,7 +1969,9 @@ function buildRows() {
   const prods = (IMP.prods || []).filter(p => p.on);
   const out = [];
   for (const r of IMP.data) {
-    const o = { order_no: get(r, 'order_no'), customer: get(r, 'customer'), phone: normPhone(get(r, 'phone')), region: get(r, 'region'), district: get(r, 'district'),
+    const rawIds = [get(r, 'order_no'), get(r, 'order_ids')].filter(Boolean);
+    const ids = [...new Set(rawIds.flatMap(v => v.split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean)))];
+    const o = { order_no: ids[0] || '', order_ids: ids.join(', '), specialist: get(r, 'specialist'), customer: get(r, 'customer'), phone: normPhone(get(r, 'phone')), region: get(r, 'region'), district: get(r, 'district'),
       address: get(r, 'address'), landmark: get(r, 'landmark'), product: get(r, 'product'), qty: get(r, 'qty'), amount: parseAmount(get(r, 'amount')), note: get(r, 'note'), courier: get(r, 'courier'),
       company: IMP.company || '', src: 'excel' };
     if (prods.length) {
@@ -2025,7 +2075,7 @@ async function exportXlsx(list, opts) {
   try { X = await loadXLSX(); } catch (e) { toast('Excel moduli yuklanmadi. Internetni tekshiring.', 'no'); return; }
   const dt = s => { const t = parseTs(s); if (!t) return ''; const d = new Date(t); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${hhmm(s)}`; };
   const rows = list.map(o => ({
-    'Buyurtma №': o.order_no || '', 'Kompaniya': o.company || '', 'Mijoz': o.customer || '', 'Telefon': o.phone || '', 'Viloyat': o.region || '', 'Tuman': o.district || '',
+    'Buyurtma №': o.order_no || '', 'Buyurtma IDlar': o.order_ids || o.order_no || '', 'Mutaxassis': o.specialist || '', 'Kompaniya': o.company || '', 'Mijoz': o.customer || '', 'Telefon': o.phone || '', 'Viloyat': o.region || '', 'Tuman': o.district || '',
     'Manzil': o.address || '', 'Moʻljal': o.landmark || '', 'Mahsulot': o.product || '', 'Soni': o.qty || '', 'Summa': Number(o.amount) || 0,
     'Kuryer': o.courier || '', 'Holat': ST[o.status].label, 'Sabab': o.cancel_reason || '', 'Kuryer izohi': o.courier_comment || '',
     'Berilgan': dt(o.assigned_at), 'Yoʻlga chiqqan': dt(o.on_way_at), 'Tugallangan': dt(o.done_at),
@@ -2036,7 +2086,7 @@ async function exportXlsx(list, opts) {
     rows.push({ 'Mijoz': 'JAMI topshirildi', 'Soni': list.filter(o => o.status === 'delivered').length, 'Summa': okSum, 'Holat': 'Bekor: ' + list.filter(o => o.status === 'cancelled').length });
   }
   const ws = X.utils.json_to_sheet(rows);
-  ws['!cols'] = [10, 18, 22, 16, 13, 14, 30, 20, 30, 6, 11, 8, 13, 26, 30, 16, 16, 16].map(w => ({ wch: w }));
+  ws['!cols'] = [10, 18, 18, 18, 22, 16, 13, 14, 30, 20, 30, 6, 11, 8, 13, 26, 30, 16, 16, 16].map(w => ({ wch: w }));
   const wb = X.utils.book_new();
   X.utils.book_append_sheet(wb, ws, opts.sheet || 'Hisobot');
   X.writeFile(wb, opts.file || `izi-hisobot-${dayKey(Date.now())}.xlsx`);
@@ -2053,10 +2103,10 @@ async function downloadTemplate(name) {
   let X;
   try { X = await loadXLSX(); } catch (e) { toast('Excel moduli yuklanmadi. Internetni tekshiring.', 'no'); return; }
   const prods = Companies.products(name), addr = 'Buxoro viloyati, Gʻijduvon tumani, Navoiy koʻchasi, 12-uy';
-  const head = ['MIJOZ ISMI', 'TELEFON', ...(prods.length ? prods : ['MAHSULOT']), 'SONI', 'SUMMASI', 'YASHASH MANZILI'];
+  const head = ['BUYURTMA ID', 'ID 2', 'MUTAXASSIS', 'MIJOZ ISMI', 'TELEFON', ...(prods.length ? prods : ['MAHSULOT']), 'SONI', 'SUMMASI', 'YASHASH MANZILI'];
   const ex = prods.length
-    ? ['Aziz Karimov', '90 111 22 33', 2, ...prods.slice(1).map(() => ''), 2, 450000, addr]
-    : ['Aziz Karimov', '90 111 22 33', 'Mahsulot nomi', 2, 450000, addr];
+    ? ['1001', '1002', 'Ali mutaxassis', 'Aziz Karimov', '90 111 22 33', 2, ...prods.slice(1).map(() => ''), 2, 450000, addr]
+    : ['1001', '1002', 'Ali mutaxassis', 'Aziz Karimov', '90 111 22 33', 'Mahsulot nomi', 2, 450000, addr];
   const cols = head.map(h => ({ wch: h === 'YASHASH MANZILI' ? 52 : h === 'MIJOZ ISMI' ? 24 : h === 'TELEFON' ? 17 : Math.max(10, h.length + 3) }));
   const ws = X.utils.aoa_to_sheet([head]), wsEx = X.utils.aoa_to_sheet([head, ex]);
   ws['!cols'] = cols; wsEx['!cols'] = cols;
@@ -2302,6 +2352,7 @@ async function saveUser() {
   } catch (e) { if (err) err.textContent = errText(e); }
 }
 function setTab(v) {
+  if (v === 'archive') loadArchive(true);
   S.tab = v; S.selMode = false; S.sel.clear();
   if (v === 'alerts') { S.hlFrom = S.readAt; markRead(); }
   render();
@@ -2338,6 +2389,10 @@ const ACT = {
   theme: el => setTheme(el.dataset.v),
   'sound-test': () => { unlockAudio(); chime('delivered'); },
   'report-today': () => reportToday(),
+  'archive-search': () => loadArchive(true),
+  'archive-more': () => loadArchive(false),
+  'archive-export': () => exportArchive(),
+  'archive-open': el => { const o = S.archiveRows.find(x => x.id === +el.dataset.id); if (o) { S.orders.set(o.id, o); openOrder(o.id); } },
   tab: el => setTab(el.dataset.v),
   filter: el => { S.filter = el.dataset.v; S.limit = 200; S.selMode = false; S.sel.clear(); render(); },
   ctab: el => { S.ctab = el.dataset.v; render(); },
@@ -2393,7 +2448,10 @@ document.addEventListener('input', e => {
 });
 document.addEventListener('change', e => {
   const t = e.target;
-  if (t.id === 'fRegion') { S.fRegion = t.value; renderList(); }
+  if (t.id === 'archiveFrom') { S.archiveFrom = t.value; S.archiveDateCustom = true; }
+  else if (t.id === 'archiveTo') { S.archiveTo = t.value; S.archiveDateCustom = true; }
+  else if (t.id === 'archiveQ') S.archiveQ = t.value;
+  else if (t.id === 'fRegion') { S.fRegion = t.value; renderList(); }
   else if (t.id === 'fCourier') { S.fCourier = t.value; renderList(); }
   else if (t.id === 'fCompany') { S.fCompany = t.value; renderList(); }
   else if (t.id === 'setSound') { S.soundOn = t.checked; store.set('izi_sound', S.soundOn); if (S.soundOn) unlockAudio(); render(); }
@@ -2416,6 +2474,7 @@ document.addEventListener('submit', e => {
   else if (e.target.id === 'coForm') { e.preventDefault(); saveCompany(); }
 });
 document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'archiveQ') { e.preventDefault(); loadArchive(true); }
   if (e.key === 'Escape' && sheetState) closeSheet();
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.orow[tabindex]')) { e.preventDefault(); e.target.click(); }
 });
