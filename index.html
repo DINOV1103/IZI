@@ -118,12 +118,21 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .amount{margin-top:8px;font-size:34px;font-weight:800;line-height:1.05;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 .amount small{margin-left:6px;font-size:17px;font-weight:700;letter-spacing:0;color:var(--muted)}
 .amount .paid{font-size:21px;letter-spacing:-.01em;color:var(--ok-ink)}
+.amount .paid.unk{color:var(--muted)}
 .cust{margin-top:10px;font-size:19px;font-weight:700;overflow-wrap:anywhere}
 .row{display:flex;align-items:flex-start;gap:10px;margin-top:10px}
 .row>.i{margin-top:2px;color:var(--muted)}
 .row .txt{flex:1;min-width:0;overflow-wrap:anywhere}
 .sub{margin-top:2px;font-size:15px;color:var(--muted)}
 .tel{font-weight:500;text-decoration:none;font-variant-numeric:tabular-nums}
+.phones .txt{display:grid;gap:8px;min-width:0}
+.ph-hint{font-size:13px;font-weight:600;color:var(--muted)}
+.ph-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px}
+.ph{min-height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--slip);color:var(--ink);font:inherit;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer}
+.ph[aria-checked=true]{border-color:var(--brand);background:var(--brand-soft);color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.btn.btn-call{width:100%;min-height:48px;background:var(--ok);color:#fff}
+.btn.btn-call.off{background:var(--new-soft);color:var(--muted);cursor:default}
+.btn-call svg.i{width:19px;height:19px}
 .mini{flex:none;align-self:center;padding:8px 12px;border-radius:10px;background:var(--brand-soft);color:var(--brand);font-size:14px;font-weight:700;text-decoration:none}
 .qty{font-weight:700;white-space:nowrap}
 .perf{position:relative;margin:16px -16px 14px;border-top:2px dashed var(--line)}
@@ -230,7 +239,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 
 /* ---------- admin: bottom nav ---------- */
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:24;padding-bottom:env(safe-area-inset-bottom);background:var(--slip);box-shadow:0 -1px 0 var(--line)}
-.bnav-in{max-width:680px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.bnav-in{max-width:680px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
 .bnav button{position:relative;min-width:0;min-height:64px;padding:0 2px;border:0;background:none;color:var(--muted);font-size:10px;letter-spacing:-.01em;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
 @media (max-width:359px){.bnav button{font-size:9px}}
 .bnav button[aria-current=page]{color:var(--brand)}
@@ -447,8 +456,8 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: '',   // masalan: https://abcdefghijkl.supabase.co
+  SUPABASE_KEY: '',   // Project Settings → API Keys → publishable (yoki anon) key
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
@@ -735,6 +744,7 @@ const REASON_HINT = {
 const ICONS = {
   phone: '<path d="M5 4h3.5l1.8 4.6-2.3 1.4a11.5 11.5 0 0 0 6 6l1.4-2.3L20 15.5V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
   pin: '<path d="M12 21s-6.5-5.8-6.5-11a6.5 6.5 0 0 1 13 0c0 5.2-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>',
+  user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.8 3.9-6 7.5-6s6.7 2.2 7.5 6"/>',
   box: '<path d="M3.5 7.5 12 3.2l8.5 4.3v9L12 20.8l-8.5-4.3z"/><path d="M3.5 7.5 12 11.8l8.5-4.3M12 11.8v9"/>',
   note: '<path d="M5 4h14v11H9l-4 4z"/>',
   bell: '<path d="M6 16.5V11a6 6 0 1 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
@@ -883,7 +893,7 @@ const demo = (() => {
     },
     async archive(t, from, to, query, offset) {
       const db = load(); adm(db, t); const q = norm(query || '');
-      const rows = db.orders.filter(o => ['delivered', 'cancelled'].includes(o.status) && dayKey(parseTs(o.done_at)) >= from && dayKey(parseTs(o.done_at)) <= to && (!q || norm([o.order_no, o.order_ids, o.specialist, o.customer, o.phone, o.region, o.district, o.address, o.landmark, o.product, o.company, o.courier, o.note, o.cancel_reason, o.courier_comment, o.amount].join(' ')).includes(q))).sort((a,b) => parseTs(b.done_at)-parseTs(a.done_at) || b.id-a.id);
+      const rows = db.orders.filter(o => ['delivered', 'cancelled'].includes(o.status) && dayKey(parseTs(o.done_at)) >= from && dayKey(parseTs(o.done_at)) <= to && (!q || norm([o.order_no, o.order_ids, o.specialist, o.specialist_phone, o.customer, o.phone, o.region, o.district, o.address, o.landmark, o.product, o.company, o.courier, o.note, o.cancel_reason, o.courier_comment, o.amount].join(' ')).includes(q))).sort((a,b) => parseTs(b.done_at)-parseTs(a.done_at) || b.id-a.id);
       return clone({orders: rows.slice(offset, offset+500), total: rows.length});
     },
     async importRows(t, rows) {
@@ -898,8 +908,8 @@ const demo = (() => {
         const items = Array.isArray(r.items) ? r.items.map(x => ({ n: String(x.n || '').trim(), q: Math.max(0, parseInt(x.q, 10) || 0) })).filter(x => x.n && x.q) : [];
         const ts = nowIso(); db.seq.order++;
         const o = { id: db.seq.order, order_no: no || null, customer: r.customer || null, phone: r.phone || null, region: r.region || null, district: r.district || null,
-          address: r.address || null, landmark: r.landmark || null, product: r.product || null, qty: r.qty || null, amount: +r.amount || 0, note: r.note || null,
-          company: r.company || null, order_ids: ids.join(', '), specialist: r.specialist || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
+          address: r.address || null, landmark: r.landmark || null, product: r.product || null, qty: r.qty || null, amount: r.amount == null ? null : +r.amount || 0, note: r.note || null,
+          company: r.company || null, order_ids: ids.join(', '), specialist: r.specialist || null, specialist_phone: r.specialist_phone || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
           courier: null, status: 'new', cancel_reason: null, courier_comment: null, created_at: ts, assigned_at: null, on_way_at: null, done_at: null, updated_at: ts };
         /* Excelda kuryer yozilgan boʻlsa: skladda yetsa darhol beriladi, yetmasa «berilmagan» boʻlib qoladi */
         if (c && takeStock(db, o)) Object.assign(o, { courier: c, status: 'assigned', assigned_at: ts });
@@ -1043,7 +1053,7 @@ const S = {
   days: store.get('izi_days', 3), online: true,
   soundOn: store.get('izi_sound', true), wake: store.get('izi_wake', true), audioOk: false,
   theme: store.get('izi_theme', 'auto'),
-  stock: new Map(), prodList: [], stkEdit: null, archiveRows: [], archiveTotal: 0, archiveFrom: dayKey(Date.now()), archiveTo: dayKey(Date.now()), archiveQ: '', archiveOffset: 0, archiveBusy: false, archiveDateCustom: false,
+  stock: new Map(), prodList: [], stkEdit: null, phSel: new Map(), archiveRows: [], archiveTotal: 0, archiveFrom: dayKey(Date.now()), archiveTo: dayKey(Date.now()), archiveQ: '', archiveOffset: 0, archiveBusy: false, archiveDateCustom: false,
   notifiedAt: 0, readAt: 0, hlFrom: 0,
 };
 
@@ -1250,14 +1260,33 @@ function productHtml(o) {
 }
 function slipBody(o) {
   const place = [o.region, o.district, o.address].filter(Boolean).join(', ');
-  return `<div class="amount">${+o.amount > 0 ? money(o.amount) + '<small>soʻm</small>' : '<span class="paid">Toʻlov olinmaydi</span>'}</div>
+  return `<div class="amount">${+o.amount > 0 ? money(o.amount) + '<small>soʻm</small>' : o.amount == null ? '<span class="paid unk">Summa koʻrsatilmagan</span>' : '<span class="paid">Toʻlov olinmaydi</span>'}</div>
     <div class="cust">${esc(o.customer || 'Ism koʻrsatilmagan')}</div>
-    ${phones(o.phone).map(p => `<div class="row">${ico('phone')}<a class="txt tel" href="${esc(telHref(p))}">${esc(fmtPhone(p))}</a><a class="mini" href="${esc(telHref(p))}">Qoʻngʻiroq</a></div>`).join('')}
+    ${phoneBlock(o)}
     ${o.company ? `<div class="row">${ico('store')}<div class="txt"><span class="muted">Qayerdan:</span> <b>${esc(o.company)}</b></div></div>` : ''}
     ${place || o.landmark ? `<div class="row">${ico('pin')}<div class="txt">${esc(place || 'Manzil yozilmagan')}${o.landmark ? `<div class="sub">Moʻljal: ${esc(o.landmark)}</div>` : ''}</div>${place ? `<a class="mini" href="${esc(mapUrl(o))}" target="_blank" rel="noopener">Xarita</a>` : ''}</div>` : ''}
     ${o.product ? `<div class="row">${ico('box')}<div class="txt">${productHtml(o)}</div></div>` : ''}
+    ${o.specialist || o.specialist_phone ? `<div class="row">${ico('user')}<div class="txt"><span class="muted">Mutaxassis:</span> <b>${esc(o.specialist || '')}</b>${o.specialist_phone ? `<div class="sub"><a class="tel" href="${esc(telHref(o.specialist_phone))}">${esc(fmtPhone(o.specialist_phone))}</a></div>` : ''}</div>${o.specialist_phone ? `<a class="mini" href="${esc(telHref(o.specialist_phone))}">Qoʻngʻiroq</a>` : ''}</div>` : ''}
     ${o.note ? `<div class="row">${ico('note')}<div class="txt sub">${esc(o.note)}</div></div>` : ''}`;
 }
+/* Mijozning 3 tagacha raqami. Kuryer bittasini tanlaydi, shundan keyin «Qoʻngʻiroq qilish» yonadi.
+   Raqam bitta boʻlsa, u oʻzi tanlangan turadi. */
+function phoneBlock(o) {
+  const ph = phones(o.phone).slice(0, 3);
+  if (!ph.length) return '';
+  let sel = S.phSel.has(o.id) ? S.phSel.get(o.id) : ph.length === 1 ? 0 : -1;
+  if (sel >= ph.length) sel = -1;
+  return `<div class="row phones">${ico('phone')}<div class="txt">
+    ${ph.length > 1 ? `<div class="ph-hint">${ph.length} ta raqam. Qaysi biriga qoʻngʻiroq qilasiz?</div>` : ''}
+    <div class="ph-list" role="radiogroup" aria-label="Mijoz raqamlari">${ph.map((p, i) => `<button type="button" class="ph" role="radio" aria-checked="${sel === i}" data-act="ph-pick" data-id="${o.id}" data-i="${i}" data-tel="${esc(p)}" aria-label="${esc(fmtPhone(p))}">${esc(shortPhone(p))}</button>`).join('')}</div>
+    ${callBtn(sel >= 0 ? ph[sel] : '')}
+  </div></div>`;
+}
+/* +998 siz qisqa koʻrinish: 91 222 33 44 */
+const shortPhone = p => { const d = String(p || '').replace(/\D/g, ''); return d.length === 12 && d.startsWith('998') ? `${d.slice(3, 5)} ${d.slice(5, 8)} ${d.slice(8, 10)} ${d.slice(10)}` : fmtPhone(p); };
+const callBtn = p => p
+  ? `<a class="btn btn-call" href="${esc(telHref(p))}">${ico('phone')}Qoʻngʻiroq qilish</a>`
+  : `<button type="button" class="btn btn-call off" data-act="ph-need" aria-disabled="true">${ico('phone')}Avval raqamni tanlang</button>`;
 function outcome(o) {
   if (!(o.status === 'cancelled' || o.courier_comment)) return '';
   return `<div class="perf"></div><div class="outcome">${o.cancel_reason ? `<b>${esc(o.cancel_reason)}</b>` : ''}${o.courier_comment ? `<p>${esc(o.courier_comment)}</p>` : ''}</div>`;
@@ -1285,7 +1314,8 @@ function slipCourier(o) {
 }
 
 /* ---------- admin ---------- */
-const NAV = [['orders', 'list', 'Buyurtmalar'], ['archive', 'box', 'Arxiv'], ['companies', 'store', 'Kompaniyalar'], ['couriers', 'truck', 'Kuryerlar'], ['alerts', 'bell', 'Xabarlar'], ['settings', 'sliders', 'Sozlamalar']];
+/* Xabarlar pastki menyuda yoʻq: yuqoridagi qoʻngʻiroqcha orqali ochiladi */
+const NAV = [['orders', 'list', 'Buyurtmalar'], ['archive', 'box', 'Arxiv'], ['companies', 'store', 'Kompaniyalar'], ['couriers', 'truck', 'Kuryerlar'], ['settings', 'sliders', 'Sozlamalar']];
 function viewAdmin() {
   const body = S.tab === 'companies' ? adminCompanies() : S.tab === 'couriers' ? adminCouriers() : S.tab === 'alerts' ? adminAlerts() : S.tab === 'settings' ? adminSettings() : S.tab === 'archive' ? adminArchive() : adminOrders();
   const unread = unreadCount();
@@ -1342,7 +1372,7 @@ function filteredOrders() {
   if (S.fCourier) list = list.filter(o => S.fCourier === '-' ? !o.courier : o.courier === S.fCourier);
   if (S.fRegion) list = list.filter(o => (detectRegion(o, keys) || '-') === S.fRegion);
   if (S.fCompany) list = list.filter(o => S.fCompany === '-' ? !o.company : o.company === S.fCompany);
-  if (q) list = list.filter(o => norm([o.order_no, o.order_ids, o.specialist, o.customer, o.phone, o.address, o.district, o.region, o.landmark, o.product, o.courier, o.company, o.note, o.amount].join(' ')).includes(q)
+  if (q) list = list.filter(o => norm([o.order_no, o.order_ids, o.specialist, o.specialist_phone, o.customer, o.phone, o.address, o.district, o.region, o.landmark, o.product, o.courier, o.company, o.note, o.amount].join(' ')).includes(q)
     || (qd.length >= 3 && String(o.phone || '').replace(/\D/g, '').includes(qd)));
   const recent = o => Math.max(parseTs(o.updated_at), parseTs(o.created_at));
   return list.sort((a, b) => S.filter === 'new' || S.filter === 'short' ? a.id - b.id : recent(b) - recent(a) || b.id - a.id);
@@ -1392,7 +1422,7 @@ function orderRow(o) {
   return `<article class="orow ${sel ? 'sel' : ''} ${miss ? 'short' : ''}" data-st="${o.status}" data-act="${S.selMode ? 'sel' : 'open'}" data-id="${o.id}" tabindex="0">
     ${S.selMode ? `<span class="cbox" aria-hidden="true">${sel ? ico('check') : ''}</span>` : ''}
     <div class="orow-main">
-      <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${money(o.amount)}</b></div>
+      <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
       <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
       <div class="orow-l3"><span class="pr">${o.company && !S.fCompany ? `<span class="co">${esc(o.company)}</span>` : ''}${esc(o.product || '')}${o.order_ids && o.order_ids !== o.order_no ? ` · ID: ${esc(o.order_ids)}` : ''}${o.qty ? ' × ' + esc(o.qty) : ''}</span>
         <span class="orow-st">${o.specialist ? `<span class="co">${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}<span class="st ${ST[o.status].cls}">${ST[o.status].label}</span>${t ? `<time>${esc(when(t))}</time>` : ''}</span></div>
@@ -1857,16 +1887,19 @@ async function deleteProduct() {
 
 /* ---------- Excel ---------- */
 const FIELDS = [
-  { k: 'order_no', label: 'Buyurtma №', syn: ['id', '№', 'no', '#', 'nomer', 'raqam', 'buyurtma raqami', 'buyurtma №', 'buyurtma id', 'zakaz', 'nomer zakaza', 'номер заказа', 'заказ', 'номер', 'order', 'order id', 'kod', 'код'] },
+  { k: 'order_no', label: 'Buyurtma №', syn: ['id', 'id raqam', 'id raqami', '№', 'no', '#', 'nomer', 'raqam', 'buyurtma raqami', 'buyurtma №', 'buyurtma id', 'zakaz', 'nomer zakaza', 'номер заказа', 'заказ', 'номер', 'order', 'order id', 'kod', 'код'] },
   { k: 'order_ids', label: 'Qoʻshimcha buyurtma ID', syn: ['buyurtma id 2', 'ikkinchi id', 'id 2', 'id2', 'order id 2'] },
-  { k: 'specialist', label: 'Mutaxassis', syn: ['mutaxassis', 'mutaxasis', 'специалист', 'specialist'] },
+  { k: 'specialist', label: 'Mutaxassis', syn: ['mutaxassis', 'mutaxasis', 'mutahassis', 'mutaxassis ismi', 'mutaxassis va raqami', 'мутахассис', 'специалист', 'specialist'] },
+  { k: 'specialist_phone', label: 'Mutaxassis raqami', syn: ['mutaxassis raqami', 'mutaxasis raqami', 'mutaxassis telefoni', 'mutaxassis tel', 'мутахассис рақами', 'телефон специалиста'] },
   { k: 'customer', label: 'Mijoz', syn: ['mijoz', 'mijoz ismi', 'ism', 'ismi', 'ism familiya', 'familiya ism', 'fio', 'ф.и.о', 'фио', 'имя', 'клиент', 'customer', 'name', 'xaridor', 'qabul qiluvchi', 'получатель'] },
-  { k: 'phone', label: 'Telefon', syn: ['telefon', 'tel', 'tel raqam', 'telefon raqami', 'телефон', 'тел', 'phone', 'mobil', 'номер телефона', 'контакт', 'aloqa'] },
+  { k: 'phone', label: 'Telefon', syn: ['telefon', 'tel', 'tel raqam', 'telefon raqami', 'raqami', 'mijoz raqami', 'mijoz raqami 1', 'raqami 1', 'telefon 1', '1 raqam', 'mijoz telefoni', 'mijoz tel', 'телефон', 'тел', 'phone', 'mobil', 'номер телефона', 'контакт', 'aloqa'] },
+  { k: 'phone2', label: 'Telefon 2', syn: ['mijoz raqami 2', 'raqami 2', 'telefon 2', 'tel 2', '2 raqam', 'ikkinchi raqam', 'qoshimcha raqam', 'qoshimcha telefon'] },
+  { k: 'phone3', label: 'Telefon 3', syn: ['mijoz raqami 3', 'raqami 3', 'telefon 3', 'tel 3', '3 raqam', 'uchinchi raqam'] },
   { k: 'region', label: 'Viloyat', syn: ['viloyat', 'viloyati', 'вилоят', 'область', 'region', 'hudud'] },
-  { k: 'district', label: 'Tuman / shahar', syn: ['tuman', 'туман', 'район', 'district', 'shahar', 'шаҳар', 'город', 'city', 'tuman shahar'] },
+  { k: 'district', label: 'Tuman / shahar', syn: ['tuman', 'туман', 'район', 'district', 'shahar', 'шаҳар', 'город', 'city', 'tuman shahar', 'shahar yoki tuman', 'tuman yoki shahar', 'shahar tuman'] },
   { k: 'address', label: 'Manzil', syn: ['manzil', 'manzili', 'манзил', 'адрес', 'address', 'adres', 'yashash manzili'] },
   { k: 'landmark', label: 'Moʻljal', syn: ['moljal', 'мўлжал', 'ориентир', 'landmark'] },
-  { k: 'product', label: 'Mahsulot', syn: ['mahsulot', 'mahsulot nomi', 'mahsulotlar', 'маҳсулот', 'товар', 'tovar', 'product', 'nomi', 'наименование', 'продукт'] },
+  { k: 'product', label: 'Mahsulot', syn: ['mahsulot', 'mahsulot nomi', 'mahsulotlar', 'maxsulot', 'maxsulot nomi', 'maxsulotlar', 'маҳсулот', 'товар', 'tovar', 'product', 'nomi', 'наименование', 'продукт'] },
   { k: 'qty', label: 'Soni', syn: ['soni', 'сони', 'кол-во', 'кол во', 'количество', 'qty', 'miqdor', 'miqdori', 'dona', 'шт'] },
   { k: 'amount', label: 'Toʻlov summasi', syn: ['summa', 'summasi', 'сумма', 'narx', 'narxi', 'нарх', 'цена', 'tolov', 'tolov summasi', 'тўлов', 'price', 'amount', 'jami', 'итого', 'к оплате', 'total', 'naqd'] },
   { k: 'note', label: 'Izoh', syn: ['izoh', 'izohlar', 'изоҳ', 'комментарий', 'примечание', 'note', 'comment', 'qoshimcha'] },
@@ -1955,7 +1988,8 @@ function detectProducts(prev) {
     let isProd = known.has(k);
     if (!isProd && !single) {
       const vals = IMP.data.map(r => r[ci]).filter(v => v !== '');
-      const ints = vals.every(v => /^\d{1,3}([.,]0+)?$/.test(String(v).trim()));
+      /* sonlar: 2, 2.0, shuningdek «2 ta», «2 dona», «2 шт» */
+      const ints = vals.every(v => /^\d{1,3}([.,]0+)?(\s*(ta|dona|dn|шт|sht|та|дона)\.?)?$/i.test(String(v).trim()));
       const counter = vals.length > 2 && vals.every((v, i) => parseQty(v) === i + 1);
       isProd = vals.length > 0 && ints && !counter;
     }
@@ -1970,9 +2004,14 @@ function buildRows() {
   const out = [];
   for (const r of IMP.data) {
     const rawIds = [get(r, 'order_no'), get(r, 'order_ids')].filter(Boolean);
-    const ids = [...new Set(rawIds.flatMap(v => v.split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean)))];
-    const o = { order_no: ids[0] || '', order_ids: ids.join(', '), specialist: get(r, 'specialist'), customer: get(r, 'customer'), phone: normPhone(get(r, 'phone')), region: get(r, 'region'), district: get(r, 'district'),
-      address: get(r, 'address'), landmark: get(r, 'landmark'), product: get(r, 'product'), qty: get(r, 'qty'), amount: parseAmount(get(r, 'amount')), note: get(r, 'note'), courier: get(r, 'courier'),
+    /* "10452, 10453", "10452/10453" yoki "10452 10453" — ikkala raqam ham olinadi */
+    const ids = [...new Set(rawIds.flatMap(v => (v.match(/[A-Za-z0-9-]*\d[A-Za-z0-9-]*/g) || []).map(x => x.replace(/^-+|-+$/g, '')).filter(Boolean)))];
+    /* «MUTAXASSIS VA RAQAMI» bitta katakda boʻlsa: ism va telefon ajratiladi */
+    let spec = get(r, 'specialist'), sph = get(r, 'specialist_phone');
+    if (!sph) { const pm = spec.match(/\+?\d[\d\s()-]{7,}\d/); if (pm) { sph = pm[0]; spec = spec.replace(pm[0], '').replace(/[\s,;:()–-]+$/, '').replace(/^[\s,;:()–-]+/, '').trim(); } }
+    const hasAmount = m.amount != null && m.amount !== '';
+    const o = { order_no: ids[0] || '', order_ids: ids.join(', '), specialist: spec, specialist_phone: normPhone(sph), customer: get(r, 'customer'), phone: normPhone([get(r, 'phone'), get(r, 'phone2'), get(r, 'phone3')].filter(Boolean).join(', ')), region: get(r, 'region'), district: get(r, 'district'),
+      address: get(r, 'address'), landmark: get(r, 'landmark'), product: get(r, 'product'), qty: get(r, 'qty'), amount: hasAmount ? parseAmount(get(r, 'amount')) : null, note: get(r, 'note'), courier: get(r, 'courier'),
       company: IMP.company || '', src: 'excel' };
     if (prods.length) {
       /* har bir mahsulot alohida ustunda: "ABIHAYAT × 2, TRIO × 1"; jami SONI mahsulotlardan kelib chiqadi */
@@ -1985,6 +2024,27 @@ function buildRows() {
     if (/^(jami|итого|всего|total)$/i.test(norm(o.customer))) continue;
     out.push(o);
   }
+  return mergeById(out);
+}
+/* Mijoz 2 xil mahsulot olsa, Excelda 2 qator boʻladi, ID bir xil: ular bitta buyurtmaga birlashadi.
+   ID bir xil, lekin mijoz boshqa boʻlsa birlashtirilmaydi (ikkinchisi takror ID sifatida oʻtkazib yuboriladi). */
+function mergeById(rows) {
+  const by = new Map(), out = [], dg = x => String(x || '').replace(/\D/g, '');
+  let merged = 0, clash = 0;
+  for (const o of rows) {
+    const k = o.order_ids ? pkey(o.company) + '|' + o.order_ids : '';
+    const p = k ? by.get(k) : null;
+    if (!p) { if (k) by.set(k, o); out.push(o); continue; }
+    const same = (!o.customer || !p.customer || norm(o.customer) === norm(p.customer)) && (!o.phone || !p.phone || dg(o.phone) === dg(p.phone));
+    if (!same) { clash++; out.push(o); continue; }
+    const items = itemsOf(p);
+    for (const it of itemsOf(o)) { const x = items.find(y => pkey(y.n) === pkey(it.n)); if (x) x.q += it.q; else items.push({ n: it.n, q: it.q }); }
+    p.items = items; p.product = items.map(x => `${x.n} × ${x.q}`).join(', '); p.qty = '';
+    if (o.amount != null) p.amount = (+p.amount || 0) + (+o.amount || 0);
+    for (const f of ['customer', 'phone', 'region', 'district', 'address', 'landmark', 'note', 'specialist', 'specialist_phone', 'courier']) if (!p[f] && o[f]) p[f] = o[f];
+    merged++;
+  }
+  if (IMP) { IMP.merged = merged; IMP.clash = clash; }
   return out;
 }
 function previewHtml(rows) {
@@ -1993,8 +2053,12 @@ function previewHtml(rows) {
   for (const o of rows) { const k = detectRegion(o, keys) || '-'; cnt[k] = (cnt[k] || 0) + 1; }
   const regLine = Object.entries(cnt).map(([k, n]) => `${k === '-' ? 'hududi aniqlanmagan' : regionLabel(k)}: ${n} ta`).join(', ');
   const noProd = rows.filter(o => !o.product).length, noAddr = rows.filter(o => !o.address && !o.district && !o.region).length;
-  const warn = [noProd ? `${noProd} ta qatorda mahsulot soni yoʻq` : '', noAddr ? `${noAddr} ta qatorda manzil yoʻq` : ''].filter(Boolean).join(', ');
-  return `<p class="hint">${esc(cap(regLine))}</p>${warn ? `<p class="warnbox">${esc(cap(warn))}. Ular ham yuklanadi, keyin tekshirib chiqing.</p>` : ''}<div class="prev">${rows.slice(0, 3).map(o => `<div class="pcard"><b>${esc(o.customer || 'Ism yoʻq')}</b> <span class="muted">${esc(fmtPhone(phones(o.phone)[0] || ''))}</span>
+  const noSum = IMP && (IMP.map.amount == null || IMP.map.amount === '');
+  const warn = [noProd ? `${noProd} ta qatorda mahsulot soni yoʻq` : '', noAddr ? `${noAddr} ta qatorda manzil yoʻq` : '',
+    IMP && IMP.clash ? `${IMP.clash} ta qatorda ID takrorlangan, lekin mijoz boshqa (ular qoʻshilmaydi)` : ''].filter(Boolean).join(', ');
+  const info = [IMP && IMP.merged ? `${IMP.merged} ta qoʻshimcha mahsulot qatori oʻz buyurtmasiga birlashtirildi` : '',
+    noSum ? 'Faylda summa ustuni yoʻq: kuryerga «Summa koʻrsatilmagan» deb chiqadi' : ''].filter(Boolean);
+  return `<p class="hint">${esc(cap(regLine))}</p>${info.map(t => `<p class="hint">${esc(t)}.</p>`).join('')}${warn ? `<p class="warnbox">${esc(cap(warn))}. Ular ham yuklanadi, keyin tekshirib chiqing.</p>` : ''}<div class="prev">${rows.slice(0, 3).map(o => `<div class="pcard"><b>${esc(o.customer || 'Ism yoʻq')}</b> <span class="muted">${esc(fmtPhone(phones(o.phone)[0] || ''))}</span>
       <div>${esc([o.region, o.district, o.address].filter(Boolean).join(', ') || 'Manzil yoʻq')}</div>
       <div>${esc(o.product || '')}${o.qty ? ' × ' + esc(o.qty) : ''} <b>${money(o.amount)} soʻm</b></div></div>`).join('')}</div>`;
 }
@@ -2075,7 +2139,7 @@ async function exportXlsx(list, opts) {
   try { X = await loadXLSX(); } catch (e) { toast('Excel moduli yuklanmadi. Internetni tekshiring.', 'no'); return; }
   const dt = s => { const t = parseTs(s); if (!t) return ''; const d = new Date(t); return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${hhmm(s)}`; };
   const rows = list.map(o => ({
-    'Buyurtma №': o.order_no || '', 'Buyurtma IDlar': o.order_ids || o.order_no || '', 'Mutaxassis': o.specialist || '', 'Kompaniya': o.company || '', 'Mijoz': o.customer || '', 'Telefon': o.phone || '', 'Viloyat': o.region || '', 'Tuman': o.district || '',
+    'Buyurtma №': o.order_no || '', 'Buyurtma IDlar': o.order_ids || o.order_no || '', 'Mutaxassis': o.specialist || '', 'Mutaxassis raqami': o.specialist_phone || '', 'Kompaniya': o.company || '', 'Mijoz': o.customer || '', 'Telefon': o.phone || '', 'Viloyat': o.region || '', 'Tuman': o.district || '',
     'Manzil': o.address || '', 'Moʻljal': o.landmark || '', 'Mahsulot': o.product || '', 'Soni': o.qty || '', 'Summa': Number(o.amount) || 0,
     'Kuryer': o.courier || '', 'Holat': ST[o.status].label, 'Sabab': o.cancel_reason || '', 'Kuryer izohi': o.courier_comment || '',
     'Berilgan': dt(o.assigned_at), 'Yoʻlga chiqqan': dt(o.on_way_at), 'Tugallangan': dt(o.done_at),
@@ -2086,7 +2150,7 @@ async function exportXlsx(list, opts) {
     rows.push({ 'Mijoz': 'JAMI topshirildi', 'Soni': list.filter(o => o.status === 'delivered').length, 'Summa': okSum, 'Holat': 'Bekor: ' + list.filter(o => o.status === 'cancelled').length });
   }
   const ws = X.utils.json_to_sheet(rows);
-  ws['!cols'] = [10, 18, 18, 18, 22, 16, 13, 14, 30, 20, 30, 6, 11, 8, 13, 26, 30, 16, 16, 16].map(w => ({ wch: w }));
+  ws['!cols'] = [10, 18, 18, 17, 18, 22, 16, 13, 14, 30, 20, 30, 6, 11, 8, 13, 26, 30, 16, 16, 16].map(w => ({ wch: w }));
   const wb = X.utils.book_new();
   X.utils.book_append_sheet(wb, ws, opts.sheet || 'Hisobot');
   X.writeFile(wb, opts.file || `izi-hisobot-${dayKey(Date.now())}.xlsx`);
@@ -2102,13 +2166,19 @@ function reportToday() {
 async function downloadTemplate(name) {
   let X;
   try { X = await loadXLSX(); } catch (e) { toast('Excel moduli yuklanmadi. Internetni tekshiring.', 'no'); return; }
-  const prods = Companies.products(name), addr = 'Buxoro viloyati, Gʻijduvon tumani, Navoiy koʻchasi, 12-uy';
-  const head = ['BUYURTMA ID', 'ID 2', 'MUTAXASSIS', 'MIJOZ ISMI', 'TELEFON', ...(prods.length ? prods : ['MAHSULOT']), 'SONI', 'SUMMASI', 'YASHASH MANZILI'];
+  /* bitta qator = bitta mijoz; har bir mahsulot alohida ustun, tagiga soni yoziladi */
+  const prods = Companies.products(name);
+  if (!prods.length) toast(`${name}: avval «Sklad» oynasida mahsulotlarni kiriting, shunda namunada ularning ustunlari chiqadi.`, 'no');
+  const pcols = prods.length ? prods : ['MAHSULOT', 'SONI'];
+  const head = ['ID RAQAM', 'MIJOZ ISMI', 'MIJOZ RAQAMI 1', 'MIJOZ RAQAMI 2', 'MIJOZ RAQAMI 3', 'VILOYAT', 'SHAHAR YOKI TUMAN', 'MANZIL', ...pcols, 'SUMMASI', 'MUTAXASSIS'];
+  const b1 = ['10451', 'Aziz Karimov', '90 111 22 33', '93 111 22 33', '', 'Buxoro viloyati', 'Gʻijduvon tumani', 'Navoiy koʻchasi, 12-uy'];
+  const b2 = ['10452', 'Dilnoza Rahimova', '91 222 33 44', '', '', 'Qashqadaryo viloyati', 'Qarshi shahri', 'Mustaqillik koʻchasi, 45-uy'];
   const ex = prods.length
-    ? ['1001', '1002', 'Ali mutaxassis', 'Aziz Karimov', '90 111 22 33', 2, ...prods.slice(1).map(() => ''), 2, 450000, addr]
-    : ['1001', '1002', 'Ali mutaxassis', 'Aziz Karimov', '90 111 22 33', 'Mahsulot nomi', 2, 450000, addr];
-  const cols = head.map(h => ({ wch: h === 'YASHASH MANZILI' ? 52 : h === 'MIJOZ ISMI' ? 24 : h === 'TELEFON' ? 17 : Math.max(10, h.length + 3) }));
-  const ws = X.utils.aoa_to_sheet([head]), wsEx = X.utils.aoa_to_sheet([head, ex]);
+    ? [[...b1, ...pcols.map((_, j) => j === 0 ? 2 : ''), 780000, 'Dilfuza'],
+       [...b2, ...pcols.map((_, j) => j === 0 || j === pcols.length - 1 ? 1 : ''), 740000, 'Sevara']]   /* 2 xil mahsulot — bitta qatorda */
+    : [[...b1, 'Mahsulot nomi', 2, 450000, 'Dilfuza']];
+  const cols = [16, 24, 17, 17, 17, 22, 24, 40, ...pcols.map(x => Math.max(10, x.length + 3)), 14, 18].map(w => ({ wch: w }));
+  const ws = X.utils.aoa_to_sheet([head]), wsEx = X.utils.aoa_to_sheet([head, ...ex]);
   ws['!cols'] = cols; wsEx['!cols'] = cols;
   const wb = X.utils.book_new();
   X.utils.book_append_sheet(wb, ws, 'BUYURTMALAR');
@@ -2430,6 +2500,14 @@ const ACT = {
     courierSet(+el.dataset.id, 'cancelled', r ? r.value : REASONS[0], note);
   },
   'sheet-close': () => closeSheet(),
+  'ph-pick': el => {
+    const i = +el.dataset.i, box = el.closest('.phones');
+    S.phSel.set(+el.dataset.id, i);
+    box.querySelectorAll('.ph').forEach((b, j) => b.setAttribute('aria-checked', String(j === i)));
+    const old = box.querySelector('.btn-call');
+    if (old) old.outerHTML = callBtn(el.dataset.tel);
+  },
+  'ph-need': () => toast('Avval qaysi raqamga qoʻngʻiroq qilishni tanlang.', 'no'),
   'stk-in': el => openStockEdit(el.dataset.i, 'add'),
   'stk-edit': el => openStockEdit(el.dataset.i, 'set'),
   'stk-del': () => deleteProduct(),
