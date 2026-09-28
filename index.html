@@ -456,8 +456,8 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: '',   // masalan: https://abcdefghijkl.supabase.co
+  SUPABASE_KEY: '',   // Project Settings → API Keys → publishable (yoki anon) key
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
@@ -541,20 +541,52 @@ function parseAmount(v) {
 const REGION_STEMS = {
   buxoro: ['buxor', 'buxar', 'bukhar', 'gijduv', 'gizhduv', 'vobkent', 'vabkent', 'kogon', 'kagan', 'romitan', 'jondor', 'zhondor', 'olot', 'alat', 'qorakol', 'qarakol', 'karakul', 'qorovulbozor', 'karaulbazar', 'peshku', 'shofirkon', 'shafirkan'],
   qashqadaryo: ['qashqadar', 'kashkadar', 'qarshi', 'karshi', 'shahrisabz', 'shaxrisabz', 'shakhrisabz', 'kitob', 'kitab', 'guzor', 'guzar', 'koson', 'kasan', 'muborak', 'mubarek', 'kasbi', 'chiroqchi', 'chirakchi', 'dehqonobod', 'dexkanabad', 'dehkanabad', 'qamashi', 'kamashi', 'mirishkor', 'nishon', 'nishan', 'yakkabog', 'yakkabag', 'kokdala', 'kukdala'],
+  toshvil: ['chirchiq', 'chirchik', 'olmaliq', 'almalik', 'almalyk', 'angren', 'bekobod', 'bekabad', 'ohangaron', 'oxangaron', 'axangaran', 'akhangaran', 'ahangaran',
+    'yangiyol', 'yangiyul', 'nurafshon', 'zangiota', 'zangiata', 'qibray', 'kibray', 'parkent', 'piskent', 'boka', 'buka', 'bostonliq', 'bostanliq', 'bustonliq',
+    'bustanlik', 'bostanlyk', 'gazalkent', 'chinoz', 'chinaz', 'oqqorgon', 'akkurgan', 'keles', 'eshonguzar', 'toytepa', 'tuytepa'],
+  toshshahar: ['chilonzor', 'chilanzar', 'yunusobod', 'yunusabad', 'ulugbek', 'yashnobod', 'yashnabad', 'shayxontohur', 'shayxontoxur', 'shayhontohur',
+    'shayxantaxur', 'shaykhantakhur', 'olmazor', 'almazar', 'uchtepa', 'sergeli', 'yakkasaroy', 'yakkasaray', 'mirobod', 'mirabad', 'bektemir', 'yangihayot', 'yangixayot'],
 };
+const TOSH_STEMS = ['toshkent', 'tashkent'];
+/* Har bir admin oʻz «zonasi» bilan ishlaydi: ADMIN — Buxoro va Qashqadaryo, TOSHKENT — Toshkent shahri va viloyati */
+const ZONE_OF = { buxoro: 'main', qashqadaryo: 'main', toshshahar: 'toshkent', toshvil: 'toshkent' };
+const ZONE_NAME = { main: 'Buxoro va Qashqadaryo', toshkent: 'Toshkent' };
+const myZone = () => (S.sess && S.sess.zone) || 'main';
+function stemKey(w) {
+  for (const k in REGION_STEMS) if (REGION_STEMS[k].some(st => w.startsWith(st))) return k;
+  return TOSH_STEMS.some(st => w.startsWith(st)) ? 'tosh' : '';
+}
+/* Matndan hudud. Tartib: «X viloyati» (eng ishonchli) → «Toshkent tumani» (viloyatniki) / «Toshkent shahri» →
+   birinchi uchragan tuman yoki shahar nomi → yolgʻiz «Toshkent» (shahar deb olinadi). */
+function regionOfText(txt) {
+  const w = norm(txt).split(' ').filter(Boolean);
+  if (!w.length) return '';
+  for (let i = 0; i < w.length; i++) {
+    const k = stemKey(w[i]), nx = w[i + 1] || '', pv = w[i - 1] || '';
+    if (!k) continue;
+    if (/^(viloyat|vil$|obl)/.test(nx)) return k === 'tosh' || k === 'toshshahar' ? 'toshvil' : k;
+    if (k === 'tosh' && /^(tuman|rayon|r$)/.test(nx)) return 'toshvil';
+    if (k === 'tosh' && (/^(shahr|shahar|sh$|gorod|g$)/.test(nx) || /^(g|gor|sh)$/.test(pv))) return 'toshshahar';
+  }
+  for (const x of w) { const k = stemKey(x); if (k && k !== 'tosh') return k; }
+  return w.some(x => stemKey(x) === 'tosh') ? 'toshshahar' : '';
+}
+function regionKeyOf(o) {
+  for (const f of [o.region, o.district, o.address, o.landmark]) { const k = regionOfText(f); if (k) return k; }
+  return '';
+}
+/* Buyurtma qaysi adminga tegishli: hududdan; hudud aniqlanmasa — yuklagan adminniki */
+const zoneOfOrder = o => ZONE_OF[regionKeyOf(o)] || myZone();
 function regionKeyOfName(name) {
-  const words = norm(name).split(' ').filter(Boolean);
-  for (const k in REGION_STEMS) if (words.some(w => REGION_STEMS[k].some(st => w.startsWith(st)))) return k;
-  return words[0] || '';
+  return regionOfText(name) || norm(name).split(' ').filter(Boolean)[0] || '';
 }
 function detectRegion(o, keys) {
+  const k = regionKeyOf(o);
+  if (k && keys.includes(k)) return k;
+  /* admin oʻzi qoʻshgan boshqa hududlar (masalan, Samarqand): nomining boshidan */
   for (const f of [o.region, o.district, o.address, o.landmark]) {
     const words = norm(f).split(' ').filter(Boolean);
-    if (!words.length) continue;
-    for (const k of keys) {
-      const stems = REGION_STEMS[k] || [k.slice(0, 5)];
-      if (words.some(w => stems.some(st => w.startsWith(st)))) return k;
-    }
+    for (const key of keys) if (!REGION_STEMS[key] && words.some(w => w.startsWith(key.slice(0, 5)))) return key;
   }
   return '';
 }
@@ -809,17 +841,21 @@ const remote = {
 };
 
 /* ---------------- API: demo (xuddi shu funksiyalar, brauzer ichida) ---------------- */
+const demoLabel = c => c === 'ADMIN' ? 'Admin' : c === 'TOSHKENT' ? 'Toshkent admin' : esc(c);
 const demo = (() => {
   const KEY = 'izi_demo_v1';
   const iso = t => new Date(t).toISOString();
   const nowIso = () => iso(Date.now());
   const clone = x => JSON.parse(JSON.stringify(x));
   const wait = () => sleep(140);
+  const MAIN_USERS = [['ADMIN', 'admin', null, 'main'], ['B-1', 'courier', 'Buxoro', 'main'], ['B-2', 'courier', 'Buxoro', 'main'], ['B-3', 'courier', 'Buxoro', 'main'],
+    ['K-1', 'courier', 'Qashqadaryo', 'main'], ['K-2', 'courier', 'Qashqadaryo', 'main'], ['K-3', 'courier', 'Qashqadaryo', 'main'], ['K-4', 'courier', 'Qashqadaryo', 'main'], ['K-5', 'courier', 'Qashqadaryo', 'main']];
+  const TOSH_USERS = [['TOSHKENT', 'admin', null, 'toshkent'],
+    ['T-1', 'courier', 'Toshkent shahri', 'toshkent'], ['T-2', 'courier', 'Toshkent shahri', 'toshkent'], ['T-3', 'courier', 'Toshkent shahri', 'toshkent'], ['T-4', 'courier', 'Toshkent shahri', 'toshkent'],
+    ['TV-1', 'courier', 'Toshkent viloyati', 'toshkent'], ['TV-2', 'courier', 'Toshkent viloyati', 'toshkent'], ['TV-3', 'courier', 'Toshkent viloyati', 'toshkent']];
   function seed() {
-    const users = [['ADMIN', 'admin', null], ['B-1', 'courier', 'Buxoro'], ['B-2', 'courier', 'Buxoro'], ['B-3', 'courier', 'Buxoro'],
-      ['K-1', 'courier', 'Qashqadaryo'], ['K-2', 'courier', 'Qashqadaryo'], ['K-3', 'courier', 'Qashqadaryo'], ['K-4', 'courier', 'Qashqadaryo'], ['K-5', 'courier', 'Qashqadaryo']]
-      .map(([code, role, region]) => ({ code, role, region, active: true }));
-    return { v: 3, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 }, stock: [] };
+    const users = [...MAIN_USERS, ...TOSH_USERS].map(([code, role, region, zone]) => ({ code, role, region, zone, active: true }));
+    return { v: 4, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 }, stock: [] };
   }
   /* Eski versiya oʻzi yaratgan 14 ta namunaviy (random) buyurtma. Brauzerda qolgan boʻlsa, bir marta oʻchiriladi;
      siz yuklagan buyurtmalarga tegilmaydi. */
@@ -838,23 +874,32 @@ const demo = (() => {
     }
     if (db.v < 3) { db.stock = db.stock || []; db.v = 3; store.set(KEY, db); }
     if (!Array.isArray(db.stock)) db.stock = [];
+    if (db.v < 4) {   /* Toshkent zonasi: eski maʼlumot «main» boʻladi, yangi admin va kuryerlar qoʻshiladi */
+      db.users.forEach(u => { u.zone = u.zone || 'main'; });
+      for (const [code, role, region, zone] of TOSH_USERS) if (!db.users.some(u => u.code === code)) db.users.push({ code, role, region, zone, active: true });
+      db.orders.forEach(o => { o.zone = o.zone || 'main'; });
+      db.stock.forEach(r => { r.zone = r.zone || 'main'; });
+      db.v = 4; store.set(KEY, db);
+    }
     return db;
   };
   const save = db => store.set(KEY, db);
   const who = (db, t) => { const c = db.sessions[t]; const u = c && db.users.find(x => x.code === c && x.active); if (!u) throw new ApiError('NO_SESSION'); return u; };
   const adm = (db, t) => { const u = who(db, t); if (u.role !== 'admin') throw new ApiError('FORBIDDEN'); return u; };
-  const pubUsers = db => db.users.map(({ code, role, region, active }) => ({ code, role, region, active }));
-  const evRows = (db, since, limit) => db.events
-    .filter(e => ['on_way', 'delivered', 'cancelled'].includes(e.type) && (!since || parseTs(e.created_at) > since))
+  const zoneOfUser = (db, code) => ((db.users.find(x => x.code === code) || {}).zone) || 'main';
+  const pubUsers = (db, z) => db.users.filter(u => (u.zone || 'main') === z).map(({ code, role, region, active }) => ({ code, role, region, active }));
+  const evRows = (db, since, limit, z) => db.events
+    .filter(e => ['on_way', 'delivered', 'cancelled'].includes(e.type) && (!since || parseTs(e.created_at) > since)
+      && (((db.orders.find(x => x.id === e.order_id) || {}).zone) || zoneOfUser(db, e.courier)) === z)
     .slice(-limit)
     .map(e => { const o = db.orders.find(x => x.id === e.order_id) || {}; return { ...e, order_no: o.order_no, customer: o.customer, amount: o.amount, address: o.address }; });
   const addEv = (db, e) => { db.seq.event++; db.events.push({ id: db.seq.event, reason: null, comment: null, created_at: nowIso(), ...e }); if (db.events.length > 3000) db.events.splice(0, db.events.length - 3000); };
   /* sklad: buyurtma kuryerga berilganda ayriladi, bekor/qaytarib olinganda qaytadi */
-  const stockRow = (db, co, pr) => db.stock.find(x => stockKey(x.company, x.product) === stockKey(co, pr));
+  const stockRow = (db, co, pr, z) => db.stock.find(x => (x.zone || 'main') === (z || 'main') && stockKey(x.company, x.product) === stockKey(co, pr));
   const takeStock = (db, o) => {
     const rows = [];
     for (const it of needOf(o).values()) {
-      const r = stockRow(db, o.company, it.n);
+      const r = stockRow(db, o.company, it.n, o.zone);
       if (!r) return false;                       /* kiritilmagan mahsulot qoldigʻi nol */
       if (r.qty < it.q) return false;
       rows.push([r, it]);
@@ -864,7 +909,7 @@ const demo = (() => {
     return true;
   };
   const giveBack = (db, o) => {
-    for (const it of o.stock_taken || []) { const r = stockRow(db, o.company, it.n); if (r) { r.qty += it.q; r.updated_at = nowIso(); } }
+    for (const it of o.stock_taken || []) { const r = stockRow(db, o.company, it.n, o.zone); if (r) { r.qty += it.q; r.updated_at = nowIso(); } }
     o.stock_taken = null;
   };
   return {
@@ -876,56 +921,58 @@ const demo = (() => {
       db.sessions[t] = c;
       const keys = Object.keys(db.sessions); if (keys.length > 40) delete db.sessions[keys[0]];
       save(db);
-      return { token: t, code: u.code, role: u.role, region: u.region };
+      return { token: t, code: u.code, role: u.role, region: u.region, zone: u.zone || 'main' };
     },
-    async me(t) { const db = load(); const u = who(db, t); return { code: u.code, role: u.role, region: u.region }; },
+    async me(t) { const db = load(); const u = who(db, t); return { code: u.code, role: u.role, region: u.region, zone: u.zone || 'main' }; },
     async logout(t) { const db = load(); delete db.sessions[t]; save(db); return { ok: true }; },
     async adminLoad(t, days) {
-      await wait(); const db = load(); adm(db, t);
+      await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const lim = Date.now() - days * 864e5;
-      return clone({ orders: db.orders.filter(o => ['new', 'assigned', 'on_way'].includes(o.status) || parseTs(o.updated_at) > lim).sort((a, b) => b.id - a.id),
-        events: evRows(db, 0, 150), users: pubUsers(db), stock: db.stock, next_since: iso(Date.now() - 15000), server_time: nowIso() });
+      return clone({ orders: db.orders.filter(o => o.zone === z && (['new', 'assigned', 'on_way'].includes(o.status) || parseTs(o.updated_at) > lim)).sort((a, b) => b.id - a.id),
+        events: evRows(db, 0, 150, z), users: pubUsers(db, z), stock: db.stock.filter(r => r.zone === z), next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async adminChanges(t, since) {
-      const db = load(); adm(db, t);
+      const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const s = parseTs(since) || Date.now() - 60000;
-      return clone({ orders: db.orders.filter(o => parseTs(o.updated_at) > s), events: evRows(db, s, 500), stock: db.stock, next_since: iso(Date.now() - 15000), server_time: nowIso() });
+      return clone({ orders: db.orders.filter(o => o.zone === z && parseTs(o.updated_at) > s), events: evRows(db, s, 500, z), stock: db.stock.filter(r => r.zone === z), next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async archive(t, from, to, query, offset) {
-      const db = load(); adm(db, t); const q = norm(query || '');
-      const rows = db.orders.filter(o => ['delivered', 'cancelled'].includes(o.status) && dayKey(parseTs(o.done_at)) >= from && dayKey(parseTs(o.done_at)) <= to && (!q || norm([o.order_no, o.order_ids, o.specialist, o.specialist_phone, o.customer, o.phone, o.region, o.district, o.address, o.landmark, o.product, o.company, o.courier, o.note, o.cancel_reason, o.courier_comment, o.amount].join(' ')).includes(q))).sort((a,b) => parseTs(b.done_at)-parseTs(a.done_at) || b.id-a.id);
+      const db = load(); const u = adm(db, t); const q = norm(query || '');
+      const rows = db.orders.filter(o => o.zone === (u.zone || 'main') && ['delivered', 'cancelled'].includes(o.status) && dayKey(parseTs(o.done_at)) >= from && dayKey(parseTs(o.done_at)) <= to && (!q || norm([o.order_no, o.order_ids, o.specialist, o.specialist_phone, o.customer, o.phone, o.region, o.district, o.address, o.landmark, o.product, o.company, o.courier, o.note, o.cancel_reason, o.courier_comment, o.amount].join(' ')).includes(q))).sort((a,b) => parseTs(b.done_at)-parseTs(a.done_at) || b.id-a.id);
       return clone({orders: rows.slice(offset, offset+500), total: rows.length});
     },
     async importRows(t, rows) {
-      await wait(); const db = load(); adm(db, t);
-      let ins = 0, skip = 0;
+      await wait(); const db = load(); const u = adm(db, t);
+      let ins = 0, skip = 0, other = 0;
       for (const r of rows) {
+        const z = ['main', 'toshkent'].includes(r.zone) ? r.zone : (u.zone || 'main');
         const no = String(r.order_no || '').trim();
         const ids = String(r.order_ids || no).split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean);
         if (ids.length && db.orders.some(o => String(o.company || '') === String(r.company || '') && String(o.order_ids || o.order_no || '').split(/[,;\/\n]+/).some(x => ids.includes(x.trim())))) { skip++; continue; }
         let c = r.courier ? normCode(r.courier) : null;
-        if (c && !db.users.some(u => u.code === c && u.role === 'courier' && u.active)) c = null;
+        if (c && !db.users.some(x => x.code === c && x.role === 'courier' && x.active && (x.zone || 'main') === z)) c = null;
         const items = Array.isArray(r.items) ? r.items.map(x => ({ n: String(x.n || '').trim(), q: Math.max(0, parseInt(x.q, 10) || 0) })).filter(x => x.n && x.q) : [];
         const ts = nowIso(); db.seq.order++;
         const o = { id: db.seq.order, order_no: no || null, customer: r.customer || null, phone: r.phone || null, region: r.region || null, district: r.district || null,
           address: r.address || null, landmark: r.landmark || null, product: r.product || null, qty: r.qty || null, amount: r.amount == null ? null : +r.amount || 0, note: r.note || null,
-          company: r.company || null, order_ids: ids.join(', '), specialist: r.specialist || null, specialist_phone: r.specialist_phone || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
+          zone: z, company: r.company || null, order_ids: ids.join(', '), specialist: r.specialist || null, specialist_phone: r.specialist_phone || null, src: r.src || null, items: items.length ? items : null, stock_taken: null,
           courier: null, status: 'new', cancel_reason: null, courier_comment: null, created_at: ts, assigned_at: null, on_way_at: null, done_at: null, updated_at: ts };
         /* Excelda kuryer yozilgan boʻlsa: skladda yetsa darhol beriladi, yetmasa «berilmagan» boʻlib qoladi */
         if (c && takeStock(db, o)) Object.assign(o, { courier: c, status: 'assigned', assigned_at: ts });
         db.orders.push(o);
-        ins++;
+        ins++; if (z !== (u.zone || 'main')) other++;
       }
       save(db);
-      return { inserted: ins, skipped: skip };
+      return { inserted: ins, skipped: skip, other_zone: other };
     },
     async assign(t, ids, courier) {
       await wait(); const db = load(); const u = adm(db, t);
-      const c = courier ? normCode(courier) : null;
-      if (c && !db.users.some(x => x.code === c && x.role === 'courier' && x.active)) throw new ApiError('BAD_COURIER');
+      const c = courier ? normCode(courier) : null, z = u.zone || 'main';
+      /* admin faqat oʻz zonasidagi kuryerga bera oladi (Toshkent admini — faqat T va TV) */
+      if (c && !db.users.some(x => x.code === c && x.role === 'courier' && x.active && (x.zone || 'main') === z)) throw new ApiError('BAD_COURIER');
       const set = new Set(ids.map(Number)); let n = 0; const short = [];
       for (const o of db.orders) {
-        if (!set.has(o.id) || o.status === 'delivered') continue;
+        if (!set.has(o.id) || o.status === 'delivered' || o.zone !== z) continue;
         if (c && !o.stock_taken && !takeStock(db, o)) { short.push(o.id); continue; }   /* skladda yetmaydi */
         if (!c && o.stock_taken) giveBack(db, o);
         const ts = nowIso();
@@ -937,8 +984,8 @@ const demo = (() => {
       return { updated: n, short: short.length, short_ids: short };
     },
     async deleteOrders(t, ids) {
-      await wait(); const db = load(); adm(db, t);
-      const set = new Set(ids.map(Number)), before = db.orders.length;
+      await wait(); const db = load(); const u = adm(db, t);
+      const set = new Set(ids.map(Number).filter(id => (db.orders.find(o => o.id === id) || {}).zone === (u.zone || 'main'))), before = db.orders.length;
       for (const o of db.orders) if (set.has(o.id) && o.stock_taken && o.status !== 'delivered') giveBack(db, o);
       db.orders = db.orders.filter(o => !set.has(o.id));
       db.events = db.events.filter(e => !set.has(e.order_id));
@@ -946,20 +993,21 @@ const demo = (() => {
       return { deleted: before - db.orders.length };
     },
     async userSave(t, code, region, pass, active) {
-      await wait(); const db = load(); adm(db, t);
+      await wait(); const db = load(); const me = adm(db, t), z = me.zone || 'main';
       const c = normCode(code);
       if (!/^[A-Z0-9-]{2,12}$/.test(c)) throw new ApiError('BAD_CODE');
       if (pass && pass.length < 4) throw new ApiError('SHORT_PASS');
       const u = db.users.find(x => x.code === c);
+      if (u && (u.zone || 'main') !== z) throw new ApiError('FORBIDDEN');   /* boshqa zonaning kuryeri */
       if (!u) {
         if (!pass) throw new ApiError('SHORT_PASS');
-        db.users.push({ code: c, role: 'courier', region: String(region || '').trim() || null, active: active !== false });
+        db.users.push({ code: c, role: 'courier', region: String(region || '').trim() || null, zone: z, active: active !== false });
       } else if (u.role === 'courier') {
         if (region != null) u.region = String(region).trim() || null;
         if (active != null) u.active = !!active;
       }
       save(db);
-      return { ok: true, users: pubUsers(db) };
+      return { ok: true, users: pubUsers(db, z) };
     },
     async myOrders(t) {
       await wait(); const db = load(); const u = who(db, t);
@@ -991,26 +1039,27 @@ const demo = (() => {
     async history(t, id) {
       const db = load(); const u = who(db, t);
       if (u.role === 'courier' && !db.orders.some(o => o.id === +id && o.courier === u.code)) throw new ApiError('NOT_FOUND');
+      if (u.role === 'admin' && !db.orders.some(o => o.id === +id && o.zone === (u.zone || 'main'))) throw new ApiError('NOT_FOUND');
       return clone(db.events.filter(e => e.order_id === +id));
     },
     async stockSave(t, company, product, qty, mode) {
-      await wait(); const db = load(); adm(db, t);
+      await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const pr = cleanProducts([product])[0], co = String(company || '').trim();
       if (!pr || !co) throw new ApiError('BAD_PRODUCT');
       const q = parseInt(qty, 10);
       if (!isFinite(q) || q < 0 || q > 1e6 || (mode === 'add' && q === 0)) throw new ApiError('BAD_QTY');
-      let r = stockRow(db, co, pr);
-      if (!r) { r = { company: co, product: pr, qty: 0, updated_at: nowIso() }; db.stock.push(r); }
+      let r = stockRow(db, co, pr, z);
+      if (!r) { r = { zone: z, company: co, product: pr, qty: 0, updated_at: nowIso() }; db.stock.push(r); }
       r.qty = mode === 'add' ? r.qty + q : q;
       r.updated_at = nowIso();
       save(db);
-      return clone({ stock: db.stock });
+      return clone({ stock: db.stock.filter(x => x.zone === z) });
     },
     async stockDelete(t, company, product) {
-      await wait(); const db = load(); adm(db, t);
-      db.stock = db.stock.filter(x => stockKey(x.company, x.product) !== stockKey(company, product || x.product));
+      await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
+      db.stock = db.stock.filter(x => x.zone !== z || stockKey(x.company, x.product) !== stockKey(company, product || x.product));
       save(db);
-      return clone({ stock: db.stock });
+      return clone({ stock: db.stock.filter(x => x.zone === z) });
     },
     reset() { store.del(KEY); },
     accounts() { return load().users.filter(u => u.active).map(u => u.code); },
@@ -1208,14 +1257,14 @@ function viewLogin() {
       <button class="btn btn-go btn-block" type="submit" id="lg-btn">Kirish</button>
     </form>
     ${DEMO ? `<div class="demo-box"><p><b>Demo rejim.</b> Maʼlumotlar faqat shu brauzerda saqlanadi. Hisobni tanlang, parol shart emas.</p>
-      <div class="chips">${demo.accounts().map(c => `<button class="chip" data-act="demo-login" data-code="${esc(c)}">${c === 'ADMIN' ? 'Admin' : esc(c)}</button>`).join('')}</div></div>` : ''}
+      <div class="chips">${demo.accounts().map(c => `<button class="chip" data-act="demo-login" data-code="${esc(c)}">${demoLabel(c)}</button>`).join('')}</div></div>` : ''}
   </div></main>`;
 }
 
 function topbar() {
   const s = S.sess, isA = s.role === 'admin', unread = isA ? unreadCount() : 0;
   return `<header class="top"><div class="top-in ${isA ? 'wide' : ''}">
-    <div class="brand">${markSvg()}<span>IZI</span>${isA ? '<span class="role">Admin</span>' : ''}</div>
+    <div class="brand">${markSvg()}<span>IZI</span>${isA ? `<span class="role">${myZone() === 'toshkent' ? 'Toshkent' : 'Admin'}</span>` : ''}</div>
     <div class="top-r">
       ${DEMO ? '<button class="demo" data-act="demo-switch">Demo</button>' : ''}
       <span class="live ${S.online ? '' : 'off'}" title="${S.online ? 'Aloqa bor' : 'Aloqa yoʻq'}"><i></i>${S.online ? '' : 'Aloqa yoʻq'}</span>
@@ -1736,7 +1785,7 @@ function openUser(code) {
 function openDemoSwitch() {
   openSheet(`<h2 class="sh-title">Hisobni almashtirish</h2>
     <p class="sh-text">Admin va kuryer oʻrnida navbat bilan ishlab koʻring. Kuryer tugma bosgach Admin hisobiga qaytsangiz, xabar ovoz bilan aytiladi. Ikki oynada ochsangiz, darhol eshitiladi.</p>
-    <div class="chips big">${demo.accounts().map(c => `<button class="chip ${S.sess && S.sess.code === c ? 'on' : ''}" data-act="demo-login" data-code="${esc(c)}">${c === 'ADMIN' ? 'Admin' : esc(c)}</button>`).join('')}</div>`, { label: 'Demo' });
+    <div class="chips big">${demo.accounts().map(c => `<button class="chip ${S.sess && S.sess.code === c ? 'on' : ''}" data-act="demo-login" data-code="${esc(c)}">${demoLabel(c)}</button>`).join('')}</div>`, { label: 'Demo' });
 }
 
 /* ---------- qoʻlda kiritish ---------- */
@@ -2022,6 +2071,7 @@ function buildRows() {
     if (!o.items && o.product) o.items = itemsOf(o);
     if (!o.customer && !o.phone && !o.address && !o.product) continue;
     if (/^(jami|итого|всего|total)$/i.test(norm(o.customer))) continue;
+    o.zone = zoneOfOrder(o);   /* Toshkent qatorlari — Toshkent adminiga, Buxoro/Qashqadaryo — ADMIN ga */
     out.push(o);
   }
   return mergeById(out);
@@ -2049,9 +2099,10 @@ function mergeById(rows) {
 }
 function previewHtml(rows) {
   if (!rows.length) return '<p class="warnbox">Buyurtma topilmadi. Mijoz, telefon yoki manzil ustunini tanlang.</p>';
-  const keys = regionKeys(), cnt = {};
-  for (const o of rows) { const k = detectRegion(o, keys) || '-'; cnt[k] = (cnt[k] || 0) + 1; }
-  const regLine = Object.entries(cnt).map(([k, n]) => `${k === '-' ? 'hududi aniqlanmagan' : regionLabel(k)}: ${n} ta`).join(', ');
+  const keys = regionKeys(), cnt = {}, z = myZone(), away = rows.filter(o => o.zone !== z).length;
+  for (const o of rows) { if (o.zone !== z) continue; const k = detectRegion(o, keys) || '-'; cnt[k] = (cnt[k] || 0) + 1; }
+  const regLine = [...Object.entries(cnt).map(([k, n]) => `${k === '-' ? 'hududi aniqlanmagan' : regionLabel(k)}: ${n} ta`),
+    away ? `${away} tasi ${z === 'toshkent' ? 'Buxoro/Qashqadaryo (ADMIN)' : 'Toshkent admini'}ga oʻtadi` : ''].filter(Boolean).join(', ');
   const noProd = rows.filter(o => !o.product).length, noAddr = rows.filter(o => !o.address && !o.district && !o.region).length;
   const noSum = IMP && (IMP.map.amount == null || IMP.map.amount === '');
   const warn = [noProd ? `${noProd} ta qatorda mahsulot soni yoʻq` : '', noAddr ? `${noAddr} ta qatorda manzil yoʻq` : '',
@@ -2110,11 +2161,11 @@ async function runImport() {
   const rows = buildRows(); if (!rows.length) return;
   const btn = $('[data-act="import-go"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Yuklanmoqda…'; }
-  let ins = 0, skip = 0;
+  let ins = 0, skip = 0, other = 0;
   try {
     for (let i = 0; i < rows.length; i += 250) {
       const r = await api.importRows(S.sess.token, rows.slice(i, i + 250));
-      ins += r.inserted; skip += r.skipped;
+      ins += r.inserted; skip += r.skipped; other += r.other_zone || 0;
       if (btn) btn.textContent = `Yuklanmoqda… ${Math.min(i + 250, rows.length)} / ${rows.length}`;
     }
     const co = IMP.company || '';
@@ -2126,7 +2177,7 @@ async function runImport() {
     Object.assign(S, { tab: 'orders', filter: 'new', q: '', fRegion: '', fCourier: '', fCompany: co, selMode: false });
     S.sel.clear();
     await adminFull();
-    toast(`${co ? co + ': ' : ''}${ins} ta buyurtma qoʻshildi${skip ? `, ${skip} tasi oldin yuklangan` : ''}`, 'ok');
+    toast(`${co ? co + ': ' : ''}${ins - other} ta buyurtma qoʻshildi${other ? `, ${other} tasi ${myZone() === 'toshkent' ? 'ADMIN' : 'Toshkent admini'}ga oʻtkazildi` : ''}${skip ? `, ${skip} tasi oldin yuklangan` : ''}`, 'ok');
   } catch (e) {
     onErr(e);
     if (btn) { btn.disabled = false; btn.textContent = `${rows.length} ta buyurtmani yuklash`; }
@@ -2171,8 +2222,9 @@ async function downloadTemplate(name) {
   if (!prods.length) toast(`${name}: avval «Sklad» oynasida mahsulotlarni kiriting, shunda namunada ularning ustunlari chiqadi.`, 'no');
   const pcols = prods.length ? prods : ['MAHSULOT', 'SONI'];
   const head = ['ID RAQAM', 'MIJOZ ISMI', 'MIJOZ RAQAMI 1', 'MIJOZ RAQAMI 2', 'MIJOZ RAQAMI 3', 'VILOYAT', 'SHAHAR YOKI TUMAN', 'MANZIL', ...pcols, 'SUMMASI', 'MUTAXASSIS'];
-  const b1 = ['10451', 'Aziz Karimov', '90 111 22 33', '93 111 22 33', '', 'Buxoro viloyati', 'Gʻijduvon tumani', 'Navoiy koʻchasi, 12-uy'];
-  const b2 = ['10452', 'Dilnoza Rahimova', '91 222 33 44', '', '', 'Qashqadaryo viloyati', 'Qarshi shahri', 'Mustaqillik koʻchasi, 45-uy'];
+  const tz = myZone() === 'toshkent';
+  const b1 = ['10451', 'Aziz Karimov', '90 111 22 33', '93 111 22 33', '', tz ? 'Toshkent shahri' : 'Buxoro viloyati', tz ? 'Chilonzor tumani' : 'Gʻijduvon tumani', 'Navoiy koʻchasi, 12-uy'];
+  const b2 = ['10452', 'Dilnoza Rahimova', '91 222 33 44', '', '', tz ? 'Toshkent viloyati' : 'Qashqadaryo viloyati', tz ? 'Chirchiq shahri' : 'Qarshi shahri', 'Mustaqillik koʻchasi, 45-uy'];
   const ex = prods.length
     ? [[...b1, ...pcols.map((_, j) => j === 0 ? 2 : ''), 780000, 'Dilfuza'],
        [...b2, ...pcols.map((_, j) => j === 0 || j === pcols.length - 1 ? 1 : ''), 740000, 'Sevara']]   /* 2 xil mahsulot — bitta qatorda */
@@ -2323,7 +2375,7 @@ async function doLogin(code, pass) {
   if (btn) { btn.disabled = true; btn.textContent = 'Tekshirilmoqda…'; }
   try {
     const r = await api.login(code, pass);
-    S.sess = { token: r.token, code: r.code, role: r.role, region: r.region };
+    S.sess = { token: r.token, code: r.code, role: r.role, region: r.region, zone: r.zone || 'main' };
     store.set('izi_sess', S.sess);
     await startSession();
   } catch (e) {
@@ -2576,7 +2628,7 @@ if (S.sess) {
     startSession();
   })();
 }
-window.IZI = { S, api, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
+window.IZI = { S, api, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
 })();
 </script>
 </body>
