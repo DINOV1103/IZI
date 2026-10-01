@@ -456,8 +456,8 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: '',   // masalan: https://abcdefghijkl.supabase.co
+  SUPABASE_KEY: '',   // Project Settings → API Keys → publishable (yoki anon) key
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
@@ -548,17 +548,23 @@ const REGION_STEMS = {
     'shayxantaxur', 'shaykhantakhur', 'olmazor', 'almazar', 'uchtepa', 'sergeli', 'yakkasaroy', 'yakkasaray', 'mirobod', 'mirabad', 'bektemir', 'yangihayot', 'yangixayot'],
 };
 const TOSH_STEMS = ['toshkent', 'tashkent'];
+/* IZI da admini yoʻq viloyatlar. Faqat VILOYAT ustunida yoki «X viloyati» deb yozilganda hisobga olinadi,
+   chunki «Navoiy koʻchasi», «Guliston koʻchasi» kabi koʻcha nomlari hamma shaharda bor. */
+const OTHER_STEMS = ['andijon', 'andijan', 'fargona', 'fergan', 'fargan', 'namangan', 'samarqand', 'samarkand', 'jizzax', 'jizzakh', 'jizax', 'jizak',
+  'djizak', 'sirdaryo', 'sirdar', 'syrdar', 'navoiy', 'navoi', 'xorazm', 'xorezm', 'khorezm', 'horazm', 'surxondaryo', 'surxandar',
+  'surkhandar', 'qoraqalpog', 'qoraqalpoq', 'karakalpak', 'nukus'];
 /* Har bir admin oʻz «zonasi» bilan ishlaydi: ADMIN — Buxoro va Qashqadaryo, TOSHKENT — Toshkent shahri va viloyati */
 const ZONE_OF = { buxoro: 'main', qashqadaryo: 'main', toshshahar: 'toshkent', toshvil: 'toshkent' };
 const ZONE_NAME = { main: 'Buxoro va Qashqadaryo', toshkent: 'Toshkent' };
 const myZone = () => (S.sess && S.sess.zone) || 'main';
 function stemKey(w) {
   for (const k in REGION_STEMS) if (REGION_STEMS[k].some(st => w.startsWith(st))) return k;
-  return TOSH_STEMS.some(st => w.startsWith(st)) ? 'tosh' : '';
+  if (TOSH_STEMS.some(st => w.startsWith(st))) return 'tosh';
+  return OTHER_STEMS.some(st => w.startsWith(st)) ? 'boshqa' : '';
 }
 /* Matndan hudud. Tartib: «X viloyati» (eng ishonchli) → «Toshkent tumani» (viloyatniki) / «Toshkent shahri» →
    birinchi uchragan tuman yoki shahar nomi → yolgʻiz «Toshkent» (shahar deb olinadi). */
-function regionOfText(txt) {
+function regionOfText(txt, isRegionField) {
   const w = norm(txt).split(' ').filter(Boolean);
   if (!w.length) return '';
   for (let i = 0; i < w.length; i++) {
@@ -568,13 +574,17 @@ function regionOfText(txt) {
     if (k === 'tosh' && /^(tuman|rayon|r$)/.test(nx)) return 'toshvil';
     if (k === 'tosh' && (/^(shahr|shahar|sh$|gorod|g$)/.test(nx) || /^(g|gor|sh)$/.test(pv))) return 'toshshahar';
   }
-  for (const x of w) { const k = stemKey(x); if (k && k !== 'tosh') return k; }
-  return w.some(x => stemKey(x) === 'tosh') ? 'toshshahar' : '';
+  for (const x of w) { const k = stemKey(x); if (k && k !== 'tosh' && k !== 'boshqa') return k; }
+  if (w.some(x => stemKey(x) === 'tosh')) return 'toshshahar';
+  /* VILOYAT ustunida «Samarqand» deb yozilgan boʻlsa — boshqa viloyat */
+  return isRegionField && w.some(x => stemKey(x) === 'boshqa') ? 'boshqa' : '';
 }
 function regionKeyOf(o) {
-  for (const f of [o.region, o.district, o.address, o.landmark]) { const k = regionOfText(f); if (k) return k; }
+  const fs = [o.region, o.district, o.address, o.landmark];
+  for (let i = 0; i < fs.length; i++) { const k = regionOfText(fs[i], i === 0); if (k) return k; }
   return '';
 }
+const REGION_TITLE = { buxoro: 'Buxoro', qashqadaryo: 'Qashqadaryo', toshshahar: 'Toshkent shahri', toshvil: 'Toshkent viloyati', boshqa: 'boshqa viloyat' };
 /* Buyurtma qaysi adminga tegishli: hududdan; hudud aniqlanmasa — yuklagan adminniki */
 const zoneOfOrder = o => ZONE_OF[regionKeyOf(o)] || myZone();
 function regionKeyOfName(name) {
@@ -943,9 +953,10 @@ const demo = (() => {
     },
     async importRows(t, rows) {
       await wait(); const db = load(); const u = adm(db, t);
-      let ins = 0, skip = 0, other = 0;
+      let ins = 0, skip = 0, other = 0, foreign = 0;
       for (const r of rows) {
         const z = ['main', 'toshkent'].includes(r.zone) ? r.zone : (u.zone || 'main');
+        if (z !== (u.zone || 'main')) { foreign++; continue; }   /* admin faqat oʻz hududi buyurtmasini qoʻsha oladi */
         const no = String(r.order_no || '').trim();
         const ids = String(r.order_ids || no).split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean);
         if (ids.length && db.orders.some(o => String(o.company || '') === String(r.company || '') && String(o.order_ids || o.order_no || '').split(/[,;\/\n]+/).some(x => ids.includes(x.trim())))) { skip++; continue; }
@@ -963,7 +974,7 @@ const demo = (() => {
         ins++; if (z !== (u.zone || 'main')) other++;
       }
       save(db);
-      return { inserted: ins, skipped: skip, other_zone: other };
+      return { inserted: ins, skipped: skip, other_zone: other, foreign };
     },
     async assign(t, ids, courier) {
       await wait(); const db = load(); const u = adm(db, t);
@@ -2054,7 +2065,7 @@ function buildRows() {
   for (const r of IMP.data) {
     const rawIds = [get(r, 'order_no'), get(r, 'order_ids')].filter(Boolean);
     /* "10452, 10453", "10452/10453" yoki "10452 10453" — ikkala raqam ham olinadi */
-    const ids = [...new Set(rawIds.flatMap(v => (v.match(/[A-Za-z0-9-]*\d[A-Za-z0-9-]*/g) || []).map(x => x.replace(/^-+|-+$/g, '')).filter(Boolean)))];
+    const ids = [...new Set(rawIds.flatMap(idTokens))];
     /* «MUTAXASSIS VA RAQAMI» bitta katakda boʻlsa: ism va telefon ajratiladi */
     let spec = get(r, 'specialist'), sph = get(r, 'specialist_phone');
     if (!sph) { const pm = spec.match(/\+?\d[\d\s()-]{7,}\d/); if (pm) { sph = pm[0]; spec = spec.replace(pm[0], '').replace(/[\s,;:()–-]+$/, '').replace(/^[\s,;:()–-]+/, '').trim(); } }
@@ -2071,10 +2082,34 @@ function buildRows() {
     if (!o.items && o.product) o.items = itemsOf(o);
     if (!o.customer && !o.phone && !o.address && !o.product) continue;
     if (/^(jami|итого|всего|total)$/i.test(norm(o.customer))) continue;
-    o.zone = zoneOfOrder(o);   /* Toshkent qatorlari — Toshkent adminiga, Buxoro/Qashqadaryo — ADMIN ga */
+    o.zone = myZone();   /* buyurtma faqat yuklagan adminning oʻz hududiga yoziladi */
     out.push(o);
   }
-  return mergeById(out);
+  return dropForeign(mergeById(out));
+}
+/* Har bir admin faqat oʻz hududi buyurtmalarini yuklaydi: ADMIN — Buxoro va Qashqadaryo, TOSHKENT — Toshkent shahri
+   va viloyati. Boshqa hudud qatorlari (boshqa adminniki ham) ilovaga umuman kiritilmaydi, hech kimga oʻtkazilmaydi.
+   Nom kirill yoki lotinda yozilishi farq qilmaydi. Hududi aniqlanmagan qator yuklanadi va «hududi aniqlanmagan» boʻladi. */
+function dropForeign(rows) {
+  const f = { n: 0, by: {} }, z = myZone();
+  if (IMP) IMP.foreign = f;
+  return rows.filter(o => {
+    const k = regionKeyOf(o);
+    if (!k || ZONE_OF[k] === z) return true;
+    f.n++; f.by[REGION_TITLE[k] || k] = (f.by[REGION_TITLE[k] || k] || 0) + 1;
+    return false;
+  });
+}
+const foreignText = f => `${f.n} ta buyurtma boshqa hududniki (${Object.entries(f.by).map(([k, n]) => `${k}: ${n}`).join(', ')}), ular yuklanmaydi`;
+/* Katakdagi buyurtma ID lari. «10457, 10458», «10457/10458», «10457 10458» — ikkalasi ham olinadi.
+   Sana va vaqt ID emas: «#953424 - 30.09.2026» → faqat 953424 (aks holda 30, 09, 2026 ham «ID» boʻlib,
+   bir kundagi hamma buyurtma bir-biriga takror deb hisoblanib qolardi). */
+function idTokens(v) {
+  const s = String(nn(v, ''))
+    .replace(/(^|[^\d])\d{1,2}[./-]\d{1,2}[./-](\d{4}|\d{2})(?!\d)/g, '$1 ')   // 30.09.2026, 30/09/26, 30-09-2026
+    .replace(/(^|[^\d])\d{4}[./-]\d{1,2}[./-]\d{1,2}(?!\d)/g, '$1 ')          // 2026-09-30
+    .replace(/(^|[^\d])\d{1,2}:\d{2}(:\d{2})?(?!\d)/g, '$1 ');               // 14:35, 14:35:08
+  return (s.match(/[A-Za-z0-9-]*\d[A-Za-z0-9-]*/g) || []).map(x => x.replace(/^-+|-+$/g, '')).filter(Boolean);
 }
 /* Mijoz 2 xil mahsulot olsa, Excelda 2 qator boʻladi, ID bir xil: ular bitta buyurtmaga birlashadi.
    ID bir xil, lekin mijoz boshqa boʻlsa birlashtirilmaydi (ikkinchisi takror ID sifatida oʻtkazib yuboriladi). */
@@ -2098,18 +2133,19 @@ function mergeById(rows) {
   return out;
 }
 function previewHtml(rows) {
+  const fr = IMP && IMP.foreign && IMP.foreign.n ? IMP.foreign : null;
+  if (!rows.length && fr) return `<p class="warnbox">Fayldagi ${fr.n} ta buyurtmaning hammasi boshqa hududniki (${esc(Object.keys(fr.by).join(', '))}). Siz faqat ${esc(myZone() === 'toshkent' ? 'Toshkent shahri va viloyati' : 'Buxoro va Qashqadaryo')} buyurtmalarini yuklay olasiz.</p>`;
   if (!rows.length) return '<p class="warnbox">Buyurtma topilmadi. Mijoz, telefon yoki manzil ustunini tanlang.</p>';
-  const keys = regionKeys(), cnt = {}, z = myZone(), away = rows.filter(o => o.zone !== z).length;
-  for (const o of rows) { if (o.zone !== z) continue; const k = detectRegion(o, keys) || '-'; cnt[k] = (cnt[k] || 0) + 1; }
-  const regLine = [...Object.entries(cnt).map(([k, n]) => `${k === '-' ? 'hududi aniqlanmagan' : regionLabel(k)}: ${n} ta`),
-    away ? `${away} tasi ${z === 'toshkent' ? 'Buxoro/Qashqadaryo (ADMIN)' : 'Toshkent admini'}ga oʻtadi` : ''].filter(Boolean).join(', ');
+  const keys = regionKeys(), cnt = {};
+  for (const o of rows) { const k = detectRegion(o, keys) || '-'; cnt[k] = (cnt[k] || 0) + 1; }
+  const regLine = Object.entries(cnt).map(([k, n]) => `${k === '-' ? 'hududi aniqlanmagan' : regionLabel(k)}: ${n} ta`).join(', ');
   const noProd = rows.filter(o => !o.product).length, noAddr = rows.filter(o => !o.address && !o.district && !o.region).length;
   const noSum = IMP && (IMP.map.amount == null || IMP.map.amount === '');
   const warn = [noProd ? `${noProd} ta qatorda mahsulot soni yoʻq` : '', noAddr ? `${noAddr} ta qatorda manzil yoʻq` : '',
     IMP && IMP.clash ? `${IMP.clash} ta qatorda ID takrorlangan, lekin mijoz boshqa (ular qoʻshilmaydi)` : ''].filter(Boolean).join(', ');
   const info = [IMP && IMP.merged ? `${IMP.merged} ta qoʻshimcha mahsulot qatori oʻz buyurtmasiga birlashtirildi` : '',
     noSum ? 'Faylda summa ustuni yoʻq: kuryerga «Summa koʻrsatilmagan» deb chiqadi' : ''].filter(Boolean);
-  return `<p class="hint">${esc(cap(regLine))}</p>${info.map(t => `<p class="hint">${esc(t)}.</p>`).join('')}${warn ? `<p class="warnbox">${esc(cap(warn))}. Ular ham yuklanadi, keyin tekshirib chiqing.</p>` : ''}<div class="prev">${rows.slice(0, 3).map(o => `<div class="pcard"><b>${esc(o.customer || 'Ism yoʻq')}</b> <span class="muted">${esc(fmtPhone(phones(o.phone)[0] || ''))}</span>
+  return `<p class="hint">${esc(cap(regLine))}</p>${fr ? `<p class="warnbox">${esc(cap(foreignText(fr)))}.</p>` : ''}${info.map(t => `<p class="hint">${esc(t)}.</p>`).join('')}${warn ? `<p class="warnbox">${esc(cap(warn))}. Ular ham yuklanadi, keyin tekshirib chiqing.</p>` : ''}<div class="prev">${rows.slice(0, 3).map(o => `<div class="pcard"><b>${esc(o.customer || 'Ism yoʻq')}</b> <span class="muted">${esc(fmtPhone(phones(o.phone)[0] || ''))}</span>
       <div>${esc([o.region, o.district, o.address].filter(Boolean).join(', ') || 'Manzil yoʻq')}</div>
       <div>${esc(o.product || '')}${o.qty ? ' × ' + esc(o.qty) : ''} <b>${money(o.amount)} soʻm</b></div></div>`).join('')}</div>`;
 }
@@ -2161,11 +2197,11 @@ async function runImport() {
   const rows = buildRows(); if (!rows.length) return;
   const btn = $('[data-act="import-go"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Yuklanmoqda…'; }
-  let ins = 0, skip = 0, other = 0;
+  let ins = 0, skip = 0, foreign = (IMP.foreign && IMP.foreign.n) || 0;
   try {
     for (let i = 0; i < rows.length; i += 250) {
       const r = await api.importRows(S.sess.token, rows.slice(i, i + 250));
-      ins += r.inserted; skip += r.skipped; other += r.other_zone || 0;
+      ins += r.inserted; skip += r.skipped; foreign += r.foreign || 0;
       if (btn) btn.textContent = `Yuklanmoqda… ${Math.min(i + 250, rows.length)} / ${rows.length}`;
     }
     const co = IMP.company || '';
@@ -2177,7 +2213,7 @@ async function runImport() {
     Object.assign(S, { tab: 'orders', filter: 'new', q: '', fRegion: '', fCourier: '', fCompany: co, selMode: false });
     S.sel.clear();
     await adminFull();
-    toast(`${co ? co + ': ' : ''}${ins - other} ta buyurtma qoʻshildi${other ? `, ${other} tasi ${myZone() === 'toshkent' ? 'ADMIN' : 'Toshkent admini'}ga oʻtkazildi` : ''}${skip ? `, ${skip} tasi oldin yuklangan` : ''}`, 'ok');
+    toast(`${co ? co + ': ' : ''}${ins} ta buyurtma qoʻshildi${skip ? `, ${skip} tasi oldin yuklangan` : ''}${foreign ? `. ${foreign} tasi boshqa hududniki — yuklanmadi` : ''}`, 'ok');
   } catch (e) {
     onErr(e);
     if (btn) { btn.disabled = false; btn.textContent = `${rows.length} ta buyurtmani yuklash`; }
@@ -2628,7 +2664,7 @@ if (S.sess) {
     startSession();
   })();
 }
-window.IZI = { S, api, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
+window.IZI = { S, api, idTokens, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
 })();
 </script>
 </body>
