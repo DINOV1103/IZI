@@ -4,55 +4,61 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>IZI</title>
-<meta name="theme-color" content="#E8EBF4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0D1130" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#2236C9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16204A" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="IZI">
+<!-- iPhone: soat va batareya joyi sarlavhaning koʻk rangiga qoʻshilib ketadi (yuqori panel safe-area bilan pastga suriladi) -->
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='128' fill='%232F45E0'/%3E%3Cpath d='M152 176H336L168 336H296' fill='none' stroke='%23fff' stroke-width='64' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='368' cy='336' r='40' fill='%23F2A31B'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --desk:#E8EBF4; --slip:#FFFFFF; --ink:#1B2250; --muted:#5F6689; --line:#D3D8EA;
-  --brand:#2F45E0; --brand-soft:#E3E7FF;
-  --way:#F2A31B; --way-soft:#FFF0D1; --way-ink:#6B4500;
-  --ok:#11994C; --ok-soft:#DDF4E7; --ok-ink:#0A6B34;
-  --no:#D63A3A; --no-soft:#FCE3E3; --no-ink:#A82222;
-  --new-soft:#ECEEF6; --new-ink:#4C5374;
-  --vio:#7B3FE4; --vio-soft:#EFE7FF; --vio-ink:#5A22B8; --vio-on:#fff;
-  --shadow:0 1px 0 rgba(27,34,80,.05),0 8px 20px -14px rgba(27,34,80,.45);
+  --desk:#F2F4F7; --slip:#FFFFFF; --ink:#111A2E; --muted:#5B6476; --line:#E1E5EC;
+  --brand:#2B3FD6; --brand-soft:#E9ECFF; --brand-btn:#2B3FD6;
+  --band:#2236C9; --band-muted:rgba(255,255,255,.74); --band-line:rgba(255,255,255,.2);
+  --way:#E8A013; --way-soft:#FFF4DC; --way-ink:#7A4B00;
+  --ok:#168A42; --ok-soft:#E3F4EA; --ok-ink:#0E6633;
+  --no:#D23B3B; --no-soft:#FCE8E8; --no-ink:#A82424;
+  --new-soft:#EEF1F5; --new-ink:#4B5468;
+  --vio:#6D3FE0; --vio-soft:#F0EAFF; --vio-ink:#5326B8; --vio-on:#fff;
+  --shadow:0 0 0 1px var(--line);
+  --pop:0 18px 40px -18px rgba(17,26,46,.45);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --vio:#A57BFF; --vio-soft:#2E1F55; --vio-ink:#D2BDFF; --vio-on:#1A0B3D;
-  --desk:#0D1130; --slip:#171D45; --ink:#EDEFFF; --muted:#A0A6CF; --line:#2B3266;
-  --brand:#6474FF; --brand-soft:#232C6B;
-  --way-soft:#3A2D10; --way-ink:#FFD27E;
-  --ok-soft:#0F3A2A; --ok-ink:#7FE2A9;
-  --no-soft:#46181E; --no-ink:#FF9E9E;
-  --new-soft:#222955; --new-ink:#BAC0E8;
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 8px 20px -14px rgba(0,0,0,.8);
+  --desk:#0B1222; --slip:#141D31; --ink:#E8ECF4; --muted:#97A1B4; --line:#26314A;
+  --brand:#7383FF; --brand-soft:#1F2A55; --brand-btn:#4253E6; --band:#16204A;
+  --way-soft:#3A2C0F; --way-ink:#FFD27E;
+  --ok-soft:#0F3424; --ok-ink:#7EDDA4;
+  --no-soft:#441A20; --no-ink:#FF9C9C;
+  --new-soft:#1C263B; --new-ink:#B5BED0;
+  --shadow:0 0 0 1px var(--line);
+  --pop:0 18px 40px -18px rgba(0,0,0,.8);
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --vio:#A57BFF; --vio-soft:#2E1F55; --vio-ink:#D2BDFF; --vio-on:#1A0B3D;
-  --desk:#0D1130; --slip:#171D45; --ink:#EDEFFF; --muted:#A0A6CF; --line:#2B3266;
-  --brand:#6474FF; --brand-soft:#232C6B;
-  --way-soft:#3A2D10; --way-ink:#FFD27E;
-  --ok-soft:#0F3A2A; --ok-ink:#7FE2A9;
-  --no-soft:#46181E; --no-ink:#FF9E9E;
-  --new-soft:#222955; --new-ink:#BAC0E8;
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 8px 20px -14px rgba(0,0,0,.8);
+  --desk:#0B1222; --slip:#141D31; --ink:#E8ECF4; --muted:#97A1B4; --line:#26314A;
+  --brand:#7383FF; --brand-soft:#1F2A55; --brand-btn:#4253E6; --band:#16204A;
+  --way-soft:#3A2C0F; --way-ink:#FFD27E;
+  --ok-soft:#0F3424; --ok-ink:#7EDDA4;
+  --no-soft:#441A20; --no-ink:#FF9C9C;
+  --new-soft:#1C263B; --new-ink:#B5BED0;
+  --shadow:0 0 0 1px var(--line);
+  --pop:0 18px 40px -18px rgba(0,0,0,.8);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 button,a,.orow,.chip{touch-action:manipulation}
-body{margin:0;min-height:100vh;font-family:Rubik,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;color:var(--ink);background:var(--desk);-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;font-family:Onest,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;color:var(--ink);background:var(--desk);-webkit-tap-highlight-color:transparent}
 body.locked{overflow:hidden}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -62,36 +68,61 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .muted{color:var(--muted)}
 
 /* ---------- top bar ---------- */
-.top{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top);background:var(--desk);background:color-mix(in srgb,var(--desk) 88%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.top-in{max-width:680px;height:60px;margin:0 auto;padding:0 10px 0 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.top{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top);background:var(--band);color:#fff}
+.top .icon-btn{color:#fff}.top .icon-btn:hover{background:rgba(255,255,255,.12)}
+.top .mark rect,.login-band .login-mark rect{fill:#fff}.top .mark path,.login-band .login-mark path{stroke:var(--band)}
+.top .role{color:var(--band-muted);border-left-color:var(--band-line)}
+.top .demo{background:rgba(255,255,255,.12);border-color:var(--band-line);color:#fff}
+.top .code{background:#fff;color:var(--band)}
+.top .badge{box-shadow:0 0 0 2px var(--band)}
+.top .live{color:#fff}
+/* sarlavha qismi: brend rangi, pastki burchaklari yumaloq; kontent uning chetiga chiqib turadi */
+.band{position:relative;overflow:hidden;padding:0 0 36px;border-radius:0 0 24px 24px;background:var(--band);color:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M152 176H336L168 336H296' fill='none' stroke='%23fff' stroke-opacity='.07' stroke-width='64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-size:280px;background-position:right -84px top -64px}
+.band-in{position:relative;max-width:680px;margin:0 auto;padding:0 16px}
+.band-in.wide{max-width:1080px}
+.band .phead{margin:8px 0 16px}
+.band .phead h1{color:#fff}
+.band .phead p{color:var(--band-muted)}
+.band .toolbar{margin:0}
+.band .btn{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1px var(--band-line)}
+.band .btn:active{background:rgba(255,255,255,.2)}
+.band .btn-go{background:#fff;color:var(--band);box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.band .banner{width:100%;margin:10px 0 0;background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 0 0 1px var(--band-line)}
+.wrap.lift{position:relative;margin-top:-22px}
+.top-in{max-width:680px;height:56px;margin:0 auto;padding:0 8px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .top-in.wide{max-width:1080px}
-.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:22px;letter-spacing:-.02em}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.02em}
 .brand .mark{width:30px;height:30px}
-.role{font-size:13px;font-weight:700;letter-spacing:0;color:var(--muted);padding:2px 8px;border:1.5px solid var(--line);border-radius:8px}
+.role{margin-left:2px;padding:1px 0 1px 11px;border-left:1px solid var(--line);font-size:14px;font-weight:500;letter-spacing:0;color:var(--muted)}
 .top-r{display:flex;align-items:center;gap:4px}
 .icon-btn{position:relative;width:44px;height:44px;border:0;border-radius:12px;background:transparent;color:var(--ink);display:grid;place-items:center}
 .icon-btn:hover{background:var(--new-soft)}
 .badge{position:absolute;top:3px;right:1px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--no);color:#fff;font-size:12px;font-weight:700;line-height:20px;text-align:center}
-.code{font-weight:800;font-size:16px;letter-spacing:.03em;padding:5px 10px;border-radius:10px;background:var(--ink);color:var(--slip);white-space:nowrap}
+.code{font-weight:700;font-size:16px;letter-spacing:.03em;padding:5px 10px;border-radius:10px;background:var(--ink);color:var(--slip);white-space:nowrap}
 .code.sm{font-size:14px;padding:3px 8px;border-radius:8px}
 .live{display:inline-flex;align-items:center;gap:6px;padding:0 6px;font-size:13px;font-weight:700;color:var(--no-ink)}
 .live i{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
 .live.off i{background:var(--no);box-shadow:none}
-.demo{border:1.5px dashed var(--brand);background:transparent;color:var(--brand);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700}
+.demo{border:1px solid var(--line);background:var(--desk);color:var(--muted);border-radius:8px;padding:4px 9px;font-size:12px;font-weight:600}
 .banner{display:flex;align-items:center;gap:10px;width:calc(100% - 28px);max-width:1052px;margin:4px auto 0;padding:12px 14px;border:0;border-radius:14px;background:var(--way-soft);color:var(--way-ink);font-weight:700;text-align:left}
 
 /* ---------- layout ---------- */
 .wrap{max-width:680px;margin:0 auto;padding:8px 14px calc(40px + env(safe-area-inset-bottom))}
 .wrap.wide{max-width:1080px;padding-bottom:calc(150px + env(safe-area-inset-bottom))}
-.h2{font-size:17px;font-weight:800;margin:0 0 10px}
-.h3{font-size:15px;font-weight:800;margin:20px 0 8px}
+.h2{font-size:16px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+.phead{margin:14px 0 14px}
+.phead h1{margin:0;font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-.025em}
+.phead p{margin:3px 0 0;font-size:14px;color:var(--muted)}
+.h3{font-size:15px;font-weight:700;margin:20px 0 8px}
 .hint{margin:0;font-size:14px;color:var(--muted)}
 
 /* ---------- receipt lines ---------- */
 .receipt{background:var(--slip);border-radius:18px;padding:10px 16px;box-shadow:var(--shadow);margin:4px 0 16px}
 .rline{display:flex;align-items:baseline;gap:8px;padding:5px 0}
 .rline .lead{flex:1;min-width:12px;border-bottom:2px dotted var(--line);transform:translateY(-5px)}
-.rline b{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rline b{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 .rline.big b{font-size:21px;letter-spacing:-.01em}
 
 /* ---------- tabs ---------- */
@@ -101,7 +132,7 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .seg em{font-style:normal;font-size:13px;min-width:24px;padding:1px 7px;border-radius:999px;background:var(--desk)}
 
 /* ---------- the slip ---------- */
-.slip{position:relative;overflow:hidden;background:var(--slip);border-radius:18px;padding:14px 16px 16px 20px;box-shadow:var(--shadow)}
+.slip{position:relative;overflow:hidden;background:var(--slip);border-radius:16px;padding:14px 16px 16px 20px;box-shadow:var(--shadow)}
 /* Kuryer bir qarashda holatni rangidan bilib oladi:
    koʻk — yangi buyurtma, sariq — yoʻlda, yashil — topshirildi, qizil — bekor qilindi. */
 .slip::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--brand)}
@@ -115,7 +146,7 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .slip.flat{box-shadow:none;border:1.5px solid var(--line)}
 .slip-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .ono{font-size:14px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.amount{margin-top:8px;font-size:34px;font-weight:800;line-height:1.05;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.amount{margin-top:8px;font-size:34px;font-weight:700;line-height:1.05;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 .amount small{margin-left:6px;font-size:17px;font-weight:700;letter-spacing:0;color:var(--muted)}
 .amount .paid{font-size:21px;letter-spacing:-.01em;color:var(--ok-ink)}
 .amount .paid.unk{color:var(--muted)}
@@ -146,14 +177,14 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .slip .tel{color:var(--brand);font-weight:700}
 
 /* rubber stamp: the one loud moment */
-.stamp{position:absolute;top:22px;right:16px;display:flex;flex-direction:column;align-items:center;padding:6px 14px 5px;border:3px solid currentColor;border-radius:12px;font-size:21px;font-weight:800;line-height:1.1;transform:rotate(-9deg);box-shadow:0 0 0 3px var(--slip),0 0 0 5.5px currentColor;background:var(--slip);background:color-mix(in srgb,var(--slip) 55%,transparent);pointer-events:none}
+.stamp{position:absolute;top:22px;right:16px;display:flex;flex-direction:column;align-items:center;padding:6px 14px 5px;border:3px solid currentColor;border-radius:12px;font-size:21px;font-weight:700;line-height:1.1;transform:rotate(-9deg);box-shadow:0 0 0 3px var(--slip),0 0 0 5.5px currentColor;background:var(--slip);background:color-mix(in srgb,var(--slip) 55%,transparent);pointer-events:none}
 .stamp small{font-size:12px;font-weight:700;letter-spacing:.04em}
 .stamp.ok{color:var(--ok)}.stamp.no{color:var(--no)}
 .stamp.land{animation:stamp .5s cubic-bezier(.2,1.5,.4,1) both}
 @keyframes stamp{0%{transform:rotate(-22deg) scale(2.2);opacity:0}55%{opacity:1}100%{transform:rotate(-9deg) scale(1);opacity:1}}
 
 /* ---------- status chips ---------- */
-.st{padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.st{flex:none;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
 .st-new{background:var(--new-soft);color:var(--new-ink)}
 .st-asg{background:var(--brand-soft);color:var(--brand)}
 .st-way{background:var(--way-soft);color:var(--way-ink)}
@@ -161,14 +192,16 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .st-no{background:var(--no-soft);color:var(--no-ink)}
 
 /* ---------- buttons ---------- */
-.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:52px;padding:0 18px;border:0;border-radius:14px;background:var(--new-soft);color:var(--ink);font-size:17px;font-weight:700;line-height:1.15;text-align:center;text-decoration:none;transition:transform .08s}
-.btn:active{transform:translateY(1px) scale(.99)}
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:0 18px;border:0;border-radius:12px;background:var(--slip);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-size:16px;font-weight:600;line-height:1.15;text-align:center;text-decoration:none;transition:transform .08s}
+.btn:active{transform:translateY(1px) scale(.99);filter:brightness(.96)}
+.btn-go,.btn-ok,.btn-no-solid,.btn-del{box-shadow:0 1px 2px rgba(17,26,46,.16),inset 0 -1px 0 rgba(0,0,0,.14)}
+.slip .btn{min-height:52px}
 .btn[disabled]{opacity:.5;pointer-events:none}
-.btn-go{background:var(--brand);color:#fff}
+.btn-go{background:var(--brand-btn);color:var(--on-brand,#fff)}
 .btn-ok{background:var(--ok);color:#fff}
 .btn-no{background:transparent;color:var(--no-ink);box-shadow:inset 0 0 0 2px var(--no)}
 .btn-no-solid{background:var(--no);color:#fff}
-.btn-ghost{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
 .btn-block{display:flex;width:100%}
 .btn-block+.btn-block{margin-top:10px}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
@@ -178,71 +211,89 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 
 /* ---------- admin: orders ---------- */
 .toolbar{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin:4px 0 12px}
-.toolbar .btn{min-height:50px;padding:0 12px;font-size:15px}
-.fchips{display:flex;gap:6px;overflow-x:auto;margin:0 -14px;padding:0 14px 4px;scrollbar-width:none}
-.fchips::-webkit-scrollbar{display:none}
-.fchip{flex:none;display:inline-flex;align-items:center;gap:8px;padding:8px 12px 8px 14px;border:0;border-radius:999px;background:var(--slip);color:var(--ink);font-size:15px;font-weight:700;box-shadow:inset 0 0 0 1.5px var(--line)}
-.fchip em{font-style:normal;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.toolbar .btn{min-height:48px;padding:0 12px;font-size:15px;white-space:nowrap}
+.toolbar.solo{display:flex}
+.fchips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+@media (min-width:760px){.fchips{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.fchip{--c:var(--new-ink);position:relative;overflow:hidden;display:flex;flex-direction:column-reverse;align-items:flex-start;justify-content:flex-end;min-width:0;min-height:64px;padding:9px 10px 9px 14px;border:0;border-radius:12px;background:var(--slip);color:var(--muted);font-size:13px;font-weight:500;line-height:1.25;text-align:left;box-shadow:inset 0 0 0 1px var(--line)}
+.fchip::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:var(--c)}
+.fchip[data-v=assigned]{--c:var(--brand)}.fchip[data-v=on_way]{--c:var(--way)}.fchip[data-v=delivered]{--c:var(--ok)}.fchip[data-v=cancelled]{--c:var(--no)}.fchip[data-v=all]{--c:var(--ink)}
+.fchip em{font-style:normal;font-size:24px;font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
 .fchip[aria-selected=true]{background:var(--ink);color:var(--slip);box-shadow:none}
-.fchip[aria-selected=true] em{color:inherit;opacity:.75}
+.fchip[aria-selected=true] em{color:var(--slip)}
+.fchip:active{transform:scale(.98)}
 .fline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 0}
 .fline .search{grid-column:1/-1}
 .fline select{min-height:44px;padding:0 4px 0 10px;font-size:14px}
 @media (max-width:400px){.fline select{font-size:13px}}
 @media (min-width:720px){.fline{grid-template-columns:1fr 200px 170px 150px}.fline .search{grid-column:auto}}
-.search{display:flex;align-items:center;gap:8px;padding:0 12px;border-radius:12px;background:var(--slip);color:var(--muted);box-shadow:inset 0 0 0 1.5px var(--line)}
+.search{display:flex;align-items:center;gap:8px;padding:0 12px;border-radius:12px;background:var(--slip);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
 .search input{flex:1;min-width:0;min-height:46px;border:0;outline:0;background:transparent;color:var(--ink)}
-select,.fld input,.fld textarea{width:100%;min-height:46px;padding:0 12px;border:0;border-radius:12px;background:var(--slip);box-shadow:inset 0 0 0 1.5px var(--line)}
+select,.fld input,.fld textarea{width:100%;min-width:0;min-height:46px;padding:0 12px;border:0;border-radius:12px;background:var(--slip);box-shadow:inset 0 0 0 1px var(--line)}
 .fld textarea{min-height:84px;padding:10px 12px;resize:vertical}
 select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0;box-shadow:inset 0 0 0 2px var(--brand)}
 .list-head{display:flex;align-items:center;gap:10px;margin:14px 0 8px;font-size:14px;font-weight:600;color:var(--muted)}
 .list-head>span{margin-right:auto}
 .olist{display:grid;gap:8px}
 @media (min-width:900px){.olist{grid-template-columns:1fr 1fr}}
-.orow{--bar:var(--new-ink);position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:12px 14px 12px 18px;border-radius:14px;background:var(--slip);box-shadow:var(--shadow);cursor:pointer}
+.orow{--bar:var(--new-ink);position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:13px 14px 13px 18px;border-radius:14px;background:var(--slip);box-shadow:var(--shadow);cursor:pointer;content-visibility:auto;contain-intrinsic-size:auto 96px}
+.orow:active{background:var(--desk)}
 .orow[data-st=assigned]{--bar:var(--brand)}.orow[data-st=on_way]{--bar:var(--way)}.orow[data-st=delivered]{--bar:var(--ok)}.orow[data-st=cancelled]{--bar:var(--no)}
-.orow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--bar)}
+.orow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--bar)}
 .orow.sel{box-shadow:inset 0 0 0 2px var(--brand),var(--shadow)}
 /* skladda mahsulot yetmaydi: binafsha fon, chiziqli belgi */
 .orow.short{background:var(--vio-soft)}
 .orow.short::before{width:6px;background:repeating-linear-gradient(135deg,var(--vio) 0 5px,transparent 5px 9px)}
 .orow-short{display:flex;align-items:flex-start;gap:6px;margin-top:6px;font-size:13px;font-weight:700;color:var(--vio-ink);line-height:1.35}
 .orow-short svg.i{width:16px;height:16px;margin-top:1px}
-.shortbar{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 0;padding:11px 14px;border:0;border-radius:14px;background:var(--vio-soft);color:var(--vio-ink);text-align:left;box-shadow:inset 0 0 0 1.5px var(--vio)}
+.shortbar{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 0;padding:11px 14px;border:0;border-radius:14px;background:var(--vio-soft);color:var(--vio-ink);text-align:left;box-shadow:inset 0 0 0 1px var(--vio)}
 .shortbar[aria-pressed=true]{background:var(--vio);color:var(--vio-on)}
 .shortbar>span{display:grid;gap:1px}
 .shortbar small{font-size:13px;font-weight:600;opacity:.85}
 .warnbox.v{display:flex;gap:10px;align-items:flex-start;background:var(--vio-soft);color:var(--vio-ink)}
 .orow-main{flex:1;min-width:0}
 .orow-l1{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.orow-l1 .nm{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:700}
-.orow-l1 .am{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.orow-l1 .nm{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:600}
+.orow-l1 .am{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
 .orow-l2{margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px;color:var(--muted)}
-.orow-l3{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
-.orow-l3 .pr{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px}
+.orow-l3{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px}
+/* pastki mayda satr: ID, kompaniya, mutaxassis, kuryer, vaqt */
+.orow-meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-top:7px;font-size:12.5px;line-height:1.3;color:var(--muted)}
+.orow-meta>span{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:100%}
+.orow-meta svg.i{width:14px;height:14px}
+.orow-meta .oid{margin:0;font-size:12.5px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums}
+.orow-meta .cc{padding:1px 7px;border-radius:6px;background:var(--new-soft);color:var(--ink);font-size:12px;font-weight:600}
+.orow-meta .warn{padding:1px 7px;font-size:12px}
+.orow-meta time{margin-left:auto;font-variant-numeric:tabular-nums}
+.orow-l3 .pr{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:14px;font-weight:500}
 .orow-st{flex:none;display:flex;align-items:center;gap:6px}
 .orow-st time{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.cc{padding:3px 8px;border-radius:8px;background:var(--ink);color:var(--slip);font-size:13px;font-weight:800}
+.cc{padding:3px 8px;border-radius:8px;background:var(--ink);color:var(--slip);font-size:13px;font-weight:700}
 .co{display:inline-block;margin-right:6px;padding:1px 7px;border-radius:7px;background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:700;vertical-align:1px;overflow:hidden;text-overflow:ellipsis}
 .warn{padding:3px 8px;border-radius:8px;background:var(--way-soft);color:var(--way-ink);font-size:13px;font-weight:700}
 .cbox{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;box-shadow:inset 0 0 0 2px var(--line)}
-.orow.sel .cbox{background:var(--brand);color:#fff;box-shadow:none}
+.orow.sel .cbox{background:var(--brand-btn);color:var(--on-brand,#fff);box-shadow:none}
 .more{margin-top:12px}
 .hide-s{display:none}
 @media (min-width:520px){.hide-s{display:inline}}
 .selbar{position:fixed;left:0;right:0;bottom:calc(66px + env(safe-area-inset-bottom));z-index:25;padding:0 10px}
-.selbar-in{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:8px 6px 8px 16px;border-radius:16px;background:var(--ink);color:var(--slip);box-shadow:0 12px 30px -12px rgba(13,17,48,.7)}
-.selbar-in>span{flex:1}
-.selbar .btn{min-height:44px;padding:0 14px;font-size:15px}
+.selbar-in{max-width:680px;margin:0 auto;display:grid;gap:8px;padding:8px 10px 10px 16px;border-radius:16px;background:var(--ink);color:var(--slip);box-shadow:var(--pop)}
+.selbar-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:15px}
+.selbar-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-left:-6px}
+.selbar .btn{min-height:46px;padding:0 12px;font-size:15px;white-space:nowrap}
+.btn-del{background:var(--no);color:#fff}
 .selbar .icon-btn{color:var(--slip)}
 .selbar .icon-btn:hover{background:transparent}
 
 /* ---------- admin: bottom nav ---------- */
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:24;padding-bottom:env(safe-area-inset-bottom);background:var(--slip);box-shadow:0 -1px 0 var(--line)}
 .bnav-in{max-width:680px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
-.bnav button{position:relative;min-width:0;min-height:64px;padding:0 2px;border:0;background:none;color:var(--muted);font-size:10px;letter-spacing:-.01em;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.bnav button{position:relative;min-width:0;min-height:64px;padding:0 2px;border:0;background:none;color:var(--muted);font-size:11px;letter-spacing:-.01em;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 @media (max-width:359px){.bnav button{font-size:9px}}
 .bnav button[aria-current=page]{color:var(--brand)}
+.bnav button svg.i{width:48px;height:28px;padding:4px 14px;border-radius:14px}
+.bnav button[aria-current=page] svg.i{background:var(--brand-soft)}
+@media (max-width:380px){.bnav button{font-size:10.5px;letter-spacing:-.02em}.bnav button span{letter-spacing:-.02em}}
 .bnav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.01em}
 .bnav .dot{position:absolute;top:11px;left:calc(50% + 7px);width:9px;height:9px;border-radius:50%;background:var(--no)}
 
@@ -251,11 +302,11 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .ctile{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:0;border-radius:16px;background:var(--slip);box-shadow:var(--shadow);text-align:left}
 .ctile.off{opacity:.55}
-.ctile-code{font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.1}
+.ctile-code{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
 .ctile-stats{display:flex;flex-direction:column;font-size:14px;color:var(--muted)}
 .ctile-stats b{color:var(--ink)}
 .ctile-stats .ok b{color:var(--ok-ink)}.ctile-stats .no b{color:var(--no-ink)}
-.ctile-sum{font-weight:800;font-variant-numeric:tabular-nums}
+.ctile-sum{font-weight:700;font-variant-numeric:tabular-nums}
 .ctile-sum small{font-weight:700;color:var(--muted)}
 
 /* ---------- admin: alerts ---------- */
@@ -274,7 +325,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .al3.plain{color:var(--muted)}
 
 /* ---------- settings ---------- */
-.card{display:grid;gap:12px;padding:16px;border-radius:18px;background:var(--slip);box-shadow:var(--shadow)}
+.card{display:grid;gap:12px;padding:16px;border-radius:16px;background:var(--slip);box-shadow:var(--shadow)}
 .card+.card{margin-top:14px}
 .card .btn{justify-self:start}
 .fld{display:grid;gap:6px}
@@ -293,7 +344,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 @media (min-width:760px){.colist{grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}}
 .cocard{display:grid;gap:10px;align-content:start;padding:16px;border-radius:18px;background:var(--slip);box-shadow:var(--shadow)}
 .cocard-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.coname{margin:0;font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-.015em;overflow-wrap:anywhere}
+.coname{margin:0;font-size:22px;font-weight:700;line-height:1.15;letter-spacing:-.015em;overflow-wrap:anywhere}
 .cocard-top .link-btn{flex:none;padding:4px 0;font-size:14px}
 .costat{margin:-6px 0 0;font-size:14px;color:var(--muted)}
 .coprod{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;border-radius:12px;background:var(--desk);text-align:left}
@@ -310,7 +361,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .stk-n{display:grid;min-width:0}
 .stk-n b{overflow-wrap:anywhere}
 .stk-n span{font-size:13px;color:var(--muted)}
-.stk-q{min-width:44px;font-size:24px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;color:var(--ok-ink)}
+.stk-q{min-width:44px;font-size:24px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--ok-ink)}
 .stk-row.zero .stk-q{color:var(--vio-ink)}.stk-row.off .stk-q{color:var(--muted)}
 .stk-row.zero{box-shadow:inset 0 0 0 1.5px var(--vio)}
 .btn.stk-in{min-height:40px;padding:0 12px;font-size:14px;gap:6px;border-radius:11px}
@@ -334,7 +385,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .nogap .row>*+*{margin-left:10px}
 .nogap .onway>*+*{margin-left:8px}
 .nogap .btn>*+*{margin-left:9px}
-.nogap .fchips>*+*{margin-left:6px}
+.nogap .fchips>*+*{margin-left:0}
 .nogap .shortbar>*+*,.nogap .coprod>*+*{margin-left:10px}
 .nogap .orow-short>*+*,.nogap .sk>*+*,.nogap .btn.stk-in>*+*{margin-left:6px}
 .nogap .sk-list{margin-bottom:-6px}.nogap .sk-list>*{margin:0 6px 6px 0}
@@ -372,7 +423,7 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .qname{min-width:0;font-weight:700;overflow-wrap:anywhere}
 .step{flex:none;display:flex;align-items:center;gap:4px}
 .step-b{width:44px;height:44px;border:0;border-radius:10px;background:var(--slip);color:var(--brand);font-size:24px;font-weight:700;line-height:1}
-.fld .step input{width:58px;min-height:44px;padding:0;text-align:center;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
+.fld .step input{width:58px;min-height:44px;padding:0;text-align:center;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 .hint.warn-t{color:var(--way-ink);font-weight:600}
 .mapbox{border-radius:14px;box-shadow:inset 0 0 0 1.5px var(--line)}
 .mapbox>summary{display:flex;align-items:center;gap:8px;padding:12px 14px;font-weight:700;cursor:pointer;list-style:none}
@@ -385,10 +436,10 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 /* ---------- sheet ---------- */
 .backdrop{position:fixed;inset:0;z-index:60;background:rgba(13,17,48,.5);opacity:0;transition:opacity .2s}
 .backdrop.show{opacity:1}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:640px;max-height:90vh;margin:0 auto;overflow:auto;overscroll-behavior:contain;padding:8px 18px calc(20px + env(safe-area-inset-bottom));border-radius:24px 24px 0 0;background:var(--slip);transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:640px;max-height:90vh;margin:0 auto;overflow:auto;overscroll-behavior:contain;padding:8px 18px calc(20px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;background:var(--slip);box-shadow:var(--pop);transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
 .sheet.show{transform:none}
 .grab{width:44px;height:5px;margin:4px auto 14px;border-radius:3px;background:var(--line)}
-.sh-title{margin:0 0 6px;font-size:21px;font-weight:800;letter-spacing:-.01em}
+.sh-title{margin:0 0 6px;font-size:21px;font-weight:700;letter-spacing:-.01em}
 .sh-text{margin:0 0 14px;color:var(--muted)}
 .form{display:grid;gap:12px}
 .form-err{min-height:1em;margin:0;font-weight:600;color:var(--no-ink)}
@@ -397,9 +448,9 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .reason:has(input:checked),.reason.on{background:var(--no-soft);box-shadow:inset 0 0 0 2px var(--no)}
 .reason input{flex:none;width:20px;height:20px;margin:0;accent-color:var(--no)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--desk);font-weight:800}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--desk);font-weight:700}
 .chip em{font-style:normal;font-size:13px;font-weight:600;color:var(--muted)}
-.chip.on{background:var(--brand);color:#fff}.chip.on em{color:inherit}
+.chip.on{background:var(--brand-btn);color:var(--on-brand,#fff)}.chip.on em{color:inherit}
 .chips.big .chip{min-height:56px;font-size:18px}
 .cpick{margin-bottom:12px}
 .cpick-r{display:block;margin-bottom:6px;font-size:14px;font-weight:700;color:var(--muted)}
@@ -416,34 +467,96 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
 .timeline time{flex:none;width:92px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* ---------- toasts ---------- */
-#toasts{position:fixed;top:calc(8px + env(safe-area-inset-top));left:0;right:0;z-index:80;display:grid;justify-items:center;gap:6px;padding:0 12px;pointer-events:none}
-.toast{max-width:560px;padding:12px 16px;border-radius:14px;background:var(--ink);color:var(--slip);font-weight:600;box-shadow:0 12px 30px -12px rgba(13,17,48,.6);opacity:0;transform:translateY(-12px);transition:opacity .25s,transform .25s}
+#toasts{position:fixed;top:auto;bottom:calc(16px + env(safe-area-inset-bottom));left:0;right:0;z-index:80;display:grid;justify-items:center;gap:6px;padding:0 12px;pointer-events:none}
+body:has(.bnav) #toasts{bottom:calc(76px + env(safe-area-inset-bottom))}
+#toasts .toast:nth-last-child(n+4){display:none}
+.toast{display:flex;align-items:center;gap:10px;max-width:520px;padding:11px 16px 11px 14px;border-radius:12px;background:#111A2E;color:#F4F6FA;font-size:14px;font-weight:500;line-height:1.35;box-shadow:var(--pop);opacity:0;transform:translateY(10px);transition:opacity .2s,transform .2s}
+.toast::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#94A3B8}
 .toast.show{opacity:1;transform:none}
-.toast.ok{background:var(--ok);color:#fff}.toast.no{background:var(--no);color:#fff}.toast.way{background:var(--way);color:#2B1C00}.toast.go{background:var(--brand);color:#fff}
+.toast.ok::before{background:#34C46A}.toast.no::before{background:#F05252}.toast.way::before{background:#F5B32B}.toast.go::before{background:#8D9BFF}
+:root[data-theme="dark"] .toast{background:#24304A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .toast{background:#24304A}}
+
+.about-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.about-row:first-of-type{border-top:0}
+.about-row span{color:var(--muted)}.about-row b{font-weight:600;text-align:right}
+/* ---------- tahrirlash va qaytarish ---------- */
+.sh-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 4px}
+.sh-acts .btn{min-height:46px;font-size:15px;white-space:nowrap}
+.rv-link{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:6px 0;border:0;background:none;color:var(--brand);font-size:15px;font-weight:600}
+.rv-link svg.i{width:18px;height:18px}
+.ph3{display:grid;gap:8px}
 
 /* ---------- login ---------- */
-.login{min-height:100vh;display:grid;place-items:center;padding:24px 18px calc(24px + env(safe-area-inset-bottom))}
-.login-card{width:100%;max-width:400px}
-.login-mark{width:60px;height:60px}
-.login-word{margin:16px 0 4px;font-size:92px;font-weight:800;line-height:.9;letter-spacing:-.055em}
-.login-sub{margin:0 0 26px;font-size:17px;color:var(--muted)}
-.demo-box{margin-top:26px;padding:14px;border:1.5px dashed var(--line);border-radius:16px}
+.login{min-height:100vh;padding:0 0 calc(28px + env(safe-area-inset-bottom))}
+.login-band{position:relative;overflow:hidden;padding:calc(44px + env(safe-area-inset-top)) 20px 72px;border-radius:0 0 28px 28px;background:var(--band);color:#fff;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M152 176H336L168 336H296' fill='none' stroke='%23fff' stroke-opacity='.07' stroke-width='64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-size:340px;background-position:right -110px top -40px}
+.login-in{max-width:400px;margin:0 auto}
+.login-card{position:relative;max-width:432px;margin:-46px auto 0;padding:0 16px}
+.login-form{gap:14px;padding:20px 18px 18px;border-radius:18px;background:var(--slip);box-shadow:var(--shadow),var(--pop)}
+.login-h{margin:0;font-size:20px;font-weight:700;letter-spacing:-.015em}
+.login-mark{width:52px;height:52px}
+.login-word{margin:16px 0 6px;font-size:40px;font-weight:700;line-height:1;letter-spacing:-.035em;color:#fff}
+.login-sub{margin:0;font-size:16px;color:var(--band-muted)}
+.demo-box{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--slip)}
 .demo-box p{margin:0 0 10px;font-size:14px;color:var(--muted)}
 
 /* ---------- empty ---------- */
 .empty{display:grid;justify-items:center;gap:10px;padding:40px 16px;text-align:center;color:var(--muted)}
 .empty p{max-width:430px;margin:0}
-.empty .empty-t{font-size:18px;font-weight:800;color:var(--ink)}
+.empty .empty-t{font-size:18px;font-weight:700;color:var(--ink)}
 
 @media (prefers-reduced-motion:reduce){.stamp.land{animation:none}.sheet,.backdrop,.toast{transition:none}}
-.archive-card{max-width:1050px;margin:auto}.archive-controls,.archive-actions{display:flex;gap:12px;flex-wrap:wrap}.archive-controls .fld{flex:1;min-width:140px}.archive-actions{margin:14px 0}.archive-card .search{margin:14px 0}.archive-card .orow{cursor:pointer}
+.archive-card{max-width:1050px;margin:auto}.archive-actions{display:flex;gap:12px;flex-wrap:wrap}
+.archive-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.archive-controls .fld{min-width:0}.archive-controls input[type=date]{min-width:0;max-width:100%}.archive-actions{margin:14px 0}.archive-card .search{margin:14px 0}.archive-card .orow{cursor:pointer}
+
+/* ---------- rang mavzulari (Sozlamalar → Rang mavzusi). Har biri shu telefonda saqlanadi ---------- */
+/* Registon: Samarqand majolikasi — lojuvard, girih naqshi, firuza hoshiya */
+:root[data-palette="registon"]{--brand:#1D4FC2;--brand-soft:#E5EDFF;--brand-btn:#1D4FC2;--band:#163689;--way:#E3A12A;--pal-acc:#22B3A9;--pal-acc-soft:#DDF4F2;--pal-acc-ink:#0E7C76}
+:root[data-palette="registon"][data-theme="dark"]{--brand:#7D98FF;--brand-soft:#1A2B5E;--brand-btn:#2F5BD6;--band:#10265F;--pal-acc-soft:rgba(34,179,169,.18);--pal-acc-ink:#6FDCD3}
+@media (prefers-color-scheme:dark){:root[data-palette="registon"]:not([data-theme="light"]){--brand:#7D98FF;--brand-soft:#1A2B5E;--brand-btn:#2F5BD6;--band:#10265F;--pal-acc-soft:rgba(34,179,169,.18);--pal-acc-ink:#6FDCD3}}
+:root[data-palette="registon"] .band,:root[data-palette="registon"] .login-band{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.11' stroke-width='1.4'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate%2845 28 28%29'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V7M28 49V56M0 28H7M49 28H56'/%3E%3C/g%3E%3Ccircle cx='28' cy='28' r='3' fill='%23E7A92F' fill-opacity='.35'/%3E%3C/svg%3E");background-size:56px 56px;background-repeat:repeat;background-position:-6px -10px;box-shadow:inset 0 -4px 0 var(--pal-acc)}
+:root[data-palette="registon"] .fchip[aria-selected=true]{background:var(--band);color:#fff}:root[data-palette="registon"] .fchip[aria-selected=true] em{color:#fff}
+:root[data-palette="registon"] .bnav button[aria-current=page] svg.i{background:var(--pal-acc-soft);color:var(--pal-acc-ink)}
+/* Atlas: xon-atlas — toʻq olcha, ikat rombi, rangli jiyak */
+:root[data-palette="atlas"]{--brand:#9B2D8F;--brand-soft:#F7E6F5;--brand-btn:#9B2D8F;--band:#4A0F52;--vio:#C2560E;--vio-soft:#FFEDDF;--vio-ink:#8A3A06;--vio-on:#fff}
+:root[data-palette="atlas"][data-theme="dark"]{--brand:#E07AD6;--brand-soft:#3A1840;--brand-btn:#A43A9A;--band:#3A0C40;--vio:#FF8A4C;--vio-soft:#3D2210;--vio-ink:#FFB98C;--vio-on:#2A1305}
+@media (prefers-color-scheme:dark){:root[data-palette="atlas"]:not([data-theme="light"]){--brand:#E07AD6;--brand-soft:#3A1840;--brand-btn:#A43A9A;--band:#3A0C40;--vio:#FF8A4C;--vio-soft:#3D2210;--vio-ink:#FFB98C;--vio-on:#2A1305}}
+:root[data-palette="atlas"] .band,:root[data-palette="atlas"] .login-band{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='64' viewBox='0 0 44 64'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cpath d='M22 2L42 32L22 62L2 32Z' stroke='%23F24CC4' stroke-opacity='.24' stroke-width='3' stroke-dasharray='6 3'/%3E%3Cpath d='M22 14L34 32L22 50L10 32Z' fill='%23F6C343' fill-opacity='.14'/%3E%3Cpath d='M22 24L27 32L22 40L17 32Z' fill='%233CC8BE' fill-opacity='.32'/%3E%3C/g%3E%3C/svg%3E");background-size:44px 64px;background-repeat:repeat}
+:root[data-palette="atlas"] .band::after,:root[data-palette="atlas"] .login-band::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:repeating-linear-gradient(90deg,#F24CC4 0 14px,#F6C343 14px 22px,#3CC8BE 22px 30px,#F6C343 30px 38px)}
+:root[data-palette="atlas"] .fchip[aria-selected=true]{background:var(--band);color:#fff}:root[data-palette="atlas"] .fchip[aria-selected=true] em{color:#fff}
+/* Tungi dispetcher: doim toʻq; xarita toʻri va marshrut; asosiy rang — logotipdagi zaʼfaron */
+:root[data-palette="tungi"]{color-scheme:dark;--desk:#0A1120;--slip:#121B2F;--ink:#E9EEF7;--muted:#93A0B7;--line:#223050;
+  --brand:#F5A524;--brand-soft:rgba(245,165,36,.15);--brand-btn:#F5A524;--on-brand:#1B1300;--band:#0E1730;
+  --new-soft:#1A2540;--new-ink:#B3BED3;--way:#F5A524;--way-soft:#3A2C0F;--way-ink:#FFD27E;--ok-soft:#0F3424;--ok-ink:#7EDDA4;
+  --no-soft:#441A20;--no-ink:#FF9C9C;--vio:#A57BFF;--vio-soft:#2E1F55;--vio-ink:#D2BDFF;--vio-on:#1A0B3D;
+  --shadow:0 0 0 1px var(--line);--pop:0 18px 40px -18px rgba(0,0,0,.8)}
+:root[data-palette="tungi"] .band,:root[data-palette="tungi"] .login-band{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='220' viewBox='0 0 420 220'%3E%3Cpath d='M10 190C70 190 80 120 140 118S220 168 262 120 300 40 360 46 410 20 418 14' fill='none' stroke='%23F5A524' stroke-opacity='.55' stroke-width='3' stroke-dasharray='2 8' stroke-linecap='round'/%3E%3Cg fill='%23F5A524'%3E%3Ccircle cx='140' cy='118' r='5' fill-opacity='.7'/%3E%3Ccircle cx='262' cy='120' r='5' fill-opacity='.7'/%3E%3Ccircle cx='360' cy='46' r='7' fill-opacity='.9'/%3E%3C/g%3E%3Ccircle cx='360' cy='46' r='16' fill='none' stroke='%23F5A524' stroke-opacity='.35' stroke-width='2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23ffffff' fill-opacity='.10'/%3E%3C/svg%3E");background-size:420px 220px,18px 18px;background-repeat:no-repeat,repeat;background-position:right -70px top -36px,0 0;box-shadow:inset 0 -1px 0 #2A3A60}
+:root[data-palette="tungi"] .band .btn-go{background:#F5A524;color:#1B1300}
+:root[data-palette="tungi"] .fchip[aria-selected=true]{background:#F5A524;color:#1B1300}:root[data-palette="tungi"] .fchip[aria-selected=true] em{color:#1B1300}
+:root[data-palette="tungi"] .top .mark rect{fill:#F5A524}:root[data-palette="tungi"] .top .mark path{stroke:#0E1730}:root[data-palette="tungi"] .top .mark circle{fill:#fff}
+:root[data-palette="tungi"] .toast{background:#1C2945}
+/* sozlamalardagi mavzu namunalari */
+.pal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pal{display:grid;gap:2px;padding:8px 8px 10px;border:0;border-radius:14px;background:var(--slip);color:var(--ink);text-align:left;box-shadow:inset 0 0 0 1px var(--line)}
+.pal[aria-checked=true]{box-shadow:inset 0 0 0 2px var(--brand)}
+.pal b{margin-top:6px;font-size:15px;font-weight:600}.pal small{font-size:12.5px;color:var(--muted)}
+.pal-sw{position:relative;display:block;height:52px;border-radius:10px;overflow:hidden;background-color:#2236C9}
+.pal-sw i{position:absolute;left:10px;bottom:10px;width:40px;height:12px;border-radius:6px;background:#fff}
+.pal-sw.pal-klassik{background-color:#2236C9;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M152 176H336L168 336H296' fill='none' stroke='%23ffffff' stroke-opacity='.07' stroke-width='64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-size:110px;background-repeat:no-repeat;background-position:right -26px top -22px}
+.pal-sw.pal-registon{background-color:#163689;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.11' stroke-width='1.4'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate%2845 28 28%29'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V7M28 49V56M0 28H7M49 28H56'/%3E%3C/g%3E%3Ccircle cx='28' cy='28' r='3' fill='%23E7A92F' fill-opacity='.35'/%3E%3C/svg%3E");background-size:28px 28px;box-shadow:inset 0 -3px 0 #22B3A9}
+.pal-sw.pal-atlas{background-color:#4A0F52;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='64' viewBox='0 0 44 64'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cpath d='M22 2L42 32L22 62L2 32Z' stroke='%23F24CC4' stroke-opacity='.24' stroke-width='3' stroke-dasharray='6 3'/%3E%3Cpath d='M22 14L34 32L22 50L10 32Z' fill='%23F6C343' fill-opacity='.14'/%3E%3Cpath d='M22 24L27 32L22 40L17 32Z' fill='%233CC8BE' fill-opacity='.32'/%3E%3C/g%3E%3C/svg%3E");background-size:22px 32px}
+.pal-sw.pal-tungi{background-color:#0E1730;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='220' viewBox='0 0 420 220'%3E%3Cpath d='M10 190C70 190 80 120 140 118S220 168 262 120 300 40 360 46 410 20 418 14' fill='none' stroke='%23F5A524' stroke-opacity='.55' stroke-width='3' stroke-dasharray='2 8' stroke-linecap='round'/%3E%3Cg fill='%23F5A524'%3E%3Ccircle cx='140' cy='118' r='5' fill-opacity='.7'/%3E%3Ccircle cx='262' cy='120' r='5' fill-opacity='.7'/%3E%3Ccircle cx='360' cy='46' r='7' fill-opacity='.9'/%3E%3C/g%3E%3Ccircle cx='360' cy='46' r='16' fill='none' stroke='%23F5A524' stroke-opacity='.35' stroke-width='2'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23ffffff' fill-opacity='.10'/%3E%3C/svg%3E");background-size:210px 110px,9px 9px;background-repeat:no-repeat,repeat;background-position:right -36px top -16px,0 0}
+.pal-sw.pal-tungi i{background:#F5A524}
+.pal[aria-checked=true] .pal-sw::after{content:"";position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23111A2E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <div id="overlay"></div>
 <div id="toasts" aria-live="polite"></div>
-<input type="file" id="fileIn" accept=".xlsx,.xls,.csv,.ods" hidden>
+<input type="file" id="fileIn" accept=".xlsx,.xls,.csv,.ods,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv,application/octet-stream" hidden>
 <noscript><p style="padding:20px">IZI ishlashi uchun brauzerda JavaScript yoqilgan boʻlishi kerak.</p></noscript>
 <script>
 (() => {
@@ -456,8 +569,8 @@ select:focus,.fld input:focus,.fld textarea:focus,.search:focus-within{outline:0
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: '',   // masalan: https://abcdefghijkl.supabase.co
+  SUPABASE_KEY: '',   // Project Settings → API Keys → publishable (yoki anon) key
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
@@ -748,13 +861,14 @@ function toRu(text) {
 }
 const latinPlain = t => String(t).replace(/([og])[ʻʼ‘’'`]/gi, '$1');
 
-const EV_TEXT = { on_way: 'yoʻlga chiqdi', delivered: 'topshirdi', cancelled: 'bekor qildi' };
+const EV_TEXT = { on_way: 'yoʻlga chiqdi', delivered: 'topshirdi', cancelled: 'bekor qildi', reverted: 'avvalgi holatga qaytardi' };
 function evSpeech(ev) {
   const who = spellCode(ev.courier);
   const no = /^\d{1,6}$/.test(String(ev.order_no || '').trim()) ? numUz(+ev.order_no) + ' raqamli ' : '';
   const cust = cleanName(ev.customer);
   if (ev.type === 'on_way') return `${who} kuryer yoʻlga chiqdi. ${cap(no + 'buyurtma')}${cust ? ', ' + cust : ''}.`;
   if (ev.type === 'delivered') return `${who} kuryer ${no}buyurtmani topshirdi.${cust ? ' ' + cust + '.' : ''}${Number(ev.amount) > 0 ? ' ' + numUz(ev.amount) + ' soʻm.' : ''}`;
+  if (ev.type === 'reverted') return `Diqqat. ${who} kuryer ${no}buyurtmani avvalgi holatga qaytardi.${cust ? ' ' + cust + '.' : ''}${ev.comment ? ' Izoh: ' + String(ev.comment).slice(0, 140) : ''}`;
   if (ev.type === 'cancelled') return `Diqqat. ${who} kuryer ${no}buyurtmani bekor qildi.${cust ? ' ' + cust + '.' : ''}${ev.reason ? ' Sabab: ' + ev.reason + '.' : ''}${ev.comment ? ' Izoh: ' + String(ev.comment).slice(0, 140) : ''}`;
   return '';
 }
@@ -763,6 +877,7 @@ function evLine(ev) {
   const who = ev.customer || (ev.order_no ? '№ ' + ev.order_no : 'buyurtma');
   if (ev.type === 'delivered') return `${ev.courier} topshirdi: ${who}${+ev.amount ? ', ' + money(ev.amount) + ' soʻm' : ''}`;
   if (ev.type === 'cancelled') return `${ev.courier} bekor qildi: ${who}${ev.reason ? ' (' + ev.reason + ')' : ''}`;
+  if (ev.type === 'reverted') return `${ev.courier} qaytardi: ${who}, «${ev.reason === 'delivered' ? 'Topshirildi' : 'Bekor qilindi'}» bekor qilindi`;
   return `${ev.courier} yoʻlga chiqdi: ${who}`;
 }
 
@@ -804,6 +919,8 @@ const ICONS = {
   x: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   store: '<path d="M4 9.5 5.6 4.5h12.8L20 9.5"/><path d="M4 9.5a2.67 2.67 0 0 0 5.33 0 2.67 2.67 0 0 0 5.34 0 2.67 2.67 0 0 0 5.33 0z"/><path d="M5.5 12.2v7.3h13v-7.3M10 19.5v-4.5h4v4.5"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/>',
   edit: '<path d="M4 20h4.2L19 9.2 14.8 5 4 15.8z"/><path d="m12.8 7 4.2 4.2"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>',
@@ -812,6 +929,46 @@ const ICONS = {
 };
 const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ''}</svg>`;
 const markSvg = (cls = 'mark') => `<svg class="${cls}" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="128" fill="#2F45E0"/><path d="M152 176H336L168 336H296" fill="none" stroke="#fff" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/><circle cx="368" cy="336" r="40" fill="#F2A31B"/></svg>`;
+
+/* ---------------- Android ilova (Capacitor) ----------------
+   Sayt Android ilova ichida ochilganda: Excel fayllar telefonga saqlanadi va «Yuborish» oynasi ochiladi,
+   «Orqaga» tugmasi avval oynani yopadi. Oddiy brauzerda hammasi avvalgidek ishlaydi. */
+const IZI_VERSION = '1.0.0';
+const CAP = window.Capacitor;
+const NATIVE = !!(CAP && typeof CAP.isNativePlatform === 'function' && CAP.isNativePlatform());
+const plug = n => (CAP && CAP.Plugins && CAP.Plugins[n]) || null;
+async function saveBook(X, wb, file) {
+  const FS = plug('Filesystem');
+  if (!NATIVE || !FS) { X.writeFile(wb, file); return; }
+  const data = X.write(wb, { bookType: 'xlsx', type: 'base64' });
+  let uri = null, saved = false;
+  try { uri = (await FS.writeFile({ path: 'IZI/' + file, data, directory: 'DOCUMENTS', recursive: true })).uri; saved = true; }
+  catch (e) {
+    try { uri = (await FS.writeFile({ path: file, data, directory: 'CACHE' })).uri; }
+    catch (e2) { toast('Faylni saqlab boʻlmadi. Telefon xotirasini tekshiring.', 'no'); return; }
+  }
+  if (saved) toast(`${file} — «Hujjatlar › IZI» papkasiga saqlandi`, 'ok');
+  const SH = plug('Share');
+  if (SH && uri) { try { await SH.share({ title: file, dialogTitle: 'Excel faylni yuborish', files: [uri] }); } catch (e) { /* oyna yopildi */ } }
+}
+function nativeSetup() {
+  const A = plug('App');
+  if (!NATIVE || !A) return;
+  A.addListener('backButton', () => {
+    if (sheetState) { closeSheet(); return; }
+    if (S.sess && S.sess.role === 'admin') {
+      if (S.selMode) { S.selMode = false; S.sel.clear(); renderList(); return; }
+      if (S.tab !== 'orders') { setTab('orders'); return; }
+    }
+    if (S.sess && S.sess.role === 'courier' && S.ctab && S.ctab !== 'active') { S.ctab = 'active'; render(); return; }
+    A.minimizeApp();
+  });
+}
+async function fillAppVer() {
+  const el = document.getElementById('appVer'), A = plug('App');
+  if (!el || !NATIVE || !A) return;
+  try { const i = await A.getInfo(); el.textContent = `${i.version} (Android, ${i.build}-yigʻma)`; } catch (e) { /* veb */ }
+}
 
 /* ---------------- API: Supabase ---------------- */
 class ApiError extends Error { constructor(code) { super(String(code || 'ERROR')); this.code = String(code || 'ERROR'); } }
@@ -846,6 +1003,8 @@ const remote = {
   myOrders: t => remote.rpc('izi_my_orders', { p_token: t }),
   setStatus: (t, id, status, reason, comment) => remote.rpc('izi_set_status', { p_token: t, p_id: id, p_status: status, p_reason: reason, p_comment: comment }),
   history: (t, id) => remote.rpc('izi_order_history', { p_token: t, p_id: id }),
+  updateOrder: (t, id, data) => remote.rpc('izi_update_order', { p_token: t, p_id: id, p_data: data }),
+  revertStatus: (t, id, comment) => remote.rpc('izi_revert_status', { p_token: t, p_id: id, p_comment: comment }),
   stockSave: (t, company, product, qty, mode) => remote.rpc('izi_stock_save', { p_token: t, p_company: company, p_product: product, p_qty: +qty, p_mode: mode }),
   stockDelete: (t, company, product) => remote.rpc('izi_stock_delete', { p_token: t, p_company: company, p_product: product || null }),
 };
@@ -899,7 +1058,7 @@ const demo = (() => {
   const zoneOfUser = (db, code) => ((db.users.find(x => x.code === code) || {}).zone) || 'main';
   const pubUsers = (db, z) => db.users.filter(u => (u.zone || 'main') === z).map(({ code, role, region, active }) => ({ code, role, region, active }));
   const evRows = (db, since, limit, z) => db.events
-    .filter(e => ['on_way', 'delivered', 'cancelled'].includes(e.type) && (!since || parseTs(e.created_at) > since)
+    .filter(e => (['on_way', 'delivered', 'cancelled'].includes(e.type) || (e.type === 'reverted' && e.actor === e.courier)) && (!since || parseTs(e.created_at) > since)
       && (((db.orders.find(x => x.id === e.order_id) || {}).zone) || zoneOfUser(db, e.courier)) === z)
     .slice(-limit)
     .map(e => { const o = db.orders.find(x => x.id === e.order_id) || {}; return { ...e, order_no: o.order_no, customer: o.customer, amount: o.amount, address: o.address }; });
@@ -1053,6 +1212,42 @@ const demo = (() => {
       if (u.role === 'admin' && !db.orders.some(o => o.id === +id && o.zone === (u.zone || 'main'))) throw new ApiError('NOT_FOUND');
       return clone(db.events.filter(e => e.order_id === +id));
     },
+    async updateOrder(t, id, data) {
+      await wait(); const db = load(); const u = adm(db, t);
+      const o = db.orders.find(x => x.id === +id && x.zone === (u.zone || 'main'));
+      if (!o) throw new ApiError('NOT_FOUND');
+      const ids = String(data.order_ids || data.order_no || '').split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean);
+      if (ids.length && db.orders.some(x => x.id !== o.id && String(x.company || '') === String(o.company || '')
+          && String(x.order_ids || x.order_no || '').split(/[,;\/\n]+/).map(y => y.trim()).some(y => ids.includes(y)))) throw new ApiError('DUP_ID');
+      const n = { ...o, order_no: data.order_no || null, order_ids: data.order_ids || null, customer: data.customer || null, phone: data.phone || null,
+        region: data.region || null, district: data.district || null, address: data.address || null, product: data.product || null, qty: null,
+        items: Array.isArray(data.items) && data.items.length ? data.items : null, amount: data.amount == null ? null : +data.amount || 0,
+        specialist: data.specialist || null, note: data.note || null };
+      if (o.stock_taken && (o.status === 'assigned' || o.status === 'on_way') && JSON.stringify(n.items) !== JSON.stringify(o.items)) {
+        giveBack(db, n);                                 /* eski mahsulot skladga */
+        if (!takeStock(db, n)) throw new ApiError('SHORT_STOCK');   /* saqlanmaydi: baza oʻzgarmay qoladi */
+      }
+      n.updated_at = nowIso();
+      Object.assign(o, n);
+      addEv(db, { order_id: o.id, courier: o.courier, type: 'edited', comment: data._changes || null, actor: u.code });
+      save(db);
+      return clone(o);
+    },
+    async revertStatus(t, id, comment) {
+      await wait(); const db = load(); const u = who(db, t);
+      const o = db.orders.find(x => x.id === +id);
+      if (!o || (u.role === 'courier' && o.courier !== u.code) || (u.role === 'admin' && o.zone !== (u.zone || 'main'))) throw new ApiError('NOT_FOUND');
+      if (o.status !== 'delivered' && o.status !== 'cancelled') throw new ApiError('BAD_STATUS');
+      if (u.role === 'courier' && dayKey(parseTs(o.done_at)) < dayKey(Date.now())) throw new ApiError('TOO_LATE');
+      const cm = String(comment || '').trim();
+      if (cm.length < 3) throw new ApiError('NEED_COMMENT');
+      const old = o.status, prev = !o.courier ? 'new' : o.on_way_at ? 'on_way' : 'assigned';
+      if (old === 'cancelled' && !o.stock_taken && prev !== 'new' && !takeStock(db, o)) throw new ApiError('SHORT_STOCK');
+      Object.assign(o, { status: prev, done_at: null, cancel_reason: null, courier_comment: null, updated_at: nowIso() });
+      addEv(db, { order_id: o.id, courier: o.courier, type: 'reverted', reason: old, comment: cm, actor: u.code });
+      save(db);
+      return clone(o);
+    },
     async stockSave(t, company, product, qty, mode) {
       await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const pr = cleanProducts([product])[0], co = String(company || '').trim();
@@ -1093,6 +1288,9 @@ const ERRS = [
   ['SHORT_PASS', 'Parol kamida 4 belgidan iborat boʻlsin.'],
   ['BAD_INPUT', 'Maʼlumot formati notoʻgʻri.'],
   ['BAD_PRODUCT', 'Mahsulot nomini yozing.'],
+  ['DUP_ID', 'Bu ID bilan shu kompaniyada boshqa buyurtma bor.'],
+  ['SHORT_STOCK', 'Skladda mahsulot yetarli emas. Avval kirim qiling.'],
+  ['TOO_LATE', 'Faqat bugun tugatilgan buyurtmani qaytarish mumkin. Adminga murojaat qiling.'],
   ['BAD_QTY', 'Sonini toʻgʻri kiriting: 0 yoki undan katta butun son.'],
 ];
 function errText(e) {
@@ -1113,7 +1311,8 @@ const S = {
   days: store.get('izi_days', 3), online: true,
   soundOn: store.get('izi_sound', true), wake: store.get('izi_wake', true), audioOk: false,
   theme: store.get('izi_theme', 'auto'),
-  stock: new Map(), prodList: [], stkEdit: null, phSel: new Map(), archiveRows: [], archiveTotal: 0, archiveFrom: dayKey(Date.now()), archiveTo: dayKey(Date.now()), archiveQ: '', archiveOffset: 0, archiveBusy: false, archiveDateCustom: false,
+  palette: store.get('izi_palette', 'klassik'),
+  stock: new Map(), prodList: [], stkEdit: null, phSel: new Map(), archiveRows: [], archiveTotal: 0, archiveFrom: dayKey(Date.now() - 6 * 864e5), archiveTo: dayKey(Date.now()), archiveQ: '', archiveOffset: 0, archiveBusy: false, archiveDateCustom: false,
   notifiedAt: 0, readAt: 0, hlFrom: 0,
 };
 
@@ -1123,9 +1322,19 @@ function applyTheme() {
   if (S.theme === 'auto') el.removeAttribute('data-theme');
   else el.setAttribute('data-theme', S.theme);
   const dark = S.theme === 'dark' || (S.theme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  let m = document.querySelector('meta[name=theme-color]:not([media])');
-  if (!m) { m = document.createElement('meta'); m.name = 'theme-color'; document.head.appendChild(m); }
-  m.content = dark ? '#0D1130' : '#E8EBF4';
+  if (S.palette && S.palette !== 'klassik') el.setAttribute('data-palette', S.palette); else el.removeAttribute('data-palette');
+  /* telefonning yuqori holat paneli — sarlavha qismi rangida */
+  const band = getComputedStyle(el).getPropertyValue('--band').trim() || (dark ? '#16204A' : '#2236C9');
+  document.querySelectorAll('meta[name=theme-color]').forEach(m => { m.content = band; });
+}
+const PALETTES = [['klassik', 'Klassik', 'Ishonchli koʻk'], ['registon', 'Registon', 'Lojuvard va girih naqshi'],
+  ['atlas', 'Atlas', 'Xon-atlas naqshi'], ['tungi', 'Tungi dispetcher', 'Toʻq, marshrut xaritasi']];
+function setPalette(v) {
+  if (!PALETTES.some(x => x[0] === v)) return;
+  S.palette = v; store.set('izi_palette', v);
+  applyTheme();
+  render();
+  toast(`Rang mavzusi: ${PALETTES.find(x => x[0] === v)[1]}`);
 }
 function setTheme(v) {
   S.theme = v; store.set('izi_theme', v);
@@ -1170,7 +1379,7 @@ function unlockAudio() {
 function announce(evs) {
   if (!evs.length) return;
   if (evs.length > 3) toast(`${evs.length} ta yangi xabar keldi`, 'go');
-  else evs.forEach(ev => toast(evLine(ev), ev.type === 'delivered' ? 'ok' : ev.type === 'cancelled' ? 'no' : 'way'));
+  else evs.forEach(ev => toast(evLine(ev), ev.type === 'delivered' ? 'ok' : ev.type === 'cancelled' ? 'no' : ev.type === 'reverted' ? 'go' : 'way'));
   try { navigator.vibrate && navigator.vibrate([140, 70, 140]); } catch (e) {}
   if (!S.soundOn) return;
   chime(evs[evs.length - 1].type);
@@ -1257,11 +1466,13 @@ function render() {
 }
 
 function viewLogin() {
-  return `<main class="login"><div class="login-card">
+  return `<main class="login"><section class="login-band"><div class="login-in">
     ${markSvg('login-mark')}
     <h1 class="login-word">IZI</h1>
-    <p class="login-sub">Buyurtmalarni kuryerlarga taqsimlash va kuzatish.</p>
-    <form id="loginForm" class="form" novalidate>
+    <p class="login-sub">Buyurtmalarni kuryerlarga taqsimlash va kuzatish</p></div></section>
+    <div class="login-card">
+    <form id="loginForm" class="form login-form" novalidate>
+      <h2 class="login-h">Tizimga kirish</h2>
       <label class="fld"><span>Login</span><input id="lg-code" name="username" autocomplete="username" autocapitalize="characters" spellcheck="false" placeholder="masalan, B-1 yoki admin"></label>
       <label class="fld"><span>Parol</span><input id="lg-pass" name="password" type="password" autocomplete="current-password"></label>
       <p class="form-err" id="lg-err" role="alert"></p>
@@ -1278,12 +1489,11 @@ function topbar() {
     <div class="brand">${markSvg()}<span>IZI</span>${isA ? `<span class="role">${myZone() === 'toshkent' ? 'Toshkent' : 'Admin'}</span>` : ''}</div>
     <div class="top-r">
       ${DEMO ? '<button class="demo" data-act="demo-switch">Demo</button>' : ''}
-      <span class="live ${S.online ? '' : 'off'}" title="${S.online ? 'Aloqa bor' : 'Aloqa yoʻq'}"><i></i>${S.online ? '' : 'Aloqa yoʻq'}</span>
-      <button class="icon-btn" data-act="sound" aria-label="${S.soundOn ? 'Ovozni oʻchirish' : 'Ovozni yoqish'}">${ico(S.soundOn ? 'sound' : 'mute')}</button>
+      ${S.online ? '' : '<span class="live off"><i></i>Aloqa yoʻq</span>'}
+      ${isA ? '' : `<button class="icon-btn" data-act="sound" aria-label="${S.soundOn ? 'Ovozni oʻchirish' : 'Ovozni yoqish'}">${ico(S.soundOn ? 'sound' : 'mute')}</button>`}
       ${isA ? `<button class="icon-btn" data-act="tab" data-v="alerts" aria-label="Xabarlar">${ico('bell')}${unread ? `<b class="badge">${unread > 99 ? '99+' : unread}</b>` : ''}</button>`
         : `<span class="code">${esc(s.code)}</span><button class="icon-btn" data-act="logout" aria-label="Chiqish">${ico('logout')}</button>`}
-    </div></div></header>
-    ${isA && S.soundOn && !S.audioOk ? `<button class="banner" data-act="unlock">${ico('sound')}Signalni yoqish uchun shu yerga bosing</button>` : ''}`;
+    </div></div></header>`;
 }
 
 /* ---------- kuryer ---------- */
@@ -1296,7 +1506,7 @@ function viewCourier() {
   const today = done.filter(o => o.status === 'delivered' && isToday(o.done_at));
   const sum = today.reduce((s, o) => s + (+o.amount || 0), 0);
   const list = S.ctab === 'active' ? active : done;
-  return `${topbar()}<main class="wrap">
+  return `${topbar()}${band(`<header class="phead"><h1>Buyurtmalarim</h1><p>${esc(todayTitle())}</p></header>`)}<main class="wrap lift">
     <section class="receipt" aria-label="Bugungi natija">
       <div class="rline"><span>Bugun topshirildi</span><span class="lead"></span><b>${today.length} ta</b></div>
       <div class="rline big"><span>Yigʻilgan pul</span><span class="lead"></span><b>${money(sum)} soʻm</b></div>
@@ -1369,17 +1579,43 @@ function slipCourier(o) {
   return `<article class="slip ${final ? 'is-final' : ''}" data-st="${o.status}" id="slip-${o.id}">
     <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span>${final ? '' : `<span class="st ${ST[o.status].cls}">${o.status === 'assigned' ? 'Yangi' : ST[o.status].label}</span>`}</div>
     ${slipBody(o)}
-    ${final ? stamp(o) + outcome(o) : actions}
+    ${final ? stamp(o) + outcome(o) + (isToday(o.done_at) ? `<button class="rv-link" data-act="revert" data-id="${o.id}">${ico('undo')}Xato bosildimi? Avvalgiga qaytarish</button>` : '') : actions}
   </article>`;
 }
 
 /* ---------- admin ---------- */
 /* Xabarlar pastki menyuda yoʻq: yuqoridagi qoʻngʻiroqcha orqali ochiladi */
 const NAV = [['orders', 'list', 'Buyurtmalar'], ['archive', 'box', 'Arxiv'], ['companies', 'store', 'Kompaniyalar'], ['couriers', 'truck', 'Kuryerlar'], ['settings', 'sliders', 'Sozlamalar']];
+/* har bir boʻlim sarlavhasi: nomi va qisqa holat */
+const UZ_MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+const UZ_DAYS = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba'];
+const todayTitle = () => { const d = new Date(); return `Bugun, ${d.getDate()}-${UZ_MONTHS[d.getMonth()]}, ${UZ_DAYS[d.getDay()]}`; };
+const PAGE_TITLE = { orders: 'Buyurtmalar', archive: 'Arxiv', companies: 'Kompaniyalar', couriers: 'Kuryerlar', settings: 'Sozlamalar', alerts: 'Xabarlar' };
+function pageHead() {
+  const n = S.users.filter(u => u.role === 'courier').length;
+  const sub = S.tab === 'companies' ? `${Companies.list().length} ta kompaniya`
+    : S.tab === 'couriers' ? `${n} ta kuryer, ${myZone() === 'toshkent' ? 'Toshkent shahri va viloyati' : 'Buxoro va Qashqadaryo'}`
+    : S.tab === 'archive' ? 'Topshirilgan va bekor qilingan buyurtmalar'
+    : S.tab === 'alerts' ? 'Kuryerlardan kelgan xabarlar'
+    : S.tab === 'settings' ? (myZone() === 'toshkent' ? 'Toshkent admini' : 'Admin: Buxoro va Qashqadaryo')
+    : todayTitle();
+  return `<header class="phead"><h1>${PAGE_TITLE[S.tab] || 'Buyurtmalar'}</h1><p>${esc(sub)}</p></header>`;
+}
+function headActions() {
+  if (S.tab === 'orders') return `<div class="toolbar">
+      <button class="btn btn-go" data-act="tab" data-v="companies" aria-label="Buyurtma qoʻshish">${ico('plus')}Qoʻshish</button>
+      <button class="btn" data-act="auto">${ico('shuffle')}Avto taqsimlash</button>
+      <button class="btn btn-ghost" data-act="export" aria-label="Hisobot (Excel)">${ico('download')}<span class="hide-s">Hisobot</span></button></div>`;
+  if (S.tab === 'companies') return `<div class="toolbar solo"><button class="btn btn-go" data-act="co-add">${ico('plus')}Kompaniya qoʻshish</button></div>`;
+  return '';
+}
+const band = (head, acts, wide) => `<section class="band"><div class="band-in ${wide ? 'wide' : ''}">${head}${acts || ''}</div></section>`;
 function viewAdmin() {
   const body = S.tab === 'companies' ? adminCompanies() : S.tab === 'couriers' ? adminCouriers() : S.tab === 'alerts' ? adminAlerts() : S.tab === 'settings' ? adminSettings() : S.tab === 'archive' ? adminArchive() : adminOrders();
+  if (S.tab === 'settings' && NATIVE) setTimeout(fillAppVer, 0);
   const unread = unreadCount();
-  return `${topbar()}<main class="wrap wide">${body}</main>
+  const unlock = S.soundOn && !S.audioOk ? `<button class="banner" data-act="unlock">${ico('sound')}Signalni yoqish uchun shu yerga bosing</button>` : '';
+  return `${topbar()}${band(unlock + pageHead(), headActions(), true)}<main class="wrap wide lift">${body}</main>
     <div id="selbarBox">${selBar()}</div>
     <nav class="bnav" aria-label="Boʻlimlar"><div class="bnav-in">${NAV.map(([k, i, l]) => `<button data-act="tab" data-v="${k}" aria-current="${S.tab === k ? 'page' : 'false'}">${ico(i)}<span>${l}</span>${k === 'alerts' && unread ? '<b class="dot"></b>' : ''}</button>`).join('')}</div></nav>`;
 }
@@ -1424,9 +1660,13 @@ function simShort(ids) {
   return n;
 }
 const missText = miss => miss.map(m => `${m.n}: kerak ${m.need}, skladda ${m.have}`).join('; ');
+/* Asosiy sahifada faqat bugungi ish: faol buyurtmalar + bugun tugaganlar. Kecha va undan oldin topshirilgan
+   yoki bekor qilingan buyurtmalar yarim tundan keyin faqat Arxivda koʻrinadi. */
+const isPast = o => (o.status === 'delivered' || o.status === 'cancelled') && !!o.done_at && dayKey(parseTs(o.done_at)) < dayKey(Date.now());
+const liveOrders = () => [...S.orders.values()].filter(o => !isPast(o));
 function filteredOrders() {
   const q = norm(S.q), qd = S.q.replace(/\D/g, ''), keys = regionKeys();
-  let list = [...S.orders.values()];
+  let list = liveOrders();
   if (S.filter === 'short') { SHORT = SHORT || shortMap(); list = list.filter(o => SHORT.has(o.id)); }
   else if (S.filter !== 'all') list = list.filter(o => o.status === S.filter);
   if (S.fCourier) list = list.filter(o => S.fCourier === '-' ? !o.courier : o.courier === S.fCourier);
@@ -1438,9 +1678,9 @@ function filteredOrders() {
   return list.sort((a, b) => S.filter === 'new' || S.filter === 'short' ? a.id - b.id : recent(b) - recent(a) || b.id - a.id);
 }
 function adminOrders() {
-  const cnt = { all: S.orders.size };
+  const live = liveOrders(), cnt = { all: live.length };
   for (const k in ST) cnt[k] = 0;
-  for (const o of S.orders.values()) cnt[o.status]++;
+  for (const o of live) cnt[o.status]++;
   SHORT = shortMap();
   if (S.filter === 'short' && !SHORT.size) S.filter = 'new';
   const couriers = S.users.filter(u => u.role === 'courier');
@@ -1448,12 +1688,7 @@ function adminOrders() {
   const cos = Companies.list().map(c => c.name);
   for (const o of S.orders.values()) if (o.company && !cos.includes(o.company)) cos.push(o.company);
   const noCo = [...S.orders.values()].some(o => !o.company);
-  return `<section class="toolbar">
-      <button class="btn btn-go" data-act="tab" data-v="companies">${ico('plus')}Buyurtma qoʻshish</button>
-      <button class="btn" data-act="auto">${ico('shuffle')}Avto taqsimlash</button>
-      <button class="btn btn-ghost" data-act="export" aria-label="Hisobot (Excel)">${ico('download')}<span class="hide-s">Hisobot</span></button>
-    </section>
-    <div class="fchips" role="tablist">${FILTERS.map(([k, l]) => `<button class="fchip" role="tab" data-act="filter" data-v="${k}" aria-selected="${S.filter === k}">${l}<em>${cnt[k] || 0}</em></button>`).join('')}</div>
+  return `<div class="fchips" role="tablist">${FILTERS.map(([k, l]) => `<button class="fchip" role="tab" data-act="filter" data-v="${k}" aria-selected="${S.filter === k}">${l}<em>${cnt[k] || 0}</em></button>`).join('')}</div>
     ${SHORT.size ? `<button class="shortbar" data-act="filter" data-v="short" aria-pressed="${S.filter === 'short'}">${ico('box')}<span><b>${SHORT.size} ta buyurtmaga mahsulot yetarli emas</b><small>${S.filter === 'short' ? 'Faqat shular koʻrsatilmoqda. Qoldiqni kompaniyaning «Sklad» oynasida toʻldiring.' : 'Koʻrish uchun bosing'}</small></span></button>` : ''}
     <div class="fline">
       <label class="search">${ico('search')}<input id="q" type="search" placeholder="Ism, telefon, manzil yoki №" value="${esc(S.q)}" autocomplete="off"></label>
@@ -1466,10 +1701,10 @@ function adminOrders() {
 function listBlock() {
   SHORT = shortMap();
   const list = filteredOrders(), shown = list.slice(0, S.limit);
-  const emptyAll = !S.orders.size;
+  const emptyAll = !liveOrders().length;
   return `<div class="list-head"><span>${S.selMode ? 'Buyurtmalarni belgilang' : `${list.length} ta buyurtma`}</span>
-      ${S.selMode && list.length ? `<button class="link-btn" data-act="selall">${S.sel.size >= shown.length ? 'Belgilashni olish' : 'Hammasini belgilash'}</button>` : ''}
-      ${list.length ? `<button class="link-btn" data-act="selmode">${S.selMode ? 'Yopish' : 'Tanlab berish'}</button>` : ''}</div>
+      ${S.selMode && list.length ? `<button class="link-btn" data-act="selall">${S.sel.size >= shown.length ? 'Hech biri' : 'Hammasi'}</button>` : ''}
+      ${list.length ? `<button class="link-btn" data-act="selmode">${S.selMode ? 'Yopish' : 'Belgilash'}</button>` : ''}</div>
     <div class="olist">${shown.length ? shown.map(orderRow).join('') : emptyAll
       ? '<div class="empty"><p class="empty-t">Buyurtmalar roʻyxati boʻsh</p><p>Kompaniyani tanlang va buyurtmalarni Excel orqali yuklang yoki qoʻlda kiriting.</p><button class="btn btn-go" data-act="tab" data-v="companies">Kompaniyalar</button></div>'
       : '<div class="empty"><p>Bu filtr boʻyicha buyurtma yoʻq.</p></div>'}</div>
@@ -1484,16 +1719,29 @@ function orderRow(o) {
     <div class="orow-main">
       <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
       <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
-      <div class="orow-l3"><span class="pr">${o.company && !S.fCompany ? `<span class="co">${esc(o.company)}</span>` : ''}${esc(o.product || '')}${o.order_ids && o.order_ids !== o.order_no ? ` · ID: ${esc(o.order_ids)}` : ''}${o.qty ? ' × ' + esc(o.qty) : ''}</span>
-        <span class="orow-st">${o.specialist ? `<span class="co">${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}<span class="st ${ST[o.status].cls}">${ST[o.status].label}</span>${t ? `<time>${esc(when(t))}</time>` : ''}</span></div>
+      <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}${o.qty ? ' × ' + esc(o.qty) : ''}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span></div>
+      <div class="orow-meta">${o.order_ids || o.order_no ? `<span class="oid">#${esc(o.order_ids || o.order_no)}</span>` : ''}${o.company && !S.fCompany ? `<span>${esc(o.company)}</span>` : ''}${o.specialist ? `<span>${ico('user')}${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}${t ? `<time>${esc(when(t))}</time>` : ''}</div>
       ${miss ? `<div class="orow-short">${ico('box')}<span>Mahsulot yetarli emas. ${esc(missText(miss))}</span></div>` : ''}
     </div></article>`;
 }
+/* arxiv qatori — asosiy roʻyxatdagi bilan bir xil tuzilish */
+function archiveRow(o) {
+  const place = [o.district || o.region, o.address].filter(Boolean).join(', ');
+  return `<article class="orow" data-st="${o.status}" data-act="archive-open" data-id="${o.id}" tabindex="0"><div class="orow-main">
+    <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
+    <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
+    <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span></div>
+    <div class="orow-meta">${o.order_ids || o.order_no ? `<span class="oid">#${esc(o.order_ids || o.order_no)}</span>` : ''}${o.company ? `<span>${esc(o.company)}</span>` : ''}${o.specialist ? `<span>${ico('user')}${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : ''}${o.done_at ? `<time>${esc(when(o.done_at))}</time>` : ''}</div>
+  </div></article>`;
+}
 function selBar() {
   if (!S.selMode || !S.sel.size) return '';
-  return `<div class="selbar"><div class="selbar-in"><span><b>${S.sel.size}</b> ta belgilandi</span>
-    <button class="btn btn-go" data-act="assign-sel">Kuryerga berish</button>
-    <button class="icon-btn" data-act="selclear" aria-label="Tanlovni bekor qilish">${ico('x')}</button></div></div>`;
+  return `<div class="selbar" role="toolbar" aria-label="Belgilanganlar bilan"><div class="selbar-in">
+    <div class="selbar-top"><span><b>${S.sel.size}</b> ta buyurtma belgilandi</span>
+      <button class="icon-btn" data-act="selclear" aria-label="Belgilashni bekor qilish">${ico('x')}</button></div>
+    <div class="selbar-acts"><button class="btn btn-go" data-act="assign-sel">${ico('truck')}Kuryerga berish</button>
+      <button class="btn btn-del" data-act="del-marked">${ico('trash')}Oʻchirish</button></div>
+  </div></div>`;
 }
 function renderList() {
   const w = $('#olistWrap'); if (w) w.innerHTML = listBlock();
@@ -1520,15 +1768,17 @@ const histText = e => ({
   assigned: `${e.courier} kuryerga berildi`, unassigned: 'Kuryerdan qaytarib olindi', on_way: `${e.courier} yoʻlga chiqdi`,
   delivered: `${e.courier} topshirdi${e.comment ? '. Izoh: ' + e.comment : ''}`,
   cancelled: `${e.courier} bekor qildi: ${e.reason || ''}${e.comment ? '. Izoh: ' + e.comment : ''}`,
+  reverted: `${e.actor === e.courier ? e.courier : 'Admin'} avvalgi holatga qaytardi («${e.reason === 'delivered' ? 'Topshirildi' : 'Bekor qilindi'}» bekor qilindi)${e.comment ? '. Izoh: ' + e.comment : ''}`,
+  edited: `Admin tahrirladi${e.comment ? ': ' + e.comment : ''}`,
 }[e.type] || e.type);
 function adminAlerts() {
   const evs = S.events;
   if (!evs.length) return '<div class="empty"><p class="empty-t">Hali xabar yoʻq</p><p>Kuryer «Yoʻlga chiqdim», «Topshirdim» yoki «Bekor qilindi» tugmasini bosganda shu yerda chiqadi va ovoz bilan aytiladi.</p></div>';
-  return `<div class="list-head"><span>Kuryerlardan kelgan xabarlar</span></div><div class="alist">${evs.map(ev => `<button class="arow ${ev.type} ${parseTs(ev.created_at) > S.hlFrom ? 'unread' : ''}" data-act="open" data-id="${ev.order_id}">
-      <span class="aic">${ico(ev.type === 'delivered' ? 'check' : ev.type === 'cancelled' ? 'x' : 'truck')}</span>
+  return `<div class="alist">${evs.map(ev => `<button class="arow ${ev.type} ${parseTs(ev.created_at) > S.hlFrom ? 'unread' : ''}" data-act="open" data-id="${ev.order_id}">
+      <span class="aic">${ico(ev.type === 'delivered' ? 'check' : ev.type === 'cancelled' ? 'x' : ev.type === 'reverted' ? 'undo' : 'truck')}</span>
       <span class="amain"><span class="al1"><b>${esc(ev.courier)}</b> ${EV_TEXT[ev.type] || ''}<time>${esc(when(ev.created_at))}</time></span>
       <span class="al2">${esc(ev.customer || 'Oʻchirilgan buyurtma')}${ev.order_no ? ` <span class="muted">№ ${esc(ev.order_no)}</span>` : ''}${ev.type === 'delivered' && +ev.amount ? ` <b>${money(ev.amount)} soʻm</b>` : ''}</span>
-      ${ev.type === 'cancelled' ? `<span class="al3">${esc(ev.reason || '')}${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.comment ? `<span class="al3 plain">${esc(ev.comment)}</span>` : ''}</span>
+      ${ev.type === 'cancelled' ? `<span class="al3">${esc(ev.reason || '')}${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.type === 'reverted' ? `<span class="al3 plain">Avvalgi holatga qaytarildi${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.comment ? `<span class="al3 plain">${esc(ev.comment)}</span>` : ''}</span>
     </button>`).join('')}</div>`;
 }
 const THEMES = [['auto', 'Avtomatik'], ['light', 'Kunduzgi'], ['dark', 'Tungi']];
@@ -1537,6 +1787,17 @@ function adminSettings() {
       <h2 class="h2">Koʻrinish</h2>
       <div class="seg theme-seg" role="tablist" aria-label="Rejim">${THEMES.map(([k, l]) => `<button role="tab" aria-selected="${S.theme === k}" data-act="theme" data-v="${k}">${ico(k === 'light' ? 'sun' : k === 'dark' ? 'moon' : 'auto')}${l}</button>`).join('')}</div>
       <p class="hint">«Avtomatik» — telefon sozlamasiga qarab kunduzgi yoki tungi rejim.</p>
+    </section>
+    <section class="card about">
+      <h2 class="h2">Ilova haqida</h2>
+      <div class="about-row"><span>Ilova</span><b>IZI — kuryerlar va buyurtmalar</b></div>
+      <div class="about-row"><span>Versiya</span><b id="appVer">${IZI_VERSION} (${NATIVE ? 'Android' : 'veb'})</b></div>
+      <div class="about-row"><span>Ishlab chiquvchi</span><b>DINOV, dinov.digital</b></div>
+    </section>
+    <section class="card">
+      <h2 class="h2">Rang mavzusi</h2>
+      <div class="pal-grid" role="radiogroup" aria-label="Rang mavzusi">${PALETTES.map(([k, l, d]) => `<button class="pal" role="radio" aria-checked="${S.palette === k}" data-act="palette" data-v="${k}"><span class="pal-sw pal-${k}" aria-hidden="true"><i></i></span><b>${l}</b><small>${d}</small></button>`).join('')}</div>
+      <p class="hint">Mavzu shu telefonda saqlanadi.${S.palette === 'tungi' ? ' «Tungi dispetcher» doim toʻq rangda boʻladi.' : ''}</p>
     </section>
     <section class="card">
       <h2 class="h2">Signal</h2>
@@ -1551,7 +1812,7 @@ function adminSettings() {
     </section>
     <section class="card">
       <h2 class="h2">Roʻyxat</h2>
-      <label class="fld"><span>Tugallangan buyurtmalarni koʻrsatish</span><select id="setDays">${[1, 3, 7, 30].map(d => `<option value="${d}" ${S.days === d ? 'selected' : ''}>Oxirgi ${d} kun</option>`).join('')}</select></label>
+      <p class="hint" style="margin-top:0">Topshirilgan va bekor qilingan buyurtmalar faqat oʻsha kuni asosiy sahifada turadi. Yarim tundan keyin ular Arxivga oʻtadi.</p>
     </section>
     <section class="card">
       <h2 class="h2">Loginlar</h2>
@@ -1566,14 +1827,14 @@ function adminSettings() {
 
 /* Arxivdagi yakunlangan buyurtmalar serverda doimiy saqlanadi. Sana Toshkent vaqti bilan. */
 function adminArchive() {
-  return `<section class="card archive-card"><h2 class="h2">Buyurtmalar arxivi</h2>
+  return `<section class="card archive-card">
     <p class="hint">Yakunlangan buyurtmalar shu yerda saqlanadi. Sana tanlamasangiz, ID yoki boshqa matn bilan barcha eski kunlardan qidiriladi.</p>
     <div class="archive-controls"><label class="fld"><span>Boshlanish</span><input id="archiveFrom" type="date" value="${esc(S.archiveFrom)}"></label>
     <label class="fld"><span>Tugash</span><input id="archiveTo" type="date" value="${esc(S.archiveTo)}"></label></div>
     <label class="search">${ico('search')}<input id="archiveQ" type="search" placeholder="ID, mutaxassis, telefon, manzil..." value="${esc(S.archiveQ)}"></label>
     <div class="archive-actions"><button class="btn btn-go" data-act="archive-search">Qidirish</button><button class="btn" data-act="archive-export">${ico('download')}Excel yuklash</button></div>
     <p class="hint" aria-live="polite">${S.archiveBusy ? 'Yuklanmoqda…' : S.archiveTotal + ' ta buyurtma topildi'}</p>
-    <div class="olist">${S.archiveRows.map(o => `<article class="orow" data-act="archive-open" data-id="${o.id}" tabindex="0"><div class="orow-main"><div class="orow-l1"><b class="nm">${esc(o.customer || 'Mijoz')}</b><b class="am">${money(o.amount)}</b></div><div class="orow-l2">ID: ${esc(o.order_ids || o.order_no || '—')} · ${esc(o.specialist || 'Mutaxassis koʻrsatilmagan')}</div><div class="orow-l3"><span class="pr">${esc(o.company || '')} · ${esc(o.product || '')}</span><span class="orow-st"><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span><time>${esc(when(o.done_at))}</time></span></div></div></article>`).join('') || '<div class="empty">Bu sana va filtrda yakunlangan buyurtma yoʻq.</div>'}</div>
+    <div class="olist">${S.archiveRows.map(archiveRow).join('') || '<div class="empty">Bu sana va filtrda yakunlangan buyurtma yoʻq.</div>'}</div>
     ${S.archiveRows.length < S.archiveTotal ? '<button class="btn btn-ghost btn-block" data-act="archive-more">Yana koʻrsatish</button>' : ''}</section>`;
 }
 async function loadArchive(reset) {
@@ -1605,7 +1866,7 @@ async function exportArchive() {
 /* ---------- admin: kompaniyalar ---------- */
 function companyStats(name) {
   const r = { total: 0, fresh: 0, active: 0, ok: 0 };
-  for (const o of S.orders.values()) {
+  for (const o of liveOrders()) {
     if (o.company !== name) continue;
     r.total++;
     if (o.status === 'new') r.fresh++;
@@ -1639,9 +1900,7 @@ function stockStrip(name) {
 }
 function adminCompanies() {
   const list = Companies.list();
-  return `<section class="toolbar"><button class="btn btn-go" data-act="co-add">${ico('plus')}Kompaniya qoʻshish</button></section>
-    <p class="hint co-lead">Kompaniyani tanlang: buyurtmalarni Excel orqali yuklang yoki qoʻlda kiriting.</p>
-    <div class="colist">${list.length ? list.map(c => {
+  return `<div class="colist">${list.length ? list.map(c => {
       const s = companyStats(c.name), n = esc(c.name);
       const stat = !s.total ? 'Hozircha buyurtma yoʻq'
         : [s.fresh ? `${s.fresh} ta berilmagan` : '', s.active ? `${s.active} ta kuryerda` : '', s.ok ? `bugun ${s.ok} ta topshirildi` : ''].filter(Boolean).join(', ') || 'Hammasi yakunlangan';
@@ -1650,7 +1909,7 @@ function adminCompanies() {
         <p class="costat">${esc(cap(stat))}</p>
         ${stockStrip(c.name)}
         <div class="btn-row co-act">
-          <button class="btn btn-go" data-act="co-excel" data-co="${n}">${ico('upload')}Excel orqali yuklash</button>
+          <button class="btn btn-go" data-act="co-excel" data-co="${n}">${ico('upload')}Excel yuklash</button>
           <button class="btn" data-act="co-manual" data-co="${n}">${ico('edit')}Qoʻlda kiritish</button>
         </div>
         <button class="link-btn" data-act="co-template" data-co="${n}">${ico('download')}Namuna Excel</button>
@@ -1704,6 +1963,8 @@ async function openOrder(id) {
       <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}${o.courier ? ' · ' + esc(o.courier) : ''}</span></div>
       ${slipBody(o)}${outcome(o)}
     </article>
+    <div class="sh-acts"><button class="btn btn-ghost" data-act="edit-order" data-id="${o.id}">${ico('edit')}Tahrirlash</button>
+      ${o.status === 'delivered' || o.status === 'cancelled' ? `<button class="btn btn-ghost" data-act="revert" data-id="${o.id}">${ico('undo')}Avvalgiga qaytarish</button>` : ''}</div>
     ${o.status !== 'delivered' ? `<h3 class="h3">${o.courier ? 'Boshqa kuryerga berish' : 'Kuryerga berish'}</h3>${courierPick('assign-one', o.courier, `data-id="${o.id}"`)}
       ${o.courier ? `<button class="link-btn" data-act="unassign" data-id="${o.id}">Kuryerdan qaytarib olish</button>` : ''}` : ''}
     <h3 class="h3">Tarix</h3><ol class="timeline" id="tl"><li><time>${esc(when(o.created_at))}</time>${addedText(o)}</li><li class="muted">Yuklanmoqda…</li></ol>
@@ -1713,6 +1974,99 @@ async function openOrder(id) {
     const tl = sheet.querySelector('#tl');
     if (tl) tl.innerHTML = `<li><time>${esc(when(o.created_at))}</time>${addedText(o)}</li>` + h.map(e => `<li><time>${esc(when(e.created_at))}</time><span>${esc(histText(e))}</span></li>`).join('');
   } catch (e) { const tl = sheet.querySelector('#tl'); if (tl) tl.lastElementChild.textContent = errText(e); }
+}
+/* ---------- buyurtmani tahrirlash (admin) ---------- */
+function openEdit(id) {
+  const o = S.orders.get(+id);
+  if (!o) return;
+  S.editId = o.id;
+  const ph = phones(o.phone), its = itemsOf(o);
+  const prods = [...Companies.products(o.company || '')];
+  for (const it of its) if (!prods.some(p => pkey(p) === pkey(it.n))) prods.push(it.n);
+  S.editProds = prods;
+  const qOf = n => { const x = its.find(y => pkey(y.n) === pkey(n)); return x ? x.q : ''; };
+  openSheet(`<h2 class="sh-title">Buyurtmani tahrirlash</h2>
+    <p class="sh-text">${esc(o.company || 'Kompaniyasiz')}, holati: ${esc(ST[o.status].label)}${o.courier ? ', kuryer ' + esc(o.courier) : ''}</p>
+    <form id="editForm" class="form" novalidate>
+      <label class="fld"><span>ID raqam</span><input id="ef-ids" autocomplete="off" value="${esc(o.order_ids || o.order_no || '')}" placeholder="masalan, 10451 yoki 10452, 10453"></label>
+      <label class="fld"><span>Mijoz ismi</span><input id="ef-name" autocomplete="off" value="${esc(o.customer || '')}"></label>
+      <div class="fld"><span>Telefon raqamlari</span><div class="ph3">${[0, 1, 2].map(i => `<input id="ef-ph${i}" type="tel" inputmode="tel" autocomplete="off" aria-label="${i + 1}-raqam" value="${esc(ph[i] ? fmtPhone(ph[i]) : '')}" placeholder="${i ? `${i + 1}-raqam (ixtiyoriy)` : '90 123 45 67'}">`).join('')}</div></div>
+      <div class="mapgrid"><label class="fld"><span>Viloyat</span><input id="ef-reg" autocomplete="off" value="${esc(o.region || '')}"></label>
+        <label class="fld"><span>Shahar yoki tuman</span><input id="ef-dist" autocomplete="off" value="${esc(o.district || '')}"></label></div>
+      <label class="fld"><span>Manzil</span><textarea id="ef-addr" rows="2">${esc(o.address || '')}</textarea></label>
+      ${prods.length ? `<div class="fld"><span>Mahsulotlar, dona</span><div class="qlist">${prods.map((p, i) => `<div class="qrow"><span class="qname">${esc(p)}</span><span class="step">
+          <button type="button" class="step-b" data-act="q-dec" data-f="ef-q" data-i="${i}" aria-label="${esc(p)}: bittaga kamaytirish">−</button>
+          <input id="ef-q${i}" inputmode="numeric" autocomplete="off" placeholder="0" value="${qOf(p)}" aria-label="${esc(p)} soni">
+          <button type="button" class="step-b" data-act="q-inc" data-f="ef-q" data-i="${i}" aria-label="${esc(p)}: bittaga koʻpaytirish">+</button></span></div>`).join('')}</div></div>`
+        : `<div class="mapgrid"><label class="fld"><span>Mahsulot</span><input id="ef-prod" autocomplete="off" value="${esc(o.product || '')}"></label><label class="fld"><span>Soni</span><input id="ef-qty" inputmode="numeric" autocomplete="off" value="${esc(o.qty || '')}"></label></div>`}
+      <div class="mapgrid"><label class="fld"><span>Summasi, soʻm</span><input id="ef-sum" inputmode="numeric" autocomplete="off" value="${o.amount == null ? '' : esc(o.amount)}" placeholder="koʻrsatilmagan"></label>
+        <label class="fld"><span>Mutaxassis</span><input id="ef-spec" autocomplete="off" value="${esc(o.specialist || '')}"></label></div>
+      <label class="fld"><span>Izoh</span><input id="ef-note" autocomplete="off" value="${esc(o.note || '')}" placeholder="masalan, kechqurun qoʻngʻiroq qiling"></label>
+      <p class="form-err" id="ef-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">Saqlash</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="open" data-id="${o.id}">Bekor qilish</button>
+    </form>`, { label: 'Buyurtmani tahrirlash' });
+}
+async function saveEdit() {
+  const o = S.orders.get(S.editId), err = $('#ef-err'), v = id => (($('#' + id) || {}).value || '').trim();
+  if (!o) return;
+  const say = (m, f) => { if (err) err.textContent = m; const el = f && $('#' + f); if (el) el.focus(); };
+  const ids = idTokens(v('ef-ids'));
+  const phone = normPhone([v('ef-ph0'), v('ef-ph1'), v('ef-ph2')].filter(Boolean).join(', '));
+  let items = [];
+  if ((S.editProds || []).length) S.editProds.forEach((p, i) => { const q = parseQty(v('ef-q' + i)); if (q) items.push({ n: p, q }); });
+  else if (v('ef-prod')) items = [{ n: v('ef-prod'), q: parseQty(v('ef-qty')) || 1 }];
+  const sumRaw = v('ef-sum');
+  const data = { order_no: ids[0] || '', order_ids: ids.join(', '), customer: v('ef-name'), phone, region: v('ef-reg'), district: v('ef-dist'),
+    address: v('ef-addr'), items, product: items.map(x => `${x.n} × ${x.q}`).join(', '), amount: sumRaw ? parseAmount(sumRaw) : null,
+    specialist: v('ef-spec'), note: v('ef-note') };
+  if (!data.customer && !data.phone) return say('Mijoz ismi yoki telefonini yozing.', 'ef-name');
+  if (!items.length) return say('Kamida bitta mahsulot sonini kiriting.');
+  const k = regionKeyOf(data);
+  if (k && ZONE_OF[k] !== myZone()) return say(`Bu manzil boshqa hududniki. Siz faqat ${myZone() === 'toshkent' ? 'Toshkent shahri va viloyati' : 'Buxoro va Qashqadaryo'} buyurtmalarini saqlay olasiz.`, 'ef-reg');
+  const before = { ID: o.order_ids || o.order_no || '', Ism: o.customer || '', Telefon: o.phone || '', Viloyat: o.region || '', Tuman: o.district || '',
+    Manzil: o.address || '', Mahsulot: o.product || '', Summa: o.amount == null ? '' : String(+o.amount), Mutaxassis: o.specialist || '', Izoh: o.note || '' };
+  const after = { ID: data.order_ids, Ism: data.customer, Telefon: data.phone, Viloyat: data.region, Tuman: data.district, Manzil: data.address,
+    Mahsulot: data.product, Summa: data.amount == null ? '' : String(+data.amount), Mutaxassis: data.specialist, Izoh: data.note };
+  const changed = Object.keys(before).filter(f => String(before[f]).trim() !== String(after[f]).trim());
+  if (!changed.length) { toast('Oʻzgarish yoʻq'); openOrder(o.id); return; }
+  data._changes = changed.join(', ');
+  try {
+    const r = await api.updateOrder(S.sess.token, o.id, data);
+    S.orders.set(r.id, r);
+    render();
+    openOrder(r.id);
+    toast(`Saqlandi: ${data._changes}`, 'ok');
+  } catch (e) { say(errText(e)); }
+}
+/* ---------- avvalgi holatga qaytarish (kuryer: shu kuni, admin: istalgan payt) ---------- */
+const prevStatus = o => !o.courier ? 'new' : o.on_way_at ? 'on_way' : 'assigned';
+function openRevert(id) {
+  const o = S.orders.get(+id);
+  if (!o) return;
+  S.revertId = o.id;
+  const from = o.status === 'delivered' ? 'Topshirildi' : 'Bekor qilindi', isA = S.sess.role === 'admin';
+  openSheet(`<h2 class="sh-title">Avvalgi holatga qaytarish</h2>
+    <p class="sh-text">«${from}» bekor qilinadi, buyurtma yana «${esc(ST[prevStatus(o)].label)}» boʻladi.${o.status === 'cancelled' ? ' Mahsulot skladdan qayta kuryerga olinadi.' : ''}${isA ? '' : ' Admin xabardor boʻladi.'}</p>
+    <form id="revertForm" class="form" novalidate>
+      <label class="fld"><span>Nega qaytaryapsiz?</span><textarea id="rv-note" rows="3" placeholder="masalan, adashib bosib yubordim"></textarea></label>
+      <p class="form-err" id="rv-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">${ico('undo')}Qaytarish</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="${isA ? 'open' : 'sheet-close'}" data-id="${o.id}">Orqaga</button>
+    </form>`, { label: 'Avvalgi holatga qaytarish' });
+  setTimeout(() => { const f = $('#rv-note'); if (f) f.focus(); }, 300);
+}
+async function doRevert() {
+  const err = $('#rv-err'), note = (($('#rv-note') || {}).value || '').trim();
+  if (note.length < 3) { if (err) err.textContent = 'Sababini yozing (kamida 3 ta harf).'; return; }
+  try {
+    const o = await api.revertStatus(S.sess.token, S.revertId, note);
+    S.orders.set(o.id, o);
+    closeSheet();
+    if (S.sess.role === 'admin') { render(); setTimeout(() => openOrder(o.id), 260); }
+    else { S.ctab = 'active'; render(); }
+    toast(`Qaytarildi: buyurtma yana «${ST[o.status].label}»${S.sess.role === 'admin' ? '' : '. Admin xabardor'}`, 'go');
+  } catch (e) { if (err) err.textContent = errText(e); }
 }
 function openAssign(ids) {
   S.assignIds = ids;
@@ -2240,7 +2594,7 @@ async function exportXlsx(list, opts) {
   ws['!cols'] = [10, 18, 18, 17, 18, 22, 16, 13, 14, 30, 20, 30, 6, 11, 8, 13, 26, 30, 16, 16, 16].map(w => ({ wch: w }));
   const wb = X.utils.book_new();
   X.utils.book_append_sheet(wb, ws, opts.sheet || 'Hisobot');
-  X.writeFile(wb, opts.file || `izi-hisobot-${dayKey(Date.now())}.xlsx`);
+  await saveBook(X, wb, opts.file || `izi-hisobot-${dayKey(Date.now())}.xlsx`);
 }
 /* Kunlik hisobot: bugun tugatilgan (topshirilgan yoki bekor qilingan) buyurtmalar + jami summa */
 function reportToday() {
@@ -2271,7 +2625,7 @@ async function downloadTemplate(name) {
   const wb = X.utils.book_new();
   X.utils.book_append_sheet(wb, ws, 'BUYURTMALAR');
   X.utils.book_append_sheet(wb, wsEx, 'NAMUNA');
-  X.writeFile(wb, `izi-${slugOf(name)}-namuna.xlsx`);
+  await saveBook(X, wb, `izi-${slugOf(name)}-namuna.xlsx`);
 }
 
 /* ================================================================
@@ -2341,7 +2695,7 @@ function setStock(rows) {
 }
 async function adminFull() {
   const initial = !S.loadedOnce;
-  const r = await api.adminLoad(S.sess.token, S.days);
+  const r = await api.adminLoad(S.sess.token, 2);   /* kechagi tugaganlar ham keladi, lekin roʻyxatda faqat bugungilar */
   lastFull = Date.now();
   const st = parseTs(r.server_time) || Date.now();
   if (!S.notifiedAt) { S.notifiedAt = st; store.set('izi_notified_at', st); }
@@ -2510,7 +2864,11 @@ async function saveUser() {
   } catch (e) { if (err) err.textContent = errText(e); }
 }
 function setTab(v) {
-  if (v === 'archive') loadArchive(true);
+  if (v === 'archive') {
+    /* sukut boʻyicha oxirgi 7 kun (kechagi tugaganlar shu yerda); sana qoʻlda tanlangan boʻlsa — oʻsha */
+    if (!S.archiveDateCustom) { S.archiveFrom = dayKey(Date.now() - 6 * 864e5); S.archiveTo = dayKey(Date.now()); }
+    loadArchive(true);
+  }
   S.tab = v; S.selMode = false; S.sel.clear();
   if (v === 'alerts') { S.hlFrom = S.readAt; markRead(); }
   render();
@@ -2533,8 +2891,11 @@ const ACT = {
   'co-del': el => removeCompany(el.dataset.co),
   'co-orders': el => { Object.assign(S, { fCompany: el.dataset.co, fRegion: '', fCourier: '', q: '', filter: 'all' }); setTab('orders'); },
   'prod-toggle': el => { const p = IMP && IMP.prods[+el.dataset.i]; if (!p) return; p.on = !p.on; updateImportPreview(); },
-  'q-inc': el => { const i = $('#mq-' + el.dataset.i); if (i) i.value = String(Math.min(999, parseQty(i.value) + 1)); },
-  'q-dec': el => { const i = $('#mq-' + el.dataset.i); if (i) { const n = parseQty(i.value) - 1; i.value = n > 0 ? String(n) : ''; } },
+  'q-inc': el => { const i = $('#' + (el.dataset.f || 'mq-') + el.dataset.i); if (i) i.value = String(Math.min(999, parseQty(i.value) + 1)); },
+  'q-dec': el => { const i = $('#' + (el.dataset.f || 'mq-') + el.dataset.i); if (i) { const n = parseQty(i.value) - 1; i.value = n > 0 ? String(n) : ''; } },
+  'edit-order': el => openEdit(el.dataset.id),
+  revert: el => openRevert(el.dataset.id),
+  'del-marked': () => deleteIds([...S.sel]),
   'manual-again': () => saveManual(true),
   logout: async () => { if (await ask({ title: 'Ilovadan chiqasizmi?', ok: 'Chiqish', kind: 'no-solid' })) logout(); },
   sound: () => {
@@ -2545,6 +2906,7 @@ const ACT = {
   },
   unlock: () => { unlockAudio(); chime('on_way'); render(); },
   theme: el => setTheme(el.dataset.v),
+  palette: el => setPalette(el.dataset.v),
   'sound-test': () => { unlockAudio(); chime('delivered'); },
   'report-today': () => reportToday(),
   'archive-search': () => loadArchive(true),
@@ -2607,8 +2969,9 @@ document.addEventListener('click', e => {
   const fn = ACT[el.dataset.act];
   if (fn) { e.preventDefault(); fn(el, e); }
 });
+let qTimer = null;
 document.addEventListener('input', e => {
-  if (e.target.id === 'q') { S.q = e.target.value; S.limit = 200; renderList(); }
+  if (e.target.id === 'q') { S.q = e.target.value; S.limit = 200; clearTimeout(qTimer); qTimer = setTimeout(renderList, 160); }
   if (e.target.id === 'mf-addr') updateRegHint();
   if (e.target.closest && e.target.closest('#manualForm')) { const er = $('#mf-err'); if (er && er.textContent) er.textContent = ''; }
 });
@@ -2637,6 +3000,8 @@ document.addEventListener('submit', e => {
   else if (e.target.id === 'manualForm') { e.preventDefault(); saveManual(false); }
   else if (e.target.id === 'prodForm') { e.preventDefault(); addProduct(); }
   else if (e.target.id === 'stkForm') { e.preventDefault(); saveStock(); }
+  else if (e.target.id === 'editForm') { e.preventDefault(); saveEdit(); }
+  else if (e.target.id === 'revertForm') { e.preventDefault(); doRevert(); }
   else if (e.target.id === 'coForm') { e.preventDefault(); saveCompany(); }
 });
 document.addEventListener('keydown', e => {
@@ -2655,6 +3020,7 @@ window.addEventListener('online', () => { if (S.sess) { clearTimeout(pollT); tic
 
 /* ---------------- ishga tushirish ---------------- */
 applyTheme();
+nativeSetup();
 checkFlexGap();
 render();
 if (S.sess) {
@@ -2664,7 +3030,10 @@ if (S.sess) {
     startSession();
   })();
 }
-window.IZI = { S, api, idTokens, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
+/* yarim tunda kecha tugagan buyurtmalar asosiy sahifadan Arxivga oʻtadi */
+let curDay = dayKey(Date.now());
+setInterval(() => { const d = dayKey(Date.now()); if (d !== curDay) { curDay = d; if (S.sess && S.sess.role === 'admin') render(); } }, 60000);
+window.IZI = { S, api, isPast, liveOrders, idTokens, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
 })();
 </script>
 </body>
