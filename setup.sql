@@ -1021,7 +1021,8 @@ begin
   return jsonb_build_object('comments', cms);
 end $$;
 
-create function public.izi_stock_save(p_token text, p_company text, p_product text, p_qty numeric, p_mode text, p_zone text) returns jsonb
+-- p_zone ixtiyoriy: eski ilova versiyalari (telefonda keshda qolgan) uni yubormaydi
+create function public.izi_stock_save(p_token text, p_company text, p_product text, p_qty numeric, p_mode text, p_zone text default null) returns jsonb
 language plpgsql security definer set search_path = public, extensions as $$
 declare
   u public.izi_users := public.izi_admin(p_token);
