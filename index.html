@@ -480,6 +480,46 @@ body:has(.bnav) #toasts{bottom:calc(76px + env(safe-area-inset-bottom))}
 .about-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
 .about-row:first-of-type{border-top:0}
 .about-row span{color:var(--muted)}.about-row b{font-weight:600;text-align:right}
+/* super-admin: foydalanuvchi guruhlari va rol tanlash */
+.ug{margin-top:12px}.ug-t{display:block;margin-bottom:7px;font-size:13px;font-weight:600;color:var(--muted)}
+.ug-t em{font-style:normal;margin-left:4px;padding:0 7px;border-radius:7px;background:var(--new-soft);color:var(--ink);font-size:12px;font-variant-numeric:tabular-nums}
+.role-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:3px;border-radius:12px;background:var(--desk)}
+.role-seg button{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:600}
+.role-seg button[aria-selected=true]{background:var(--slip);color:var(--ink);box-shadow:var(--shadow)}
+.role-seg button:disabled{opacity:1}
+.co-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 10px}
+.co-tools .btn{min-height:42px;padding:0 14px;font-size:15px}
+.pseg{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--slip);box-shadow:inset 0 0 0 1px var(--line)}
+.pseg button{min-height:36px;padding:0 13px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:14px;font-weight:600}
+.pseg button[aria-selected=true]{background:var(--ink);color:var(--slip)}
+.co-cap{margin:12px 2px 8px;font-size:13px;color:var(--muted)}
+.co-stock{margin-top:12px;gap:10px}
+.co-stock .h2{margin-bottom:0}
+.cs-z{display:grid;gap:7px}.cs-t{font-size:13px;color:var(--muted)}
+.cs-chips{display:flex;flex-wrap:wrap;gap:6px}
+.schip{display:inline-flex;align-items:center;gap:8px;padding:6px 6px 6px 11px;border-radius:10px;background:var(--desk);font-size:13px;font-weight:600}
+.schip b{min-width:26px;padding:2px 7px;border-radius:7px;background:var(--ok-soft);color:var(--ok-ink);text-align:center;font-variant-numeric:tabular-nums}
+.schip.low b{background:var(--way-soft);color:var(--way-ink)}.schip.zero b{background:var(--no-soft);color:var(--no-ink)}
+.orow-meta .cm-n{color:var(--brand);font-weight:600}
+/* ---------- izohlar ---------- */
+.chk{display:flex;align-items:center;gap:10px;font-size:15px}.chk input{width:18px;height:18px;accent-color:var(--brand)}
+.cm-box{margin-top:6px}
+.cm-list{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.cm{padding:10px 12px;border-radius:12px;background:var(--desk);box-shadow:inset 3px 0 0 var(--line)}
+.cm.r-company{box-shadow:inset 3px 0 0 var(--brand)}.cm.r-admin{box-shadow:inset 3px 0 0 var(--ok)}.cm.r-courier{box-shadow:inset 3px 0 0 var(--way)}
+.cm.me{background:var(--brand-soft)}
+.cm-h{display:flex;align-items:baseline;gap:8px;font-size:13px}.cm-h span{color:var(--muted)}.cm-h time{margin-left:auto;color:var(--muted);font-size:12px}
+.cm p{margin:4px 0 0;font-size:15px;line-height:1.4;white-space:pre-wrap;word-break:break-word}
+.cm-empty{padding:10px 2px;color:var(--muted);font-size:14px}
+.cm-form{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.cm-form textarea{width:100%;min-width:0;min-height:48px;padding:11px 12px;border:0;border-radius:12px;background:var(--slip);color:var(--ink);font:inherit;font-size:15px;resize:vertical;box-shadow:inset 0 0 0 1px var(--line)}
+.cm-form textarea:focus{outline:0;box-shadow:inset 0 0 0 2px var(--brand)}
+.cm-form .btn{min-height:48px}
+.cm-hint{margin:6px 2px 0;font-size:12.5px;color:var(--muted)}
+.cm-peek{display:flex;align-items:flex-start;gap:9px;width:100%;margin:12px 0 0;padding:10px 12px;border:0;border-radius:12px;background:var(--brand-soft);color:var(--ink);text-align:left;font-size:14px;line-height:1.35}
+.cm-peek svg.i{flex:none;width:18px;height:18px;margin-top:1px;color:var(--brand)}
+.cm-peek span{flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.cm-peek em{flex:none;font-style:normal;font-size:12px;color:var(--brand);font-weight:600}
 /* ---------- tahrirlash va qaytarish ---------- */
 .sh-acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 4px}
 .sh-acts .btn{min-height:46px;font-size:15px;white-space:nowrap}
@@ -569,12 +609,12 @@ body:has(.bnav) #toasts{bottom:calc(76px + env(safe-area-inset-bottom))}
    maʼlumotlar faqat shu brauzerning oʻzida saqlanadi.
    ===================================================================== */
 const IZI_CONFIG = {
-SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
-SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
+  SUPABASE_URL: 'https://vfbphmwdiulmegbpwfpi.supabase.co',
+  SUPABASE_KEY: 'sb_publishable_JpMhQxBTc-0lc_0YCIFhdA_kRGKr6Sz',
 };
 
 const DEMO = !(IZI_CONFIG.SUPABASE_URL && IZI_CONFIG.SUPABASE_KEY);
-const ADMIN_POLL = 5000, COURIER_POLL = 15000, HIDDEN_POLL = 60000, FULL_RELOAD = 180000;
+const ADMIN_POLL = 5000, COURIER_POLL = 15000, COMPANY_POLL = 20000, HIDDEN_POLL = 60000, FULL_RELOAD = 180000;
 const XLSX_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 
 /* ---------------- storage (brauzer xotirasi boʻlmasa ham ishlaydi) ---------------- */
@@ -603,6 +643,7 @@ const parseTs = s => {
   return isNaN(t) ? 0 : t;
 };
 const dayKey = t => { const d = new Date(t); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const vibrate = ms => { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* qoʻllanmaydi */ } };
 const isToday = s => { const t = parseTs(s); return !!t && dayKey(t) === dayKey(Date.now()); };
 const hhmm = s => { const t = parseTs(s); if (!t) return ''; const d = new Date(t); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
 const when = s => { const t = parseTs(s); if (!t) return ''; if (isToday(s)) return hhmm(s); const d = new Date(t); return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + ' ' + hhmm(s); };
@@ -782,6 +823,7 @@ const slugOf = s => norm(s).replace(/\s+/g, '-') || 'kompaniya';
 /* ---------------- mahsulot va sklad ---------------- */
 const pkey = s => String(nn(s, '')).trim().replace(/\s+/g, ' ').toUpperCase();
 const stockKey = (co, p) => pkey(co) + '|' + pkey(p);
+const stockGet = (co, p, zone) => S.stock.get((isSuper() ? (zone || 'main') + '~' : '') + stockKey(co, p));
 /* Buyurtmadagi mahsulotlar: [{n:'ABIHAYAT', q:2}]. items boʻlmasa "ABIHAYAT × 2, TRIO × 1" matnidan olinadi.
    Xuddi shu qoida serverdagi izi_items() funksiyasida ham bor. */
 function itemsOf(o) {
@@ -861,13 +903,15 @@ function toRu(text) {
 }
 const latinPlain = t => String(t).replace(/([og])[ʻʼ‘’'`]/gi, '$1');
 
-const EV_TEXT = { on_way: 'yoʻlga chiqdi', delivered: 'topshirdi', cancelled: 'bekor qildi', reverted: 'avvalgi holatga qaytardi' };
+const EV_TEXT = { on_way: 'yoʻlga chiqdi', delivered: 'topshirdi', cancelled: 'bekor qildi', reverted: 'avvalgi holatga qaytardi', comment: 'izoh yozdi' };
+const evWho = ev => ev.type === 'comment' && ev.actor && ev.actor !== ev.courier ? (ev.company || ev.actor) : ev.courier;
 function evSpeech(ev) {
   const who = spellCode(ev.courier);
   const no = /^\d{1,6}$/.test(String(ev.order_no || '').trim()) ? numUz(+ev.order_no) + ' raqamli ' : '';
   const cust = cleanName(ev.customer);
   if (ev.type === 'on_way') return `${who} kuryer yoʻlga chiqdi. ${cap(no + 'buyurtma')}${cust ? ', ' + cust : ''}.`;
   if (ev.type === 'delivered') return `${who} kuryer ${no}buyurtmani topshirdi.${cust ? ' ' + cust + '.' : ''}${Number(ev.amount) > 0 ? ' ' + numUz(ev.amount) + ' soʻm.' : ''}`;
+  if (ev.type === 'comment') return `${evWho(ev)} izoh yozdi. ${String(ev.comment || '').slice(0, 140)}`;
   if (ev.type === 'reverted') return `Diqqat. ${who} kuryer ${no}buyurtmani avvalgi holatga qaytardi.${cust ? ' ' + cust + '.' : ''}${ev.comment ? ' Izoh: ' + String(ev.comment).slice(0, 140) : ''}`;
   if (ev.type === 'cancelled') return `Diqqat. ${who} kuryer ${no}buyurtmani bekor qildi.${cust ? ' ' + cust + '.' : ''}${ev.reason ? ' Sabab: ' + ev.reason + '.' : ''}${ev.comment ? ' Izoh: ' + String(ev.comment).slice(0, 140) : ''}`;
   return '';
@@ -878,6 +922,7 @@ function evLine(ev) {
   if (ev.type === 'delivered') return `${ev.courier} topshirdi: ${who}${+ev.amount ? ', ' + money(ev.amount) + ' soʻm' : ''}`;
   if (ev.type === 'cancelled') return `${ev.courier} bekor qildi: ${who}${ev.reason ? ' (' + ev.reason + ')' : ''}`;
   if (ev.type === 'reverted') return `${ev.courier} qaytardi: ${who}, «${ev.reason === 'delivered' ? 'Topshirildi' : 'Bekor qilindi'}» bekor qilindi`;
+  if (ev.type === 'comment') return `${evWho(ev)} izoh yozdi (${who}): ${String(ev.comment || '').slice(0, 80)}`;
   return `${ev.courier} yoʻlga chiqdi: ${who}`;
 }
 
@@ -889,8 +934,6 @@ const ST = {
   delivered: { label: 'Topshirildi', cls: 'st-ok' },
   cancelled: { label: 'Bekor qilindi', cls: 'st-no' },
 };
-/* Bazada kutilmagan holat uchrasa, butun ekran chizilmay qolmasligi uchun zaxira */
-const stOf = s => ST[s] || { label: String(nn(s, '—')), cls: 'st-new' };
 const FILTERS = [['new', 'Berilmagan'], ['assigned', 'Berilgan'], ['on_way', 'Yoʻlda'], ['delivered', 'Topshirildi'], ['cancelled', 'Bekor'], ['all', 'Hammasi']];
 const REASONS = ['Mijoz bilan bogʻlana olmadim', 'Buyurtma kechiktirildi', 'Boshqa sabab'];
 const REASON_HINT = {
@@ -1006,8 +1049,13 @@ const remote = {
   setStatus: (t, id, status, reason, comment) => remote.rpc('izi_set_status', { p_token: t, p_id: id, p_status: status, p_reason: reason, p_comment: comment }),
   history: (t, id) => remote.rpc('izi_order_history', { p_token: t, p_id: id }),
   updateOrder: (t, id, data) => remote.rpc('izi_update_order', { p_token: t, p_id: id, p_data: data }),
+  companyList: t => remote.rpc('izi_company_list', { p_token: t }),
+  companySave: (t, code, company, pass, active) => remote.rpc('izi_company_save', { p_token: t, p_code: code, p_company: company, p_pass: pass, p_active: active }),
+  companyLoad: (t, from, to, query) => remote.rpc('izi_company_load', { p_token: t, p_from: from || null, p_to: to || null, p_query: query || null }),
+  addComment: (t, id, text) => remote.rpc('izi_add_comment', { p_token: t, p_id: id, p_text: text }),
+  userManage: (t, code, role, zone, region, company, pass, active) => remote.rpc('izi_user_manage', { p_token: t, p_code: code, p_role: role, p_zone: zone, p_region: region, p_company: company, p_pass: pass, p_active: active }),
   revertStatus: (t, id, comment) => remote.rpc('izi_revert_status', { p_token: t, p_id: id, p_comment: comment }),
-  stockSave: (t, company, product, qty, mode) => remote.rpc('izi_stock_save', { p_token: t, p_company: company, p_product: product, p_qty: +qty, p_mode: mode }),
+  stockSave: (t, company, product, qty, mode, zone) => remote.rpc('izi_stock_save', { p_token: t, p_company: company, p_product: product, p_qty: +qty, p_mode: mode, p_zone: zone || null }),
   stockDelete: (t, company, product) => remote.rpc('izi_stock_delete', { p_token: t, p_company: company, p_product: product || null }),
 };
 
@@ -1024,9 +1072,11 @@ const demo = (() => {
   const TOSH_USERS = [['TOSHKENT', 'admin', null, 'toshkent'],
     ['T-1', 'courier', 'Toshkent shahri', 'toshkent'], ['T-2', 'courier', 'Toshkent shahri', 'toshkent'], ['T-3', 'courier', 'Toshkent shahri', 'toshkent'], ['T-4', 'courier', 'Toshkent shahri', 'toshkent'],
     ['TV-1', 'courier', 'Toshkent viloyati', 'toshkent'], ['TV-2', 'courier', 'Toshkent viloyati', 'toshkent'], ['TV-3', 'courier', 'Toshkent viloyati', 'toshkent']];
+  const CO_USERS = [['ALIVIDA', 'ALIVIDA ORGANIC'], ['ACTIMED', 'ACTIMED']];
   function seed() {
-    const users = [...MAIN_USERS, ...TOSH_USERS].map(([code, role, region, zone]) => ({ code, role, region, zone, active: true }));
-    return { v: 4, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 }, stock: [] };
+    const users = [...MAIN_USERS, ...TOSH_USERS].map(([code, role, region, zone]) => ({ code, role, region, zone, active: true }))
+      .concat(CO_USERS.map(([code, company]) => ({ code, role: 'company', region: null, zone: 'main', company, active: true })));
+    return { v: 6, users, orders: [], events: [], sessions: {}, seq: { order: 0, event: 0 }, stock: [] };
   }
   /* Eski versiya oʻzi yaratgan 14 ta namunaviy (random) buyurtma. Brauzerda qolgan boʻlsa, bir marta oʻchiriladi;
      siz yuklagan buyurtmalarga tegilmaydi. */
@@ -1052,18 +1102,27 @@ const demo = (() => {
       db.stock.forEach(r => { r.zone = r.zone || 'main'; });
       db.v = 4; store.set(KEY, db);
     }
+    if (db.v < 5) {   /* kompaniya kuzatuvchilari va izohlar */
+      for (const [code, company] of CO_USERS) if (!db.users.some(u => u.code === code)) db.users.push({ code, role: 'company', region: null, zone: 'main', company, active: true });
+      db.orders.forEach(o => { if (!Array.isArray(o.comments)) o.comments = []; });
+      db.v = 5; store.set(KEY, db);
+    }
+    if (db.v < 6) { db.v = 6; store.set(KEY, db); }
     return db;
   };
   const save = db => store.set(KEY, db);
   const who = (db, t) => { const c = db.sessions[t]; const u = c && db.users.find(x => x.code === c && x.active); if (!u) throw new ApiError('NO_SESSION'); return u; };
-  const adm = (db, t) => { const u = who(db, t); if (u.role !== 'admin') throw new ApiError('FORBIDDEN'); return u; };
+  const adm = (db, t) => { const u = who(db, t); if (u.role !== 'admin' && u.role !== 'super') throw new ApiError('FORBIDDEN'); return u; };
+  const sup = (db, t) => { const u = who(db, t); if (u.role !== 'super') throw new ApiError('FORBIDDEN'); return u; };
+  const inZone = (u, z) => (u.zone || 'main') === 'all' || (z || 'main') === (u.zone || 'main');
   const zoneOfUser = (db, code) => ((db.users.find(x => x.code === code) || {}).zone) || 'main';
-  const pubUsers = (db, z) => db.users.filter(u => (u.zone || 'main') === z).map(({ code, role, region, active }) => ({ code, role, region, active }));
+  const pubUsers = (db, z) => db.users.filter(u => u.role !== 'super' && (z === 'all' || ((u.zone || 'main') === z && ['admin', 'courier'].includes(u.role)))).map(({ code, role, region, active, zone, company }) => ({ code, role, region, active, zone, company }));
   const evRows = (db, since, limit, z) => db.events
-    .filter(e => (['on_way', 'delivered', 'cancelled'].includes(e.type) || (e.type === 'reverted' && e.actor === e.courier)) && (!since || parseTs(e.created_at) > since)
-      && (((db.orders.find(x => x.id === e.order_id) || {}).zone) || zoneOfUser(db, e.courier)) === z)
+    .filter(e => (['on_way', 'delivered', 'cancelled'].includes(e.type) || (e.type === 'reverted' && e.actor === e.courier)
+        || (e.type === 'comment' && (db.users.find(x => x.code === e.actor) || {}).role !== 'admin')) && (!since || parseTs(e.created_at) > since)
+      && (z === 'all' || (((db.orders.find(x => x.id === e.order_id) || {}).zone) || zoneOfUser(db, e.courier)) === z))
     .slice(-limit)
-    .map(e => { const o = db.orders.find(x => x.id === e.order_id) || {}; return { ...e, order_no: o.order_no, customer: o.customer, amount: o.amount, address: o.address }; });
+    .map(e => { const o = db.orders.find(x => x.id === e.order_id) || {}; return { ...e, order_no: o.order_no, customer: o.customer, amount: o.amount, address: o.address, company: o.company }; });
   const addEv = (db, e) => { db.seq.event++; db.events.push({ id: db.seq.event, reason: null, comment: null, created_at: nowIso(), ...e }); if (db.events.length > 3000) db.events.splice(0, db.events.length - 3000); };
   /* sklad: buyurtma kuryerga berilganda ayriladi, bekor/qaytarib olinganda qaytadi */
   const stockRow = (db, co, pr, z) => db.stock.find(x => (x.zone || 'main') === (z || 'main') && stockKey(x.company, x.product) === stockKey(co, pr));
@@ -1092,20 +1151,20 @@ const demo = (() => {
       db.sessions[t] = c;
       const keys = Object.keys(db.sessions); if (keys.length > 40) delete db.sessions[keys[0]];
       save(db);
-      return { token: t, code: u.code, role: u.role, region: u.region, zone: u.zone || 'main' };
+      return { token: t, code: u.code, role: u.role, region: u.region, zone: u.zone || 'main', company: u.company || null };
     },
-    async me(t) { const db = load(); const u = who(db, t); return { code: u.code, role: u.role, region: u.region, zone: u.zone || 'main' }; },
+    async me(t) { const db = load(); const u = who(db, t); return { code: u.code, role: u.role, region: u.region, zone: u.zone || 'main', company: u.company || null }; },
     async logout(t) { const db = load(); delete db.sessions[t]; save(db); return { ok: true }; },
     async adminLoad(t, days) {
       await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const lim = Date.now() - days * 864e5;
-      return clone({ orders: db.orders.filter(o => o.zone === z && (['new', 'assigned', 'on_way'].includes(o.status) || parseTs(o.updated_at) > lim)).sort((a, b) => b.id - a.id),
-        events: evRows(db, 0, 150, z), users: pubUsers(db, z), stock: db.stock.filter(r => r.zone === z), next_since: iso(Date.now() - 15000), server_time: nowIso() });
+      return clone({ orders: db.orders.filter(o => inZone(u, o.zone) && (['new', 'assigned', 'on_way'].includes(o.status) || parseTs(o.updated_at) > lim)).sort((a, b) => b.id - a.id),
+        events: evRows(db, 0, 150, z), users: pubUsers(db, z), stock: db.stock.filter(r => inZone(u, r.zone)), next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async adminChanges(t, since) {
       const db = load(); const u = adm(db, t), z = u.zone || 'main';
       const s = parseTs(since) || Date.now() - 60000;
-      return clone({ orders: db.orders.filter(o => o.zone === z && parseTs(o.updated_at) > s), events: evRows(db, s, 500, z), stock: db.stock.filter(r => r.zone === z), next_since: iso(Date.now() - 15000), server_time: nowIso() });
+      return clone({ orders: db.orders.filter(o => inZone(u, o.zone) && parseTs(o.updated_at) > s), events: evRows(db, s, 500, z), stock: db.stock.filter(r => inZone(u, r.zone)), next_since: iso(Date.now() - 15000), server_time: nowIso() });
     },
     async archive(t, from, to, query, offset) {
       const db = load(); const u = adm(db, t); const q = norm(query || '');
@@ -1139,12 +1198,12 @@ const demo = (() => {
     },
     async assign(t, ids, courier) {
       await wait(); const db = load(); const u = adm(db, t);
-      const c = courier ? normCode(courier) : null, z = u.zone || 'main';
-      /* admin faqat oʻz zonasidagi kuryerga bera oladi (Toshkent admini — faqat T va TV) */
-      if (c && !db.users.some(x => x.code === c && x.role === 'courier' && x.active && (x.zone || 'main') === z)) throw new ApiError('BAD_COURIER');
+      const c = courier ? normCode(courier) : null;
+      const cu = c ? db.users.find(x => x.code === c && x.role === 'courier' && x.active && inZone(u, x.zone)) : null;
+      if (c && !cu) throw new ApiError('BAD_COURIER');
       const set = new Set(ids.map(Number)); let n = 0; const short = [];
       for (const o of db.orders) {
-        if (!set.has(o.id) || o.status === 'delivered' || o.zone !== z) continue;
+        if (!set.has(o.id) || o.status === 'delivered' || !inZone(u, o.zone) || (cu && o.zone !== (cu.zone || 'main'))) continue;
         if (c && !o.stock_taken && !takeStock(db, o)) { short.push(o.id); continue; }   /* skladda yetmaydi */
         if (!c && o.stock_taken) giveBack(db, o);
         const ts = nowIso();
@@ -1157,7 +1216,7 @@ const demo = (() => {
     },
     async deleteOrders(t, ids) {
       await wait(); const db = load(); const u = adm(db, t);
-      const set = new Set(ids.map(Number).filter(id => (db.orders.find(o => o.id === id) || {}).zone === (u.zone || 'main'))), before = db.orders.length;
+      const set = new Set(ids.map(Number).filter(id => inZone(u, (db.orders.find(o => o.id === id) || {}).zone))), before = db.orders.length;
       for (const o of db.orders) if (set.has(o.id) && o.stock_taken && o.status !== 'delivered') giveBack(db, o);
       db.orders = db.orders.filter(o => !set.has(o.id));
       db.events = db.events.filter(e => !set.has(e.order_id));
@@ -1165,21 +1224,46 @@ const demo = (() => {
       return { deleted: before - db.orders.length };
     },
     async userSave(t, code, region, pass, active) {
-      await wait(); const db = load(); const me = adm(db, t), z = me.zone || 'main';
-      const c = normCode(code);
+      await wait(); const db = load(); const me = adm(db, t);
+      if (me.role === 'super') throw new ApiError('FORBIDDEN');
+      const z = me.zone || 'main', c = normCode(code);
       if (!/^[A-Z0-9-]{2,12}$/.test(c)) throw new ApiError('BAD_CODE');
       if (pass && pass.length < 4) throw new ApiError('SHORT_PASS');
       const u = db.users.find(x => x.code === c);
-      if (u && (u.zone || 'main') !== z) throw new ApiError('FORBIDDEN');   /* boshqa zonaning kuryeri */
+      if (u && ((u.zone || 'main') !== z || !['courier', 'admin'].includes(u.role) || (u.role === 'admin' && u.code !== me.code))) throw new ApiError('FORBIDDEN');
       if (!u) {
         if (!pass) throw new ApiError('SHORT_PASS');
         db.users.push({ code: c, role: 'courier', region: String(region || '').trim() || null, zone: z, active: active !== false });
       } else if (u.role === 'courier') {
         if (region != null) u.region = String(region).trim() || null;
         if (active != null) u.active = !!active;
+      } else if (!pass) throw new ApiError('SHORT_PASS');
+      save(db);
+      return { ok: true, users: db.users.filter(x => (x.zone || 'main') === z && ['admin', 'courier'].includes(x.role)).map(({ code, role, region, active, zone }) => ({ code, role, region, active, zone })) };
+    },
+    async userManage(t, code, role, zone, region, company, pass, active) {
+      await wait(); const db = load(); sup(db, t);
+      const c = normCode(code);
+      if (!/^[A-Z0-9-]{2,20}$/.test(c)) throw new ApiError('BAD_CODE');
+      if (!['admin', 'courier', 'company'].includes(role)) throw new ApiError('BAD_INPUT');
+      const z = role === 'company' ? 'all' : (['main', 'toshkent'].includes(zone) ? zone : 'main');
+      const co = String(company || '').trim();
+      const u = db.users.find(x => x.code === c);
+      if (u && u.role === 'super') throw new ApiError('FORBIDDEN');
+      if (u && u.role !== role) throw new ApiError('ROLE_LOCKED');
+      if (role === 'company' && !co && !u) throw new ApiError('BAD_INPUT');
+      if (!u) {
+        if (!pass || pass.length < 4) throw new ApiError('SHORT_PASS');
+        db.users.push({ code: c, role, region: role === 'courier' ? (String(region || '').trim() || null) : null, zone: z, company: role === 'company' ? co : null, active: active !== false });
+      } else {
+        if (role === 'courier' && region != null) u.region = String(region).trim() || null;
+        if (role === 'company' && co) u.company = co;
+        if (pass && pass.length >= 4) u.pass = pass;
+        if (active != null) u.active = !!active;
+        if ((pass && pass.length >= 4) || active === false) for (const k in db.sessions) if (db.sessions[k] === c) delete db.sessions[k];
       }
       save(db);
-      return { ok: true, users: pubUsers(db, z) };
+      return { ok: true, users: db.users.filter(x => x.role !== 'super').map(({ code, role, region, zone, company, active }) => ({ code, role, region, zone, company, active })) };
     },
     async myOrders(t) {
       await wait(); const db = load(); const u = who(db, t);
@@ -1212,11 +1296,67 @@ const demo = (() => {
       const db = load(); const u = who(db, t);
       if (u.role === 'courier' && !db.orders.some(o => o.id === +id && o.courier === u.code)) throw new ApiError('NOT_FOUND');
       if (u.role === 'admin' && !db.orders.some(o => o.id === +id && o.zone === (u.zone || 'main'))) throw new ApiError('NOT_FOUND');
+      if (u.role === 'company' && !db.orders.some(o => o.id === +id && pkey(o.company || '') === pkey(u.company || ''))) throw new ApiError('NOT_FOUND');
+      if (u.role === 'super' && !db.orders.some(o => o.id === +id)) throw new ApiError('NOT_FOUND');
       return clone(db.events.filter(e => e.order_id === +id));
+    },
+    async companyList(t) {
+      await wait(); const db = load(); sup(db, t);
+      return clone(db.users.filter(u => u.role === 'company').map(({ code, company, active }) => ({ code, company, active })));
+    },
+    async companySave(t, code, company, pass, active) {
+      await wait(); const db = load(); sup(db, t);
+      const c = normCode(code), co = String(company || '').trim();
+      if (!/^[A-Z0-9-]{3,20}$/.test(c)) throw new ApiError('BAD_CODE');
+      if (pass && pass.length < 4) throw new ApiError('SHORT_PASS');
+      const u = db.users.find(x => x.code === c);
+      if (u && u.role !== 'company') throw new ApiError('FORBIDDEN');
+      if (!u) {
+        if (!co) throw new ApiError('BAD_INPUT');
+        if (!pass) throw new ApiError('SHORT_PASS');
+        db.users.push({ code: c, role: 'company', region: null, zone: 'all', company: co, active: active !== false });
+      } else {
+        if (co) u.company = co;
+        if (typeof active === 'boolean') u.active = active;
+        if (pass || active === false) for (const k in db.sessions) if (db.sessions[k] === c) delete db.sessions[k];
+      }
+      save(db);
+      return clone(db.users.filter(x => x.role === 'company').map(({ code, company, active }) => ({ code, company, active })));
+    },
+    async companyLoad(t, from, to, query) {
+      await wait(); const db = load(); const u = who(db, t);
+      if (u.role !== 'company' || !u.company) throw new ApiError('FORBIDDEN');
+      const mine = o => pkey(o.company || '') === pkey(u.company);
+      const tt = to || dayKey(Date.now()), ff = from || dayKey(Date.now() - 6 * 864e5);
+      const q = norm(query || ''), qd = String(query || '').replace(/\D/g, '');
+      const hit = o => q ? (norm([o.order_no, o.order_ids, o.customer, o.phone, o.region, o.district, o.address, o.product, o.specialist, o.courier].join(' ')).includes(q)
+          || (qd.length >= 4 && String(o.phone || '').replace(/\D/g, '').includes(qd)))
+        : (['new', 'assigned', 'on_way'].includes(o.status) || (o.done_at && dayKey(parseTs(o.done_at)) >= ff && dayKey(parseTs(o.done_at)) <= tt));
+      const F = ['id', 'order_no', 'order_ids', 'customer', 'phone', 'region', 'district', 'address', 'landmark', 'product', 'items', 'qty', 'amount', 'specialist', 'note',
+        'company', 'status', 'courier', 'zone', 'created_at', 'assigned_at', 'on_way_at', 'done_at', 'cancel_reason', 'courier_comment', 'comments', 'updated_at'];
+      const orders = db.orders.filter(o => mine(o) && hit(o)).sort((a, b) => b.id - a.id).slice(0, 1500)
+        .map(o => Object.fromEntries(F.map(k => [k, k === 'comments' ? (o.comments || []) : (o[k] === undefined ? null : o[k])])));
+      const stock = db.stock.filter(r => pkey(r.company || '') === pkey(u.company)).map(r => ({ zone: r.zone || 'main', product: r.product, qty: r.qty }));
+      return clone({ company: u.company, orders, stock, server_time: nowIso() });
+    },
+    async addComment(t, id, text) {
+      await wait(); const db = load(); const u = who(db, t);
+      const txt = String(text || '').trim().slice(0, 500);
+      if (txt.length < 2) throw new ApiError('NEED_COMMENT');
+      const o = db.orders.find(x => x.id === +id);
+      const ok = o && ((u.role === 'company' && pkey(o.company || '') === pkey(u.company || '')) || (u.role === 'admin' && o.zone === (u.zone || 'main'))
+        || u.role === 'super' || (u.role === 'courier' && o.courier === u.code));
+      if (!ok) throw new ApiError('NOT_FOUND');
+      o.comments = (Array.isArray(o.comments) ? o.comments : []).slice(-59);
+      o.comments.push({ by: u.code, role: u.role, name: u.role === 'company' ? u.company : u.code, text: txt, at: nowIso() });
+      o.updated_at = nowIso();
+      addEv(db, { order_id: o.id, courier: o.courier, type: 'comment', comment: txt, actor: u.code });
+      save(db);
+      return clone({ comments: o.comments });
     },
     async updateOrder(t, id, data) {
       await wait(); const db = load(); const u = adm(db, t);
-      const o = db.orders.find(x => x.id === +id && x.zone === (u.zone || 'main'));
+      const o = db.orders.find(x => x.id === +id && inZone(u, x.zone));
       if (!o) throw new ApiError('NOT_FOUND');
       const ids = String(data.order_ids || data.order_no || '').split(/[,;\/\n]+/).map(x => x.trim()).filter(Boolean);
       if (ids.length && db.orders.some(x => x.id !== o.id && String(x.company || '') === String(o.company || '')
@@ -1237,6 +1377,7 @@ const demo = (() => {
     },
     async revertStatus(t, id, comment) {
       await wait(); const db = load(); const u = who(db, t);
+      if (u.role !== 'admin' && u.role !== 'super' && u.role !== 'courier') throw new ApiError('FORBIDDEN');
       const o = db.orders.find(x => x.id === +id);
       if (!o || (u.role === 'courier' && o.courier !== u.code) || (u.role === 'admin' && o.zone !== (u.zone || 'main'))) throw new ApiError('NOT_FOUND');
       if (o.status !== 'delivered' && o.status !== 'cancelled') throw new ApiError('BAD_STATUS');
@@ -1251,9 +1392,11 @@ const demo = (() => {
       return clone(o);
     },
     async stockSave(t, company, product, qty, mode) {
-      await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
+      await wait(); const db = load(); const u = adm(db, t);
       const pr = cleanProducts([product])[0], co = String(company || '').trim();
       if (!pr || !co) throw new ApiError('BAD_PRODUCT');
+      if ((u.zone || 'main') === 'all' && !zone) throw new ApiError('BAD_INPUT');
+      const z = (u.zone || 'main') === 'all' ? (zone || 'main') : u.zone;
       const q = parseInt(qty, 10);
       if (!isFinite(q) || q < 0 || q > 1e6 || (mode === 'add' && q === 0)) throw new ApiError('BAD_QTY');
       let r = stockRow(db, co, pr, z);
@@ -1261,16 +1404,16 @@ const demo = (() => {
       r.qty = mode === 'add' ? r.qty + q : q;
       r.updated_at = nowIso();
       save(db);
-      return clone({ stock: db.stock.filter(x => x.zone === z) });
+      return clone({ stock: db.stock.filter(x => inZone(u, x.zone)) });
     },
     async stockDelete(t, company, product) {
-      await wait(); const db = load(); const u = adm(db, t), z = u.zone || 'main';
-      db.stock = db.stock.filter(x => x.zone !== z || stockKey(x.company, x.product) !== stockKey(company, product || x.product));
+      await wait(); const db = load(); const u = adm(db, t);
+      db.stock = db.stock.filter(x => !(inZone(u, x.zone) && stockKey(x.company, x.product) === stockKey(company, product || x.product)));
       save(db);
-      return clone({ stock: db.stock.filter(x => x.zone === z) });
+      return clone({ stock: db.stock.filter(x => inZone(u, x.zone)) });
     },
     reset() { store.del(KEY); },
-    accounts() { return load().users.filter(u => u.active).map(u => u.code); },
+    accounts() { return load().users.filter(u => u.active && u.role !== 'super' && u.role !== 'company').map(u => u.code); },
   };
 })();
 
@@ -1304,7 +1447,10 @@ function errText(e) {
 }
 
 /* ---------------- holat ---------------- */
+/* S dan oldin eʼlon qilinadi: saqlangan sessiya bilan ochilganda S.co darhol tayyor boʻlsin */
+const newCo = () => ({ orders: [], stock: [], company: '', period: 7, q: '', filter: 'all', sig: '', lastCm: 0, ready: false });
 const S = {
+  co: newCo(), coUsers: null,
   sess: store.get('izi_sess'),
   orders: new Map(), events: [], users: [], seenEv: new Set(), since: null, loadedOnce: false,
   tab: 'orders', filter: 'new', fRegion: '', fCourier: '', fCompany: '', q: '', limit: 200,
@@ -1381,7 +1527,7 @@ function unlockAudio() {
 function announce(evs) {
   if (!evs.length) return;
   if (evs.length > 3) toast(`${evs.length} ta yangi xabar keldi`, 'go');
-  else evs.forEach(ev => toast(evLine(ev), ev.type === 'delivered' ? 'ok' : ev.type === 'cancelled' ? 'no' : ev.type === 'reverted' ? 'go' : 'way'));
+  else evs.forEach(ev => toast(evLine(ev), ev.type === 'delivered' ? 'ok' : ev.type === 'cancelled' ? 'no' : ev.type === 'reverted' || ev.type === 'comment' ? 'go' : 'way'));
   try { navigator.vibrate && navigator.vibrate([140, 70, 140]); } catch (e) {}
   if (!S.soundOn) return;
   chime(evs[evs.length - 1].type);
@@ -1461,9 +1607,9 @@ function checkFlexGap() {
 
 function render() {
   const app = $('#app');
-  SHORT = null;   /* har chizishda qoldiq yetmaydigan buyurtmalar bir marta hisoblanadi */
   const a = document.activeElement, fid = a && a.id, pos = a && typeof a.selectionStart === 'number' ? a.selectionStart : null;
-  app.innerHTML = !S.sess ? viewLogin() : S.sess.role === 'admin' ? viewAdmin() : viewCourier();
+  app.innerHTML = !S.sess ? viewLogin() : (S.sess.role === 'admin' || S.sess.role === 'super') ? viewAdmin() : S.sess.role === 'company' ? viewCompany() : viewCourier();
+  refreshThread();
   S.landFresh = false;
   if (fid) { const el = document.getElementById(fid); if (el && el !== a) { el.focus(); if (pos != null) try { el.setSelectionRange(pos, pos); } catch (e) {} } }
 }
@@ -1487,16 +1633,250 @@ function viewLogin() {
 }
 
 function topbar() {
-  const s = S.sess, isA = s.role === 'admin', unread = isA ? unreadCount() : 0;
-  return `<header class="top"><div class="top-in ${isA ? 'wide' : ''}">
-    <div class="brand">${markSvg()}<span>IZI</span>${isA ? `<span class="role">${myZone() === 'toshkent' ? 'Toshkent' : 'Admin'}</span>` : ''}</div>
+  const s = S.sess, isA = s.role === 'admin' || s.role === 'super', isC = s.role === 'company', unread = isA ? unreadCount() : 0;
+  return `<header class="top"><div class="top-in ${isA || isC ? 'wide' : ''}">
+    <div class="brand">${markSvg()}<span>IZI</span>${isA ? `<span class="role">${s.role === 'super' ? 'Boshqaruv' : myZone() === 'toshkent' ? 'Toshkent' : 'Admin'}</span>` : isC ? '<span class="role">Kuzatuv</span>' : ''}</div>
     <div class="top-r">
       ${DEMO ? '<button class="demo" data-act="demo-switch">Demo</button>' : ''}
       ${S.online ? '' : '<span class="live off"><i></i>Aloqa yoʻq</span>'}
-      ${isA ? '' : `<button class="icon-btn" data-act="sound" aria-label="${S.soundOn ? 'Ovozni oʻchirish' : 'Ovozni yoqish'}">${ico(S.soundOn ? 'sound' : 'mute')}</button>`}
+      ${isA || isC ? '' : `<button class="icon-btn" data-act="sound" aria-label="${S.soundOn ? 'Ovozni oʻchirish' : 'Ovozni yoqish'}">${ico(S.soundOn ? 'sound' : 'mute')}</button>`}
       ${isA ? `<button class="icon-btn" data-act="tab" data-v="alerts" aria-label="Xabarlar">${ico('bell')}${unread ? `<b class="badge">${unread > 99 ? '99+' : unread}</b>` : ''}</button>`
+        : isC ? `<button class="icon-btn" data-act="logout" aria-label="Chiqish">${ico('logout')}</button>`
         : `<span class="code">${esc(s.code)}</span><button class="icon-btn" data-act="logout" aria-label="Chiqish">${ico('logout')}</button>`}
     </div></div></header>`;
+}
+
+/* ---------- viloyat admini: oʻz zonasining kuryerlari va oʻz paroli ---------- */
+function adminLoginsCard() {
+  const list = (S.users || []).filter(u => u.role === 'courier' || u.code === S.sess.code)
+    .sort((a, b) => (a.role === 'admin' ? -1 : 0) - (b.role === 'admin' ? -1 : 0) || a.code.localeCompare(b.code));
+  return `<section class="card">
+      <h2 class="h2">Loginlar</h2>
+      <div class="ulist">${list.map(u => `<button class="urow" data-act="user-edit" data-code="${esc(u.code)}"><b>${esc(u.code)}</b><span class="muted">${u.role === 'admin' ? 'Siz (administrator)' : esc(u.region || 'Hududsiz')}</span>${u.active ? '' : '<span class="st st-no">Oʻchirilgan</span>'}<span class="chev">Tahrirlash</span></button>`).join('')}</div>
+      <button class="btn" data-act="user-new">Kuryer qoʻshish</button>
+    </section>`;
+}
+/* ---------- super-admin (ghost): hamma narsa + foydalanuvchi boshqaruvi ---------- */
+const isSuper = () => S.sess && S.sess.role === 'super';
+const ROLE_LABEL = { admin: 'Admin', courier: 'Kuryer', company: 'Kompaniya' };
+const ZONE_LABEL = { main: 'Buxoro va Qashqadaryo', toshkent: 'Toshkent', all: 'Hamma hudud' };
+function superUsersCard() {
+  const list = (S.users || []).slice().sort((a, b) => (a.role + a.code).localeCompare(b.role + b.code));
+  const by = groupBy(list, u => u.role);
+  const order = ['admin', 'courier', 'company'];
+  return `<section class="card">
+      <h2 class="h2">Foydalanuvchilar</h2>
+      <p class="hint" style="margin-top:0">Admin, kuryer va kompaniya loginlarini faqat siz boshqarasiz. Boshqa adminlar bu boʻlimni koʻrmaydi.</p>
+      ${order.filter(r => by[r]).map(r => `<div class="ug"><span class="ug-t">${ROLE_LABEL[r]} <em>${by[r].length}</em></span>
+        <div class="ulist">${by[r].map(u => `<button class="urow" data-act="su-user" data-code="${esc(u.code)}"><b>${esc(u.code)}</b><span class="muted">${esc(u.role === 'company' ? (u.company || '') : u.role === 'admin' ? (ZONE_LABEL[u.zone] || '') : (u.region || ZONE_LABEL[u.zone] || ''))}</span>${u.active ? '' : '<span class="st st-no">Oʻchirilgan</span>'}<span class="chev">Tahrirlash</span></button>`).join('')}</div></div>`).join('')}
+      <button class="btn btn-go" data-act="su-user">${ico('plus')}Foydalanuvchi qoʻshish</button>
+    </section>`;
+}
+function openSuperUser(code) {
+  const u = code ? (S.users || []).find(x => x.code === code) : null;
+  const role = u ? u.role : 'courier';
+  const coNames = [...new Set([...Companies.list().map(c => c.name), ...(u && u.company ? [u.company] : [])])];
+  const zone = u ? u.zone : 'main';
+  openSheet(`<h2 class="sh-title">${u ? esc(u.code) : 'Yangi foydalanuvchi'}</h2>
+    <p class="sh-text">${u ? `${ROLE_LABEL[u.role]}. Rolni oʻzgartirib boʻlmaydi — faqat parol, hudud yoki holatni.` : 'Mavqeyini tanlang, login va parol bering.'}</p>
+    <form id="suForm" class="form" novalidate data-edit="${u ? esc(u.code) : ''}" data-role="${role}">
+      <div class="fld"><span>Foydalanuvchi mavqeyi</span>
+        <div class="seg role-seg" role="tablist">${['admin', 'courier', 'company'].map(r => `<button type="button" role="tab" aria-selected="${role === r}" data-act="su-role" data-v="${r}" ${u ? 'disabled' : ''}>${ROLE_LABEL[r]}</button>`).join('')}</div></div>
+      <label class="fld"><span>Login (nom)</span><input id="su-code" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${u ? esc(u.code) : ''}" ${u ? 'readonly' : ''} placeholder="masalan, B-4, KARSHI yoki ALIVIDA"></label>
+      <div id="su-extra">${superUserExtra(role, u, coNames, zone)}</div>
+      <label class="fld"><span>${u ? 'Yangi parol (oʻzgartirmasangiz, boʻsh)' : 'Parol'}</span><input id="su-pass" type="text" autocomplete="new-password" spellcheck="false" placeholder="kamida 4 ta belgi"></label>
+      ${u ? `<label class="switch"><input type="checkbox" id="su-active" ${u.active ? 'checked' : ''}><span>Faol. Oʻchirilsa, bu login bilan kirib boʻlmaydi.</span></label>` : ''}
+      <p class="form-err" id="su-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">Saqlash</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="sheet-close">Bekor qilish</button>
+    </form>`, { label: 'Foydalanuvchi' });
+}
+function superUserExtra(role, u, coNames, zone) {
+  if (role === 'company') return `<label class="fld"><span>Kompaniya</span><select id="su-co">${(coNames.length ? coNames : ['']).map(n => `<option ${u && u.company === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></label>
+    <p class="cm-hint">Kompaniya nomi Exceldagi buyurtmalar nomi bilan bir xil boʻlsin.</p>`;
+  if (role === 'admin') return `<label class="fld"><span>Hudud (zona)</span><select id="su-zone"><option value="main" ${zone === 'main' ? 'selected' : ''}>Buxoro va Qashqadaryo</option><option value="toshkent" ${zone === 'toshkent' ? 'selected' : ''}>Toshkent</option></select></label>`;
+  const regs = [...new Set((S.users || []).filter(x => x.role === 'courier').map(x => x.region).filter(Boolean))];
+  return `<label class="fld"><span>Hudud (zona)</span><select id="su-zone"><option value="main" ${zone === 'main' ? 'selected' : ''}>Buxoro va Qashqadaryo</option><option value="toshkent" ${zone === 'toshkent' ? 'selected' : ''}>Toshkent</option></select></label>
+    <label class="fld"><span>Hudud nomi (ixtiyoriy)</span><input id="su-region" list="suRegs" autocomplete="off" value="${esc(u ? u.region || '' : '')}" placeholder="masalan, Buxoro"><datalist id="suRegs">${regs.map(r => `<option value="${esc(r)}">`).join('')}</datalist></label>`;
+}
+function pickSuperRole(v) {
+  const f = $('#suForm'); if (!f || f.dataset.edit) return;
+  f.dataset.role = v;
+  f.querySelectorAll('.role-seg button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === v)));
+  const ex = $('#su-extra'); if (ex) ex.innerHTML = superUserExtra(v, null, [...new Set(Companies.list().map(c => c.name))], 'main');
+  const code = $('#su-code'); if (code) code.placeholder = v === 'company' ? 'masalan, ALIVIDA' : v === 'admin' ? 'masalan, KARSHI' : 'masalan, B-4';
+}
+async function saveSuperUser(form) {
+  const err = $('#su-err'), edit = form.dataset.edit, role = form.dataset.role, v = id => (($('#' + id) || {}).value || '').trim();
+  const code = edit || v('su-code'), pass = v('su-pass'), act = $('#su-active');
+  const zone = $('#su-zone') ? $('#su-zone').value : 'main', region = v('su-region'), company = v('su-co');
+  if (!normCode(code)) { err.textContent = 'Login yozing.'; return; }
+  if (!edit && pass.length < 4) { err.textContent = 'Parol kamida 4 ta belgi boʻlsin.'; return; }
+  if (role === 'company' && !company) { err.textContent = 'Kompaniyani tanlang.'; return; }
+  try {
+    const r = await api.userManage(S.sess.token, code, role, zone, region || null, company || null, pass || null, act ? act.checked : true);
+    if (r && r.users) S.users = r.users;
+    closeSheet(); render();
+    toast(edit ? 'Saqlandi' : `${ROLE_LABEL[role]} qoʻshildi: ${normCode(code)}`, 'ok');
+  } catch (e) { err.textContent = errText(e); }
+}
+
+/* ---------- kompaniya kuzatuvi: faqat koʻradi va izoh yozadi ---------- */
+async function companyTick(first) {
+  const c = S.co, to = dayKey(Date.now()), from = dayKey(Date.now() - (c.period - 1) * 864e5);
+  const r = await api.companyLoad(S.sess.token, from, to, c.q.trim() || null);
+  c.orders = r.orders || []; c.stock = r.stock || []; c.company = r.company || S.sess.company || ''; c.ready = true;
+  /* admin yoki kuryerdan yangi izoh kelsa — xabar */
+  let last = 0, lastOrder = null;
+  for (const o of c.orders) for (const m of (o.comments || [])) if (m.role !== 'company' && parseTs(m.at) > last) { last = parseTs(m.at); lastOrder = o; }
+  if (!first && last > c.lastCm && lastOrder) { toast(`Yangi izoh: ${lastOrder.order_no ? '№ ' + lastOrder.order_no : lastOrder.customer || ''}`, 'go'); vibrate(80); }
+  c.lastCm = Math.max(c.lastCm, last);
+  const sig = c.orders.map(o => `${o.id}:${o.updated_at}`).join('|') + '#' + c.stock.map(x => `${x.zone}${x.product}${x.qty}`).join('|');
+  if (first || sig !== c.sig) { c.sig = sig; render(); }
+}
+const CO_ZONES = { main: 'Buxoro va Qashqadaryo skladi', toshkent: 'Toshkent skladi' };
+function coStockCard() {
+  const by = groupBy(S.co.stock, r => r.zone || 'main'), zs = Object.keys(CO_ZONES).filter(z => by[z]);
+  if (!zs.length) return '';
+  return `<section class="card co-stock"><h2 class="h2">Skladdagi qoldiq</h2>${zs.map(z => `<div class="cs-z"><span class="cs-t">${CO_ZONES[z]}</span>
+    <div class="cs-chips">${by[z].map(r => `<span class="schip ${r.qty <= 0 ? 'zero' : r.qty < 5 ? 'low' : ''}">${esc(r.product)}<b>${money(r.qty)}</b></span>`).join('')}</div></div>`).join('')}</section>`;
+}
+function companyRow(o) {
+  const place = [o.district || o.region, o.address].filter(Boolean).join(', '), n = (o.comments || []).length;
+  const t = o.done_at || o.on_way_at || o.assigned_at || o.created_at;
+  return `<article class="orow" data-st="${o.status}" data-act="copen" data-id="${o.id}" tabindex="0"><div class="orow-main">
+    <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
+    <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
+    <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span></div>
+    <div class="orow-meta">${o.order_ids || o.order_no ? `<span class="oid">#${esc(o.order_ids || o.order_no)}</span>` : ''}${o.specialist ? `<span>${ico('user')}${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : ''}${n ? `<span class="cm-n">${ico('note')}${n}</span>` : ''}${t ? `<time>${esc(when(t))}</time>` : ''}</div>
+  </div></article>`;
+}
+function viewCompany() {
+  const c = S.co, list = c.orders, cnt = { all: list.length };
+  for (const k in ST) cnt[k] = 0;
+  for (const o of list) cnt[o.status]++;
+  const shown = c.filter === 'all' ? list : list.filter(o => o.status === c.filter);
+  const per = c.period === 1 ? 'bugun' : `oxirgi ${c.period} kunda`;
+  const d = new Date(), date = `${d.getDate()}-${UZ_MONTHS[d.getMonth()]}, ${UZ_DAYS[d.getDay()]}`;
+  return `${topbar()}${band(`<header class="phead"><h1>${esc(c.company || S.sess.company || 'Kompaniya')}</h1><p>Yetkazib berish kuzatuvi, ${esc(date)}</p></header>`, '', true)}
+  <main class="wrap wide lift co-view">
+    <div class="fchips" role="tablist">${FILTERS.map(([k, l]) => `<button class="fchip" data-v="${k}" data-act="cfilter" role="tab" aria-selected="${c.filter === k}">${l}<em>${cnt[k] || 0}</em></button>`).join('')}</div>
+    ${coStockCard()}
+    <div class="co-tools">
+      <div class="pseg" role="tablist" aria-label="Davr">${[[1, 'Bugun'], [7, '7 kun'], [30, '30 kun']].map(([v, l]) => `<button data-act="cperiod" data-v="${v}" role="tab" aria-selected="${c.period === v}">${l}</button>`).join('')}</div>
+      <button class="btn btn-ghost" data-act="cexport" aria-label="Excel qilib yuklab olish">${ico('download')}Excel</button>
+    </div>
+    <label class="search">${ico('search')}<input id="cq" type="search" enterkeyhint="search" autocomplete="off" placeholder="ID, ism, telefon yoki manzil" value="${esc(c.q)}"></label>
+    <p class="co-cap">${c.q ? `Qidiruv barcha kunlar boʻyicha: ${shown.length} ta` : `Faol buyurtmalar va ${per} tugaganlari: ${shown.length} ta`}</p>
+    <div class="olist">${shown.map(companyRow).join('') || `<div class="empty"><p class="empty-t">${c.ready ? 'Buyurtma topilmadi' : 'Yuklanmoqda…'}</p>${c.ready ? '<p>Davrni yoki qidiruvni oʻzgartirib koʻring.</p>' : ''}</div>`}</div>
+  </main>`;
+}
+async function openCompanyOrder(id) {
+  const o = S.co.orders.find(x => x.id === +id);
+  if (!o) return;
+  const sheet = openSheet(`<article class="slip flat">
+      <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_ids || o.order_no) : 'Buyurtma'}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}${o.courier ? ' · ' + esc(o.courier) : ''}</span></div>
+      ${slipBody(o)}${outcome(o)}
+    </article>
+    ${commentsSection(o)}
+    <h3 class="h3">Tarix</h3><ol class="timeline" id="tl"><li><time>${esc(when(o.created_at))}</time>Roʻyxatga qoʻshildi</li><li class="muted">Yuklanmoqda…</li></ol>`, { label: 'Buyurtma' });
+  try {
+    const h = await api.history(S.sess.token, o.id);
+    const tl = sheet.querySelector('#tl');
+    if (tl) tl.innerHTML = `<li><time>${esc(when(o.created_at))}</time>Roʻyxatga qoʻshildi</li>` + h.map(e => `<li><time>${esc(when(e.created_at))}</time><span>${esc(histText(e))}</span></li>`).join('');
+  } catch (e) { const tl = sheet.querySelector('#tl'); if (tl) tl.lastElementChild.textContent = errText(e); }
+}
+/* ---------- izohlar: kompaniya, admin va kuryer yozishmasi ---------- */
+const CM_ROLE = { company: 'Kompaniya', admin: 'Admin', courier: 'Kuryer' };
+function commentsHtml(o) {
+  const list = o.comments || [];
+  return list.length ? list.map(m => `<li class="cm r-${esc(m.role)} ${m.by === S.sess.code ? 'me' : ''}"><div class="cm-h"><b>${esc(m.name || m.by)}</b><span>${String(m.name || m.by).toLowerCase() === String(CM_ROLE[m.role] || '').toLowerCase() ? '' : CM_ROLE[m.role] || ''}</span><time>${esc(when(m.at))}</time></div><p>${esc(m.text)}</p></li>`).join('')
+    : '<li class="cm-empty">Hali izoh yoʻq.</li>';
+}
+function commentsSection(o) {
+  const r = S.sess.role;
+  return `<section class="cm-box"><h3 class="h3">Izohlar</h3>
+    <ol class="cm-list" id="cmList" data-id="${o.id}" data-n="${(o.comments || []).length}">${commentsHtml(o)}</ol>
+    <form id="cmForm" class="cm-form" data-id="${o.id}" novalidate>
+      <textarea id="cm-text" rows="2" maxlength="500" placeholder="${r === 'company' ? 'Masalan: mijoz faqat 18:00 dan keyin qabul qiladi' : 'Izoh yoki javob yozing'}" aria-label="Izoh"></textarea>
+      <button class="btn btn-go" type="submit">Yuborish</button>
+    </form>
+    <p class="cm-hint">${r === 'company' ? 'Izohni admin va buyurtmani olib borayotgan kuryer koʻradi.' : r === 'admin' ? 'Izohni kompaniya va kuryer ham koʻradi.' : 'Izohni admin va kompaniya ham koʻradi.'}</p></section>`;
+}
+const cmSource = id => S.sess && S.sess.role === 'company' ? S.co.orders.find(x => x.id === +id) : S.orders.get(+id);
+/* ochiq oynadagi yozishmani yangi maʼlumot bilan yangilab turish */
+function refreshThread() {
+  const ul = document.getElementById('cmList');
+  if (!ul || !S.sess) return;
+  const o = cmSource(ul.dataset.id);
+  if (o && String((o.comments || []).length) !== ul.dataset.n) { ul.innerHTML = commentsHtml(o); ul.dataset.n = String((o.comments || []).length); }
+}
+async function sendComment(form) {
+  const id = +form.dataset.id, ta = $('#cm-text'), txt = ((ta && ta.value) || '').trim(), btn = form.querySelector('button[type=submit]');
+  if (txt.length < 2) { toast('Izoh matnini yozing', 'no'); if (ta) ta.focus(); return; }
+  if (btn) btn.disabled = true;
+  try {
+    const r = await api.addComment(S.sess.token, id, txt);
+    const o = cmSource(id);
+    if (o) { o.comments = r.comments; o.updated_at = new Date().toISOString(); }
+    if (ta) ta.value = '';
+    render();
+    toast('Izoh yuborildi', 'ok');
+  } catch (e) { toast(errText(e), 'no'); }
+  finally { if (btn) btn.disabled = false; }
+}
+function openThread(id) {
+  const o = S.orders.get(+id);
+  if (!o) return;
+  openSheet(`<h2 class="sh-title">Izohlar</h2><p class="sh-text">${o.order_no ? '№ ' + esc(o.order_no) + ', ' : ''}${esc(o.customer || '')}</p>${commentsSection(o)}`, { label: 'Izohlar' });
+}
+function cmPeek(o) {
+  const list = o.comments || [];
+  if (!list.length) return '';
+  const m = list[list.length - 1];
+  return `<button class="cm-peek" data-act="cthread" data-id="${o.id}">${ico('note')}<span><b>${esc(m.name || m.by)}:</b> ${esc(m.text)}</span>${list.length > 1 ? `<em>${list.length} ta</em>` : ''}</button>`;
+}
+/* ---------- admin: kompaniya loginlari ---------- */
+async function loadCoUsers() {
+  try { S.coUsers = await api.companyList(S.sess.token); } catch (e) { S.coUsers = []; onErr(e, true); }
+  if (S.tab === 'settings') render();
+}
+function coUsersCard() {
+  if (S.coUsers == null) { setTimeout(loadCoUsers, 0); S.coUsers = undefined; }
+  const list = S.coUsers || [];
+  return `<section class="card">
+      <h2 class="h2">Kompaniya loginlari</h2>
+      <p class="hint" style="margin-top:0">Kompaniya oʻz buyurtmalarini, ularning holati va tarixini, skladdagi qoldigʻini koʻradi va izoh yozadi. Hech narsani oʻzgartira olmaydi.</p>
+      <div class="ulist">${list.map(u => `<button class="urow" data-act="co-user" data-code="${esc(u.code)}"><b>${esc(u.code)}</b><span class="muted">${esc(u.company)}</span>${u.active ? '' : '<span class="st st-no">Oʻchirilgan</span>'}<span class="chev">Tahrirlash</span></button>`).join('')
+        || `<p class="hint">${S.coUsers === undefined ? 'Yuklanmoqda…' : 'Hali kompaniya logini yoʻq.'}</p>`}</div>
+      <button class="btn" data-act="co-user">Kompaniya logini qoʻshish</button>
+    </section>`;
+}
+function openCoUser(code) {
+  const u = code ? (S.coUsers || []).find(x => x.code === code) : null;
+  const names = [...new Set([...Companies.list().map(c => c.name), ...(u ? [u.company] : [])])];
+  openSheet(`<h2 class="sh-title">${u ? 'Kompaniya logini' : 'Yangi kompaniya logini'}</h2>
+    <p class="sh-text">${u ? 'Parolni oʻzgartirish yoki loginni oʻchirish.' : 'Kompaniya shu login bilan kirib, faqat oʻz buyurtmalarini kuzatadi.'}</p>
+    <form id="coUserForm" class="form" novalidate data-edit="${u ? esc(u.code) : ''}">
+      <label class="fld"><span>Login</span><input id="cu-code" autocomplete="off" autocapitalize="characters" value="${u ? esc(u.code) : ''}" ${u ? 'readonly' : ''} placeholder="masalan, ALIVIDA"></label>
+      <label class="fld"><span>Kompaniya</span><select id="cu-co">${names.map(n => `<option ${u && u.company === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select></label>
+      <label class="fld"><span>${u ? 'Yangi parol (oʻzgartirmasangiz, boʻsh qoldiring)' : 'Parol'}</span><input id="cu-pass" type="text" autocomplete="new-password" placeholder="kamida 4 ta belgi"></label>
+      ${u ? `<label class="chk"><input type="checkbox" id="cu-act" ${u.active ? 'checked' : ''}> Login faol</label>` : ''}
+      <p class="form-err" id="cu-err" role="alert"></p>
+      <button class="btn btn-go btn-block" type="submit">Saqlash</button>
+      <button class="btn btn-ghost btn-block" type="button" data-act="sheet-close">Bekor qilish</button>
+    </form>`, { label: 'Kompaniya logini' });
+}
+async function saveCoUser(form) {
+  const err = $('#cu-err'), edit = form.dataset.edit, v = id => (($('#' + id) || {}).value || '').trim();
+  const code = edit || v('cu-code'), co = v('cu-co'), pass = v('cu-pass'), act = $('#cu-act');
+  if (!code) { err.textContent = 'Login yozing.'; return; }
+  if (!edit && pass.length < 4) { err.textContent = 'Parol kamida 4 ta belgi boʻlsin.'; return; }
+  try {
+    S.coUsers = await api.companySave(S.sess.token, code, co, pass || null, act ? act.checked : true);
+    closeSheet(); render();
+    toast(edit ? 'Saqlandi' : `Login yaratildi: ${normCode(code)}`, 'ok');
+  } catch (e) { err.textContent = errText(e); }
 }
 
 /* ---------- kuryer ---------- */
@@ -1580,8 +1960,9 @@ function slipCourier(o) {
     <button class="btn btn-ok btn-block" data-act="st-ok" data-id="${o.id}" ${busy}>${ico('check')}Topshirdim</button>
     <button class="btn btn-no btn-block" data-act="st-no" data-id="${o.id}" ${busy}>Bekor qilindi</button>`;
   return `<article class="slip ${final ? 'is-final' : ''}" data-st="${o.status}" id="slip-${o.id}">
-    <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span>${final ? '' : `<span class="st ${stOf(o.status).cls}">${o.status === 'assigned' ? 'Yangi' : stOf(o.status).label}</span>`}</div>
+    <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span>${final ? '' : `<span class="st ${ST[o.status].cls}">${o.status === 'assigned' ? 'Yangi' : ST[o.status].label}</span>`}</div>
     ${slipBody(o)}
+    ${cmPeek(o)}
     ${final ? stamp(o) + outcome(o) + (isToday(o.done_at) ? `<button class="rv-link" data-act="revert" data-id="${o.id}">${ico('undo')}Xato bosildimi? Avvalgiga qaytarish</button>` : '') : actions}
   </article>`;
 }
@@ -1597,10 +1978,10 @@ const PAGE_TITLE = { orders: 'Buyurtmalar', archive: 'Arxiv', companies: 'Kompan
 function pageHead() {
   const n = S.users.filter(u => u.role === 'courier').length;
   const sub = S.tab === 'companies' ? `${Companies.list().length} ta kompaniya`
-    : S.tab === 'couriers' ? `${n} ta kuryer, ${myZone() === 'toshkent' ? 'Toshkent shahri va viloyati' : 'Buxoro va Qashqadaryo'}`
+    : S.tab === 'couriers' ? `${n} ta kuryer${isSuper() ? '' : ', ' + (myZone() === 'toshkent' ? 'Toshkent shahri va viloyati' : 'Buxoro va Qashqadaryo')}`
     : S.tab === 'archive' ? 'Topshirilgan va bekor qilingan buyurtmalar'
     : S.tab === 'alerts' ? 'Kuryerlardan kelgan xabarlar'
-    : S.tab === 'settings' ? (myZone() === 'toshkent' ? 'Toshkent admini' : 'Admin: Buxoro va Qashqadaryo')
+    : S.tab === 'settings' ? (isSuper() ? 'Super-admin' : myZone() === 'toshkent' ? 'Toshkent admini' : 'Admin: Buxoro va Qashqadaryo')
     : todayTitle();
   return `<header class="phead"><h1>${PAGE_TITLE[S.tab] || 'Buyurtmalar'}</h1><p>${esc(sub)}</p></header>`;
 }
@@ -1635,15 +2016,14 @@ function courierStats(code) {
   return r;
 }
 /* Berilmagan buyurtmalardan qaysilariga hozirgi qoldiq yetmaydi: shular binafsha rangda turadi
-   va kuryerga berilmaydi. Qoldigʻi umuman kiritilmagan mahsulot ham «yetmaydi» deb hisoblanadi
-   (server ham shunday: takeStock qoldiq satri yoʻq mahsulotni bermaydi). */
+   va kuryerga berilmaydi. Qoldigʻi kiritilmagan mahsulot tekshirilmaydi. */
 let SHORT = null;
 function shortMap() {
   const map = new Map();
   for (const o of S.orders.values()) {
     if (o.status !== 'new' || o.stock_taken) continue;
     const miss = [];
-    for (const [k, it] of needOf(o)) { const r = S.stock.get(k); if (!r || r.qty < it.q) miss.push({ n: it.n, need: it.q, have: r ? Math.max(0, r.qty) : 0 }); }
+    for (const [k, it] of needOf(o)) { const r = stockGet(o.company, it.n, o.zone); if (!r || r.qty < it.q) miss.push({ n: it.n, need: it.q, have: r ? Math.max(0, r.qty) : 0 }); }
     if (miss.length) map.set(o.id, miss);
   }
   return map;
@@ -1651,15 +2031,17 @@ function shortMap() {
 /* Bir nechtasini birdan berishda: eng eski buyurtmadan boshlab ayriladi (server ham shunday qiladi),
    qoldiq tugagach qolganlari berilmaydi. Oyna shuni oldindan aytadi. */
 function simShort(ids) {
+  /* super-adminda qoldiq zona boʻyicha: kalitga buyurtma zonasini qoʻshamiz */
+  const zk = isSuper(), sk = (o, k) => zk ? (o.zone || 'main') + '~' + k : k;
   const left = new Map([...S.stock].map(([k, r]) => [k, r.qty]));
   let n = 0;
   for (const o of ids.map(id => S.orders.get(+id)).filter(Boolean).sort((a, b) => a.id - b.id)) {
     if (o.status === 'delivered' || o.stock_taken) continue;
     const need = needOf(o);
     let ok = true;
-    for (const [k, it] of need) if (!left.has(k) || left.get(k) < it.q) ok = false;
+    for (const [k, it] of need) { const z = sk(o, k); if (!left.has(z) || left.get(z) < it.q) ok = false; }
     if (!ok) { n++; continue; }
-    for (const [k, it] of need) if (left.has(k)) left.set(k, left.get(k) - it.q);
+    for (const [k, it] of need) { const z = sk(o, k); if (left.has(z)) left.set(z, left.get(z) - it.q); }
   }
   return n;
 }
@@ -1684,8 +2066,8 @@ function filteredOrders() {
 function adminOrders() {
   const live = liveOrders(), cnt = { all: live.length };
   for (const k in ST) cnt[k] = 0;
-  for (const o of live) cnt[o.status] = (cnt[o.status] || 0) + 1;
-  SHORT = SHORT || shortMap();
+  for (const o of live) cnt[o.status]++;
+  SHORT = shortMap();
   if (S.filter === 'short' && !SHORT.size) S.filter = 'new';
   const couriers = S.users.filter(u => u.role === 'courier');
   const meta = regionMeta();
@@ -1703,7 +2085,7 @@ function adminOrders() {
     <div id="olistWrap">${listBlock()}</div>`;
 }
 function listBlock() {
-  SHORT = SHORT || shortMap();
+  SHORT = shortMap();
   const list = filteredOrders(), shown = list.slice(0, S.limit);
   const emptyAll = !liveOrders().length;
   return `<div class="list-head"><span>${S.selMode ? 'Buyurtmalarni belgilang' : `${list.length} ta buyurtma`}</span>
@@ -1723,7 +2105,7 @@ function orderRow(o) {
     <div class="orow-main">
       <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Nomaʼlum mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
       <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
-      <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}${o.qty ? ' × ' + esc(o.qty) : ''}</span><span class="st ${stOf(o.status).cls}">${stOf(o.status).label}</span></div>
+      <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}${o.qty ? ' × ' + esc(o.qty) : ''}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span></div>
       <div class="orow-meta">${o.order_ids || o.order_no ? `<span class="oid">#${esc(o.order_ids || o.order_no)}</span>` : ''}${o.company && !S.fCompany ? `<span>${esc(o.company)}</span>` : ''}${o.specialist ? `<span>${ico('user')}${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : rk ? '' : '<span class="warn">Hudud?</span>'}${t ? `<time>${esc(when(t))}</time>` : ''}</div>
       ${miss ? `<div class="orow-short">${ico('box')}<span>Mahsulot yetarli emas. ${esc(missText(miss))}</span></div>` : ''}
     </div></article>`;
@@ -1734,7 +2116,7 @@ function archiveRow(o) {
   return `<article class="orow" data-st="${o.status}" data-act="archive-open" data-id="${o.id}" tabindex="0"><div class="orow-main">
     <div class="orow-l1"><b class="nm">${esc(o.customer || fmtPhone(phones(o.phone)[0] || '') || 'Mijoz')}</b><b class="am">${o.amount == null ? '—' : money(o.amount)}</b></div>
     <div class="orow-l2">${esc(place || 'Manzil yozilmagan')}</div>
-    <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}</span><span class="st ${stOf(o.status).cls}">${stOf(o.status).label}</span></div>
+    <div class="orow-l3"><span class="pr">${esc(o.product || 'Mahsulot yozilmagan')}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}</span></div>
     <div class="orow-meta">${o.order_ids || o.order_no ? `<span class="oid">#${esc(o.order_ids || o.order_no)}</span>` : ''}${o.company ? `<span>${esc(o.company)}</span>` : ''}${o.specialist ? `<span>${ico('user')}${esc(o.specialist)}</span>` : ''}${o.courier ? `<span class="cc">${esc(o.courier)}</span>` : ''}${o.done_at ? `<time>${esc(when(o.done_at))}</time>` : ''}</div>
   </div></article>`;
 }
@@ -1748,7 +2130,6 @@ function selBar() {
   </div></div>`;
 }
 function renderList() {
-  SHORT = null;
   const w = $('#olistWrap'); if (w) w.innerHTML = listBlock();
   const b = $('#selbarBox'); if (b) b.innerHTML = selBar();
 }
@@ -1775,15 +2156,16 @@ const histText = e => ({
   cancelled: `${e.courier} bekor qildi: ${e.reason || ''}${e.comment ? '. Izoh: ' + e.comment : ''}`,
   reverted: `${e.actor === e.courier ? e.courier : 'Admin'} avvalgi holatga qaytardi («${e.reason === 'delivered' ? 'Topshirildi' : 'Bekor qilindi'}» bekor qilindi)${e.comment ? '. Izoh: ' + e.comment : ''}`,
   edited: `Admin tahrirladi${e.comment ? ': ' + e.comment : ''}`,
+  comment: `${e.actor || 'Kimdir'} izoh yozdi: ${e.comment || ''}`,
 }[e.type] || e.type);
 function adminAlerts() {
   const evs = S.events;
   if (!evs.length) return '<div class="empty"><p class="empty-t">Hali xabar yoʻq</p><p>Kuryer «Yoʻlga chiqdim», «Topshirdim» yoki «Bekor qilindi» tugmasini bosganda shu yerda chiqadi va ovoz bilan aytiladi.</p></div>';
   return `<div class="alist">${evs.map(ev => `<button class="arow ${ev.type} ${parseTs(ev.created_at) > S.hlFrom ? 'unread' : ''}" data-act="open" data-id="${ev.order_id}">
-      <span class="aic">${ico(ev.type === 'delivered' ? 'check' : ev.type === 'cancelled' ? 'x' : ev.type === 'reverted' ? 'undo' : 'truck')}</span>
-      <span class="amain"><span class="al1"><b>${esc(ev.courier)}</b> ${EV_TEXT[ev.type] || ''}<time>${esc(when(ev.created_at))}</time></span>
+      <span class="aic">${ico(ev.type === 'delivered' ? 'check' : ev.type === 'cancelled' ? 'x' : ev.type === 'reverted' ? 'undo' : ev.type === 'comment' ? 'note' : 'truck')}</span>
+      <span class="amain"><span class="al1"><b>${esc(evWho(ev) || '')}</b> ${EV_TEXT[ev.type] || ''}<time>${esc(when(ev.created_at))}</time></span>
       <span class="al2">${esc(ev.customer || 'Oʻchirilgan buyurtma')}${ev.order_no ? ` <span class="muted">№ ${esc(ev.order_no)}</span>` : ''}${ev.type === 'delivered' && +ev.amount ? ` <b>${money(ev.amount)} soʻm</b>` : ''}</span>
-      ${ev.type === 'cancelled' ? `<span class="al3">${esc(ev.reason || '')}${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.type === 'reverted' ? `<span class="al3 plain">Avvalgi holatga qaytarildi${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.comment ? `<span class="al3 plain">${esc(ev.comment)}</span>` : ''}</span>
+      ${ev.type === 'cancelled' ? `<span class="al3">${esc(ev.reason || '')}${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.type === 'reverted' ? `<span class="al3 plain">Avvalgi holatga qaytarildi${ev.comment ? ': ' + esc(ev.comment) : ''}</span>` : ev.type === 'comment' ? `<span class="al3 plain">${esc(ev.comment || '')}</span>` : ev.comment ? `<span class="al3 plain">${esc(ev.comment)}</span>` : ''}</span>
     </button>`).join('')}</div>`;
 }
 const THEMES = [['auto', 'Avtomatik'], ['light', 'Kunduzgi'], ['dark', 'Tungi']];
@@ -1819,11 +2201,7 @@ function adminSettings() {
       <h2 class="h2">Roʻyxat</h2>
       <p class="hint" style="margin-top:0">Topshirilgan va bekor qilingan buyurtmalar faqat oʻsha kuni asosiy sahifada turadi. Yarim tundan keyin ular Arxivga oʻtadi.</p>
     </section>
-    <section class="card">
-      <h2 class="h2">Loginlar</h2>
-      <div class="ulist">${S.users.map(u => `<button class="urow" data-act="user-edit" data-code="${esc(u.code)}"><b>${u.code === 'ADMIN' ? 'admin' : esc(u.code)}</b><span class="muted">${u.role === 'admin' ? 'Administrator' : esc(u.region || 'Hududsiz')}</span>${u.active ? '' : '<span class="st st-no">Oʻchirilgan</span>'}<span class="chev">Tahrirlash</span></button>`).join('')}</div>
-      <button class="btn" data-act="user-new">Kuryer qoʻshish</button>
-    </section>
+    ${isSuper() ? superUsersCard() : adminLoginsCard()}
     <section class="card">
       ${DEMO ? '<button class="btn btn-ghost" data-act="demo-reset">Barcha maʼlumotlarni tozalash</button>' : ''}
       <button class="btn btn-no" data-act="logout">${ico('logout')}Chiqish</button>
@@ -1899,7 +2277,7 @@ function stockStrip(name) {
   const prods = coProducts(name), n = esc(name);
   if (!prods.length) return `<button class="coprod none" data-act="co-prod" data-co="${n}">${ico('box')}<span>Mahsulotlar kiritilmagan</span><b>Qoʻshish</b></button>`;
   return `<button class="coprod" data-act="co-prod" data-co="${n}" aria-label="${n}: mahsulotlar va sklad">
-    <span class="sk-list">${prods.map(p => { const r = S.stock.get(stockKey(name, p));
+    <span class="sk-list">${prods.map(p => { const r = isSuper() ? (stockGet(name, p, 'main') || stockGet(name, p, 'toshkent')) : stockGet(name, p);
       return `<span class="sk ${r ? (r.qty <= 0 ? 'zero' : '') : 'off'}">${esc(p)}<b>${r ? r.qty : '—'}</b></span>`; }).join('')}</span>
     <b class="sk-go">Sklad</b></button>`;
 }
@@ -1965,13 +2343,14 @@ async function openOrder(id) {
   const miss = shortMap().get(o.id);
   const sheet = openSheet(`${miss ? `<p class="warnbox v">${ico('box')}<span><b>Mahsulot yetarli emas.</b> ${esc(missText(miss))}. Kuryerga berish uchun avval skladga kirim qiling.</span></p>` : ''}
     <article class="slip flat">
-      <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span><span class="st ${stOf(o.status).cls}">${stOf(o.status).label}${o.courier ? ' · ' + esc(o.courier) : ''}</span></div>
+      <div class="slip-top"><span class="ono">${o.order_no ? '№ ' + esc(o.order_no) : 'Buyurtma'}</span><span class="st ${ST[o.status].cls}">${ST[o.status].label}${o.courier ? ' · ' + esc(o.courier) : ''}</span></div>
       ${slipBody(o)}${outcome(o)}
     </article>
     <div class="sh-acts"><button class="btn btn-ghost" data-act="edit-order" data-id="${o.id}">${ico('edit')}Tahrirlash</button>
       ${o.status === 'delivered' || o.status === 'cancelled' ? `<button class="btn btn-ghost" data-act="revert" data-id="${o.id}">${ico('undo')}Avvalgiga qaytarish</button>` : ''}</div>
     ${o.status !== 'delivered' ? `<h3 class="h3">${o.courier ? 'Boshqa kuryerga berish' : 'Kuryerga berish'}</h3>${courierPick('assign-one', o.courier, `data-id="${o.id}"`)}
       ${o.courier ? `<button class="link-btn" data-act="unassign" data-id="${o.id}">Kuryerdan qaytarib olish</button>` : ''}` : ''}
+    ${commentsSection(o)}
     <h3 class="h3">Tarix</h3><ol class="timeline" id="tl"><li><time>${esc(when(o.created_at))}</time>${addedText(o)}</li><li class="muted">Yuklanmoqda…</li></ol>
     <button class="btn btn-no btn-block" data-act="del-one" data-id="${o.id}">Buyurtmani oʻchirish</button>`, { label: 'Buyurtma' });
   try {
@@ -1991,7 +2370,7 @@ function openEdit(id) {
   S.editProds = prods;
   const qOf = n => { const x = its.find(y => pkey(y.n) === pkey(n)); return x ? x.q : ''; };
   openSheet(`<h2 class="sh-title">Buyurtmani tahrirlash</h2>
-    <p class="sh-text">${esc(o.company || 'Kompaniyasiz')}, holati: ${esc(stOf(o.status).label)}${o.courier ? ', kuryer ' + esc(o.courier) : ''}</p>
+    <p class="sh-text">${esc(o.company || 'Kompaniyasiz')}, holati: ${esc(ST[o.status].label)}${o.courier ? ', kuryer ' + esc(o.courier) : ''}</p>
     <form id="editForm" class="form" novalidate>
       <label class="fld"><span>ID raqam</span><input id="ef-ids" autocomplete="off" value="${esc(o.order_ids || o.order_no || '')}" placeholder="masalan, 10451 yoki 10452, 10453"></label>
       <label class="fld"><span>Mijoz ismi</span><input id="ef-name" autocomplete="off" value="${esc(o.customer || '')}"></label>
@@ -2039,7 +2418,6 @@ async function saveEdit() {
   try {
     const r = await api.updateOrder(S.sess.token, o.id, data);
     S.orders.set(r.id, r);
-    await refreshAdmin();   /* mahsulot roʻyxati oʻzgargan boʻlsa sklad qoldigʻi darhol yangilanadi */
     render();
     openOrder(r.id);
     toast(`Saqlandi: ${data._changes}`, 'ok');
@@ -2053,7 +2431,7 @@ function openRevert(id) {
   S.revertId = o.id;
   const from = o.status === 'delivered' ? 'Topshirildi' : 'Bekor qilindi', isA = S.sess.role === 'admin';
   openSheet(`<h2 class="sh-title">Avvalgi holatga qaytarish</h2>
-    <p class="sh-text">«${from}» bekor qilinadi, buyurtma yana «${esc(stOf(prevStatus(o)).label)}» boʻladi.${o.status === 'cancelled' ? ' Mahsulot skladdan qayta kuryerga olinadi.' : ''}${isA ? '' : ' Admin xabardor boʻladi.'}</p>
+    <p class="sh-text">«${from}» bekor qilinadi, buyurtma yana «${esc(ST[prevStatus(o)].label)}» boʻladi.${o.status === 'cancelled' ? ' Mahsulot skladdan qayta kuryerga olinadi.' : ''}${isA ? '' : ' Admin xabardor boʻladi.'}</p>
     <form id="revertForm" class="form" novalidate>
       <label class="fld"><span>Nega qaytaryapsiz?</span><textarea id="rv-note" rows="3" placeholder="masalan, adashib bosib yubordim"></textarea></label>
       <p class="form-err" id="rv-err" role="alert"></p>
@@ -2069,10 +2447,9 @@ async function doRevert() {
     const o = await api.revertStatus(S.sess.token, S.revertId, note);
     S.orders.set(o.id, o);
     closeSheet();
-    /* bekor qilingan buyurtma qaytarilsa mahsulot yana skladdan olinadi: qoldiq darhol koʻrinsin */
-    if (S.sess.role === 'admin') { await refreshAdmin(); render(); setTimeout(() => openOrder(o.id), 260); }
+    if (S.sess.role === 'admin') { render(); setTimeout(() => openOrder(o.id), 260); }
     else { S.ctab = 'active'; render(); }
-    toast(`Qaytarildi: buyurtma yana «${stOf(o.status).label}»${S.sess.role === 'admin' ? '' : '. Admin xabardor'}`, 'go');
+    toast(`Qaytarildi: buyurtma yana «${ST[o.status].label}»${S.sess.role === 'admin' ? '' : '. Admin xabardor'}`, 'go');
   } catch (e) { if (err) err.textContent = errText(e); }
 }
 function openAssign(ids) {
@@ -2213,7 +2590,6 @@ async function saveManual(again) {
     toast(`${customer}: buyurtma qoʻshildi`, 'ok');
     S.fCompany = name;
     await adminFull();
-    render();   /* kompaniya filtri almashdi: maʼlumot oʻzgarmasa ham qayta chiziladi */
     if (!again) { closeSheet(); return; }
     if (learn.length) { openManual(name); $('#mf-name').focus(); return; }
     $('#manualForm').reset(); updateRegHint(); if (err) err.textContent = '';
@@ -2232,10 +2608,17 @@ function openProducts(name) {
   const prods = coProducts(name), oc = onCouriers(name);
   S.prodList = prods;
   openSheet(`<h2 class="sh-title">${esc(name)}</h2>
-    <p class="sh-text">Kuryerlar skladidagi mahsulotlar. Buyurtma kuryerga berilganda qoldiqdan ayriladi, bekor qilinsa qaytib qoʻshiladi. Qoldigʻi kiritilmagan mahsulot bilan buyurtma kuryerga berilmaydi — avval «Kirim» qiling.</p>
-    <div class="stk">${prods.length ? prods.map((p, i) => { const r = S.stock.get(stockKey(name, p)), c = oc.get(pkey(p)) || 0;
+    <p class="sh-text">Kuryerlar skladidagi mahsulotlar. Buyurtma kuryerga berilganda qoldiqdan ayriladi, bekor qilinsa qaytib qoʻshiladi.</p>
+    <div class="stk">${prods.length ? prods.map((p, i) => {
+      if (isSuper()) { const rm = stockGet(name, p, 'main'), rt = stockGet(name, p, 'toshkent');
+        return `<div class="stk-row ${(rm || rt) ? '' : 'off'}"><div class="stk-n"><b>${esc(p)}</b>
+          <span>${(rm || rt) ? `Buxoro/Qashqadaryo: ${rm ? rm.qty : '—'} · Toshkent: ${rt ? rt.qty : '—'}` : 'Qoldiq kiritilmagan, nazorat qilinmaydi'}</span></div>
+          <button class="btn stk-in" data-act="stk-in" data-i="${i}" data-z="main">BQ kirim</button>
+          <button class="btn stk-in" data-act="stk-in" data-i="${i}" data-z="toshkent">T kirim</button>
+          <button class="icon-btn" data-act="stk-edit" data-i="${i}" data-z="main" aria-label="Buxoro/Qashqadaryo qoldigʻini tuzatish">${ico('edit')}</button></div>`; }
+      const r = stockGet(name, p), c = oc.get(pkey(p)) || 0;
       return `<div class="stk-row ${r ? (r.qty <= 0 ? 'zero' : '') : 'off'}">
-        <div class="stk-n"><b>${esc(p)}</b><span>${r ? (c ? `Kuryerlarda: ${c} ta` : 'Skladda') : 'Qoldiq kiritilmagan — berilmaydi'}</span></div>
+        <div class="stk-n"><b>${esc(p)}</b><span>${r ? (c ? `Kuryerlarda: ${c} ta` : 'Skladda') : 'Qoldiq kiritilmagan, nazorat qilinmaydi'}</span></div>
         <div class="stk-q" aria-label="Skladda">${r ? r.qty : '—'}</div>
         <button class="btn stk-in" data-act="stk-in" data-i="${i}">${ico('plus')}Kirim</button>
         <button class="icon-btn" data-act="stk-edit" data-i="${i}" aria-label="${esc(p)}: qoldiqni tuzatish yoki oʻchirish">${ico('edit')}</button>
@@ -2250,13 +2633,14 @@ function openProducts(name) {
     <button class="btn btn-ghost btn-block" data-act="sheet-close">Yopish</button>
     <button class="link-btn danger" data-act="co-del" data-co="${esc(name)}">Kompaniyani oʻchirish</button>`, { label: 'Mahsulotlar' });
 }
-function openStockEdit(i, mode) {
+function openStockEdit(i, mode, zone) {
   const name = S.prodCo, p = S.prodList[+i];
   if (!p) return;
-  const r = S.stock.get(stockKey(name, p));
-  S.stkEdit = { p, mode };
+  const z = isSuper() ? (zone || 'main') : null;
+  const r = stockGet(name, p, z);
+  S.stkEdit = { p, mode, zone: z };
   openSheet(`<h2 class="sh-title">${esc(p)}</h2>
-    <p class="sh-text">${esc(name)}. Hozir skladda: <b>${r ? r.qty + ' ta' : 'kiritilmagan'}</b></p>
+    <p class="sh-text">${esc(name)}${z ? ' · ' + (z === 'toshkent' ? 'Toshkent skladi' : 'Buxoro/Qashqadaryo skladi') : ''}. Hozir skladda: <b>${r ? r.qty + ' ta' : 'kiritilmagan'}</b></p>
     <form id="stkForm" class="form" novalidate>
       <label class="fld"><span>${mode === 'add' ? 'Nechta keldi' : 'Skladda aslida nechta bor'}</span><input id="sk-q" inputmode="numeric" autocomplete="off" placeholder="${mode === 'add' ? 'masalan, 20' : r ? r.qty : '0'}"></label>
       <p class="hint">${mode === 'add' ? 'Kiritgan soningiz qoldiqqa qoʻshiladi.' : 'Qoldiq aynan shu songa oʻrnatiladi (sanoqdan keyin tuzatish uchun).'}</p>
@@ -2268,11 +2652,11 @@ function openStockEdit(i, mode) {
   setTimeout(() => { const f = $('#sk-q'); if (f) f.focus(); }, 300);
 }
 async function saveStock() {
-  const { p, mode } = S.stkEdit || {}, err = $('#sk-err'), raw = (($('#sk-q') || {}).value || '').trim();
+  const { p, mode, zone } = S.stkEdit || {}, err = $('#sk-err'), raw = (($('#sk-q') || {}).value || '').trim();
   if (!p) return;
   if (!/^\d{1,7}$/.test(raw) || (mode === 'add' && +raw === 0)) { if (err) err.textContent = mode === 'add' ? 'Kelgan sonini yozing, masalan 20.' : 'Sonini yozing: 0 yoki undan katta.'; return; }
   try {
-    const r = await api.stockSave(S.sess.token, S.prodCo, p, +raw, mode);
+    const r = await api.stockSave(S.sess.token, S.prodCo, p, +raw, mode, zone);
     setStock(r.stock);
     toast(mode === 'add' ? `${p}: +${raw} ta kirim qilindi` : `${p}: qoldiq ${raw} ta`, 'ok');
     render();
@@ -2283,9 +2667,9 @@ async function addProduct() {
   const err = $('#pf-err'), name = cleanProducts([(($('#pf-name') || {}).value || '')])[0], raw = (($('#pf-qty') || {}).value || '').trim() || '0';
   if (!name) { if (err) err.textContent = 'Mahsulot nomini yozing.'; return; }
   if (!/^\d{1,7}$/.test(raw)) { if (err) err.textContent = 'Sonini raqam bilan yozing.'; return; }
-  if (S.stock.has(stockKey(S.prodCo, name))) { if (err) err.textContent = 'Bu mahsulot allaqachon bor. Roʻyxatdan «Kirim» ni bosing.'; return; }
+  if (stockGet(S.prodCo, name, 'main') || stockGet(S.prodCo, name)) { if (err) err.textContent = 'Bu mahsulot allaqachon bor. Roʻyxatdan «Kirim» ni bosing.'; return; }
   try {
-    const r = await api.stockSave(S.sess.token, S.prodCo, name, +raw, 'set');
+    const r = await api.stockSave(S.sess.token, S.prodCo, name, +raw, 'set', isSuper() ? 'main' : null);
     Companies.addProducts(S.prodCo, [name]);
     setStock(r.stock);
     toast(`${name} qoʻshildi: skladda ${raw} ta`, 'ok');
@@ -2409,8 +2793,7 @@ function detectProducts(prev) {
     if (!name || !k || used.has(ci) || ROWNUM_HEAD.test(k)) return;
     let isProd = known.has(k);
     if (!isProd && !single) {
-      /* qatorlar turli uzunlikda boʻlishi mumkin: boʻsh va yoʻq kataklar hisobga olinmaydi */
-      const vals = IMP.data.map(r => r[ci]).filter(v => v !== '' && v != null);
+      const vals = IMP.data.map(r => r[ci]).filter(v => v !== '');
       /* sonlar: 2, 2.0, shuningdek «2 ta», «2 dona», «2 шт» */
       const ints = vals.every(v => /^\d{1,3}([.,]0+)?(\s*(ta|dona|dn|шт|sht|та|дона)\.?)?$/i.test(String(v).trim()));
       const counter = vals.length > 2 && vals.every((v, i) => parseQty(v) === i + 1);
@@ -2433,8 +2816,7 @@ function buildRows() {
     let spec = get(r, 'specialist'), sph = get(r, 'specialist_phone');
     if (!sph) { const pm = spec.match(/\+?\d[\d\s()-]{7,}\d/); if (pm) { sph = pm[0]; spec = spec.replace(pm[0], '').replace(/[\s,;:()–-]+$/, '').replace(/^[\s,;:()–-]+/, '').trim(); } }
     const hasAmount = m.amount != null && m.amount !== '';
-    /* ism va mutaxassisdagi ortiqcha boʻshliqlar tozalanadi: «Dilnoza   Rahimova» → «Dilnoza Rahimova» */
-    const o = { order_no: ids[0] || '', order_ids: ids.join(', '), specialist: spec.replace(/\s+/g, ' '), specialist_phone: normPhone(sph), customer: get(r, 'customer').replace(/\s+/g, ' '), phone: normPhone([get(r, 'phone'), get(r, 'phone2'), get(r, 'phone3')].filter(Boolean).join(', ')), region: get(r, 'region'), district: get(r, 'district'),
+    const o = { order_no: ids[0] || '', order_ids: ids.join(', '), specialist: spec, specialist_phone: normPhone(sph), customer: get(r, 'customer'), phone: normPhone([get(r, 'phone'), get(r, 'phone2'), get(r, 'phone3')].filter(Boolean).join(', ')), region: get(r, 'region'), district: get(r, 'district'),
       address: get(r, 'address'), landmark: get(r, 'landmark'), product: get(r, 'product'), qty: get(r, 'qty'), amount: hasAmount ? parseAmount(get(r, 'amount')) : null, note: get(r, 'note'), courier: get(r, 'courier'),
       company: IMP.company || '', src: 'excel' };
     if (prods.length) {
@@ -2476,36 +2858,21 @@ function idTokens(v) {
   return (s.match(/[A-Za-z0-9-]*\d[A-Za-z0-9-]*/g) || []).map(x => x.replace(/^-+|-+$/g, '')).filter(Boolean);
 }
 /* Mijoz 2 xil mahsulot olsa, Excelda 2 qator boʻladi, ID bir xil: ular bitta buyurtmaga birlashadi.
-   ID bir xil, lekin mijoz boshqa boʻlsa birlashtirilmaydi (ikkinchisi takror ID sifatida oʻtkazib yuboriladi).
-   Bitta katakda 2 ta ID boʻlishi mumkin («10452, 10453» va «10452» — bitta buyurtma), shuning uchun
-   har bir ID alohida kalit: ikkala qatorda uchragan bitta ID topilsa ham qatorlar birlashadi.
-   Telefon ham roʻyxat: bir xil raqam uchrasa, bitta mijoz deb olinadi. */
+   ID bir xil, lekin mijoz boshqa boʻlsa birlashtirilmaydi (ikkinchisi takror ID sifatida oʻtkazib yuboriladi). */
 function mergeById(rows) {
   const by = new Map(), out = [], dg = x => String(x || '').replace(/\D/g, '');
-  const keysOf = o => idTokens(o.order_ids).map(t => pkey(o.company) + '|' + t);
-  const samePhone = (a, b) => {
-    const A = phones(a).map(dg).filter(Boolean), B = phones(b).map(dg).filter(Boolean);
-    return !A.length || !B.length || A.some(x => B.includes(x));
-  };
   let merged = 0, clash = 0;
   for (const o of rows) {
-    const ks = keysOf(o);
-    let p = null;
-    for (const k of ks) { const x = by.get(k); if (x) { p = x; break; } }
-    if (!p) { for (const k of ks) if (!by.has(k)) by.set(k, o); out.push(o); continue; }
-    const same = (!o.customer || !p.customer || norm(o.customer) === norm(p.customer)) && samePhone(o.phone, p.phone);
+    const k = o.order_ids ? pkey(o.company) + '|' + o.order_ids : '';
+    const p = k ? by.get(k) : null;
+    if (!p) { if (k) by.set(k, o); out.push(o); continue; }
+    const same = (!o.customer || !p.customer || norm(o.customer) === norm(p.customer)) && (!o.phone || !p.phone || dg(o.phone) === dg(p.phone));
     if (!same) { clash++; out.push(o); continue; }
     const items = itemsOf(p);
     for (const it of itemsOf(o)) { const x = items.find(y => pkey(y.n) === pkey(it.n)); if (x) x.q += it.q; else items.push({ n: it.n, q: it.q }); }
     p.items = items; p.product = items.map(x => `${x.n} × ${x.q}`).join(', '); p.qty = '';
     if (o.amount != null) p.amount = (+p.amount || 0) + (+o.amount || 0);
-    for (const f of ['customer', 'region', 'district', 'address', 'landmark', 'note', 'specialist', 'specialist_phone', 'courier']) if (!p[f] && o[f]) p[f] = o[f];
-    if (o.phone) p.phone = normPhone([p.phone, o.phone].filter(Boolean).join(', '));
-    /* birlashgan qatorning ID lari ham asosiy buyurtmada qoladi, shunda hech bir ID yoʻqolmaydi */
-    const allIds = [...new Set([...idTokens(p.order_ids), ...idTokens(o.order_ids)])];
-    p.order_ids = allIds.join(', ');
-    if (!p.order_no) p.order_no = allIds[0] || '';
-    for (const k of keysOf(p)) if (!by.has(k)) by.set(k, p);
+    for (const f of ['customer', 'phone', 'region', 'district', 'address', 'landmark', 'note', 'specialist', 'specialist_phone', 'courier']) if (!p[f] && o[f]) p[f] = o[f];
     merged++;
   }
   if (IMP) { IMP.merged = merged; IMP.clash = clash; }
@@ -2592,7 +2959,6 @@ async function runImport() {
     Object.assign(S, { tab: 'orders', filter: 'new', q: '', fRegion: '', fCourier: '', fCompany: co, selMode: false });
     S.sel.clear();
     await adminFull();
-    render();   /* adminFull faqat maʼlumot oʻzgarsa chizadi; bu yerda boʻlim ham almashdi */
     toast(`${co ? co + ': ' : ''}${ins} ta buyurtma qoʻshildi${skip ? `, ${skip} tasi oldin yuklangan` : ''}${foreign ? `. ${foreign} tasi boshqa hududniki — yuklanmadi` : ''}`, 'ok');
   } catch (e) {
     onErr(e);
@@ -2608,7 +2974,7 @@ async function exportXlsx(list, opts) {
   const rows = list.map(o => ({
     'Buyurtma №': o.order_no || '', 'Buyurtma IDlar': o.order_ids || o.order_no || '', 'Mutaxassis': o.specialist || '', 'Mutaxassis raqami': o.specialist_phone || '', 'Kompaniya': o.company || '', 'Mijoz': o.customer || '', 'Telefon': o.phone || '', 'Viloyat': o.region || '', 'Tuman': o.district || '',
     'Manzil': o.address || '', 'Moʻljal': o.landmark || '', 'Mahsulot': o.product || '', 'Soni': o.qty || '', 'Summa': Number(o.amount) || 0,
-    'Kuryer': o.courier || '', 'Holat': stOf(o.status).label, 'Sabab': o.cancel_reason || '', 'Kuryer izohi': o.courier_comment || '',
+    'Kuryer': o.courier || '', 'Holat': ST[o.status].label, 'Sabab': o.cancel_reason || '', 'Kuryer izohi': o.courier_comment || '',
     'Berilgan': dt(o.assigned_at), 'Yoʻlga chiqqan': dt(o.on_way_at), 'Tugallangan': dt(o.done_at),
   }));
   if (opts.totals) {
@@ -2661,7 +3027,7 @@ let pollT = null, polling = false, lastFull = 0;
 function schedule() {
   clearTimeout(pollT);
   if (!S.sess) return;
-  let ms = S.sess.role === 'admin' ? ADMIN_POLL : COURIER_POLL;
+  let ms = (S.sess.role === 'admin' || S.sess.role === 'super') ? ADMIN_POLL : S.sess.role === 'company' ? COMPANY_POLL : COURIER_POLL;
   if (document.visibilityState === 'hidden') ms = HIDDEN_POLL;   /* ekran yopiq: sekin soʻraymiz */
   pollT = setTimeout(tick, ms);
 }
@@ -2671,7 +3037,8 @@ async function tick() {
   if (polling) { schedule(); return; }
   polling = true;
   try {
-    if (S.sess.role === 'admin') { if (!S.loadedOnce || Date.now() - lastFull > FULL_RELOAD) await adminFull(); else await adminChanges(); }
+    if (S.sess.role === 'admin' || S.sess.role === 'super') { if (!S.loadedOnce || Date.now() - lastFull > FULL_RELOAD) await adminFull(); else await adminChanges(); }
+    else if (S.sess.role === 'company') await companyTick(false);
     else await courierTick(false);
     setOnline(true);
   } catch (e) { onErr(e, true); }
@@ -2688,8 +3055,6 @@ function takeEvents(list, initial) {
   }
   S.events.sort((a, b) => b.id - a.id);
   if (S.events.length > 300) S.events.length = 300;
-  /* koʻrilgan xabar raqamlari cheksiz oʻsmasligi uchun: roʻyxatda qolganlari yetarli */
-  if (S.seenEv.size > 3000) S.seenEv = new Set(S.events.map(e => e.id));
   if (fresh.length) { S.notifiedAt = Math.max(S.notifiedAt, ...fresh.map(e => parseTs(e.created_at))); store.set('izi_notified_at', S.notifiedAt); }
   if (S.tab === 'alerts') markRead();
   return fresh;
@@ -2708,32 +3073,18 @@ function mergeOrders(list) {
   return ch;
 }
 /* sklad qoldiqlari serverdan keladi: kuryer bekor qilsa ham admin ekranida darhol yangilanadi */
-const stockSig = () => [...S.stock.values()].map(r => stockKey(r.company, r.product) + '=' + r.qty).sort().join('|');
+const stockSig = () => [...S.stock.values()].map(r => (r.zone || '') + stockKey(r.company, r.product) + '=' + r.qty).sort().join('|');
 function setStock(rows) {
   if (!Array.isArray(rows)) return false;
   const before = stockSig();
-  S.stock = new Map(rows.map(r => [stockKey(r.company, r.product), { company: r.company, product: r.product, qty: +r.qty || 0 }]));
-  /* Boshqa qurilmada qoʻshilgan mahsulot va kompaniyalar bu yerda ham koʻrinsin.
-     Bu funksiya har 5 soniyada chaqiriladi, shuning uchun roʻyxat bir marta oʻqiladi va
-     faqat haqiqatan yangi nom topilsa yoziladi (avval har bir qoldiq satri uchun qayta
-     oʻqilib-yozilardi — telefonda sezilarli ortiqcha ish). */
-  let list = Companies.list(), dirty = false;
-  const byName = new Map();
-  const index = () => { byName.clear(); for (const c of list) byName.set(pkey(c.name), c); };
-  const flush = () => { if (dirty) { Companies.save(list); dirty = false; } };
-  index();
+  const zk = isSuper();   /* super-adminda ikkala zona qoldigʻi alohida saqlanadi */
+  S.stock = new Map(rows.map(r => [(zk ? (r.zone || 'main') + '~' : '') + stockKey(r.company, r.product), { company: r.company, product: r.product, qty: +r.qty || 0, zone: r.zone || 'main' }]));
+  /* boshqa qurilmada qoʻshilgan mahsulot va kompaniyalar bu yerda ham koʻrinsin */
   for (const r of S.stock.values()) {
-    let c = byName.get(pkey(r.company));
-    if (!c) {
-      flush();                                     /* yangi kompaniya qoʻshishdan oldin yozib qoʻyamiz */
-      if (Companies.add(r.company).err) continue;
-      list = Companies.list(); index();
-      c = byName.get(pkey(r.company));
-      if (!c) continue;
-    }
-    if (!c.products.some(p => pkey(p) === pkey(r.product))) { c.products.push(r.product); dirty = true; }
+    let c = Companies.list().find(x => pkey(x.name) === pkey(r.company));
+    if (!c) { Companies.add(r.company); c = Companies.list().find(x => pkey(x.name) === pkey(r.company)); }
+    if (c && !Companies.products(c.name).some(p => pkey(p) === pkey(r.product))) Companies.addProducts(c.name, [r.product]);
   }
-  flush();
   return before !== stockSig();
 }
 async function adminFull() {
@@ -2776,6 +3127,8 @@ async function courierTick(first) {
     if (p && parseTs(p.updated_at) > parseTs(o.updated_at)) { next.set(o.id, p); continue; }
     next.set(o.id, o);
     if (!first && o.status === 'assigned' && (!p || p.status !== 'assigned')) fresh++;
+    const pc = p ? (p.comments || []).length : 0, nc = (o.comments || []).length, lastM = (o.comments || [])[nc - 1];
+    if (!first && p && nc > pc && lastM && lastM.by !== S.sess.code) toast(`Yangi izoh: ${o.order_no ? '№ ' + o.order_no : o.customer || ''} — ${lastM.text}`, 'go');
   }
   const changed = first || sigOf(prev) !== sigOf(next);
   S.orders = next;
@@ -2787,16 +3140,17 @@ async function refreshAdmin() { try { await adminChanges(); setOnline(true); } c
 /* ---------------- sessiya ---------------- */
 async function startSession() {
   stopPolling();
-  Object.assign(S, { orders: new Map(), events: [], seenEv: new Set(), since: null, loadedOnce: false, tab: 'orders', filter: 'new', q: '', fRegion: '', fCourier: '', fCompany: '', selMode: false, ctab: 'active', landed: null });
+  Object.assign(S, { orders: new Map(), events: [], seenEv: new Set(), since: null, loadedOnce: false, tab: 'orders', filter: 'new', q: '', fRegion: '', fCourier: '', fCompany: '', selMode: false, ctab: 'active', landed: null, co: newCo(), coUsers: null });
   S.sel.clear();
   render();
   try {
-    if (S.sess.role === 'admin') {
+    if (S.sess.role === 'admin' || S.sess.role === 'super') {
       S.notifiedAt = store.get('izi_notified_at', 0) || 0;
       S.readAt = store.get('izi_read_at', 0) || 0;
       await adminFull();
       if (S.wake) keepAwake(true);
-    } else await courierTick(true);
+    } else if (S.sess.role === 'company') await companyTick(true);
+    else await courierTick(true);
     setOnline(true);
   } catch (e) { onErr(e, true); }
   schedule();
@@ -2808,7 +3162,7 @@ async function doLogin(code, pass) {
   if (btn) { btn.disabled = true; btn.textContent = 'Tekshirilmoqda…'; }
   try {
     const r = await api.login(code, pass);
-    S.sess = { token: r.token, code: r.code, role: r.role, region: r.region, zone: r.zone || 'main' };
+    S.sess = { token: r.token, code: r.code, role: r.role, region: r.region, zone: r.zone || 'main', company: r.company || null };
     store.set('izi_sess', S.sess);
     await startSession();
   } catch (e) {
@@ -2821,26 +3175,18 @@ function logout() {
   const t = S.sess && S.sess.token;
   S.sess = null;
   store.del('izi_sess');
-  Object.assign(S, { orders: new Map(), events: [], users: [], loadedOnce: false });
+  Object.assign(S, { orders: new Map(), events: [], users: [], loadedOnce: false, co: newCo(), coUsers: null });
   keepAwake(false);
   closeSheet(true);
   render();
   if (t) api.logout(t).catch(() => {});
 }
-/* Fonda (har 5/15 soniyada) yuborilgan soʻrov xato bersa, avval faqat konsolga yozilardi:
-   ekranda eski maʼlumot qolib, admin buni sezmasdi. Endi bir xil xato 2 daqiqada bir marta aytiladi. */
-const quietSeen = new Map();
 function onErr(e, quiet) {
   const c = (e && e.code) || String(e || '');
   if (c.includes('NO_SESSION')) { toast(errText(e), 'no'); logout(); return; }
   if (c === 'NETWORK') { setOnline(false); if (!quiet) toast(errText(e), 'no'); return; }
-  if (!quiet) { toast(errText(e), 'no'); return; }
-  if (window.console) console.warn('IZI:', c);
-  const now = Date.now();
-  if (now - nn(quietSeen.get(c), 0) < 120000) return;
-  quietSeen.set(c, now);
-  if (quietSeen.size > 20) quietSeen.delete(quietSeen.keys().next().value);
-  toast(errText(e), 'no');
+  if (!quiet) toast(errText(e), 'no');
+  else if (window.console) console.warn('IZI:', c);
 }
 
 /* ---------------- kuryer amallari ---------------- */
@@ -2861,12 +3207,8 @@ async function courierSet(id, status, reason = null, note = '') {
   } catch (e) { onErr(e); }
   finally { S.busy.delete(id); render(); }
 }
-/* Tugma ikki marta bosilib ketsa, soʻrov ikki marta ketmaydi: qoldiq stock_taken bilan himoyalangan,
-   lekin takroriy soʻrov tarixga ikkita bir xil yozuv va ikkita xabar qoldirardi. */
-let assignBusy = false;
 async function runAssign(ids, code) {
-  if (!ids.length || assignBusy) return;
-  assignBusy = true;
+  if (!ids.length) return;
   closeSheet();
   try {
     const r = await api.assign(S.sess.token, ids, code || null);
@@ -2877,12 +3219,9 @@ async function runAssign(ids, code) {
     await refreshAdmin();
     render();
   } catch (e) { onErr(e); }
-  finally { assignBusy = false; }
 }
 async function runAuto() {
   const plan = S.autoPlan || [];
-  if (assignBusy) return;
-  assignBusy = true;
   closeSheet();
   let n = 0;
   try {
@@ -2891,7 +3230,6 @@ async function runAuto() {
     toast(`Taqsimlandi: ${n} ta buyurtma${sh ? `. ${sh} tasiga mahsulot yetmadi` : ''}`, sh ? 'no' : 'ok');
     S.selMode = false; S.sel.clear(); S.filter = 'assigned';
   } catch (e) { onErr(e); }
-  finally { assignBusy = false; }
   await refreshAdmin();
   render();
 }
@@ -2953,6 +3291,14 @@ const ACT = {
   'q-inc': el => { const i = $('#' + (el.dataset.f || 'mq-') + el.dataset.i); if (i) i.value = String(Math.min(999, parseQty(i.value) + 1)); },
   'q-dec': el => { const i = $('#' + (el.dataset.f || 'mq-') + el.dataset.i); if (i) { const n = parseQty(i.value) - 1; i.value = n > 0 ? String(n) : ''; } },
   'edit-order': el => openEdit(el.dataset.id),
+  copen: el => openCompanyOrder(el.dataset.id),
+  cfilter: el => { S.co.filter = el.dataset.v; render(); },
+  cperiod: el => { S.co.period = +el.dataset.v; S.co.ready = false; render(); companyTick(false).catch(e => onErr(e)); },
+  cexport: () => { const c = S.co, l = c.filter === 'all' ? c.orders : c.orders.filter(o => o.status === c.filter); if (!l.length) { toast('Yuklab olish uchun buyurtma yoʻq'); return; } exportXlsx(l, { file: `izi-${slugOf(c.company || 'kompaniya')}-${dayKey(Date.now())}.xlsx` }); },
+  cthread: el => openThread(el.dataset.id),
+  'co-user': el => openCoUser(el.dataset.code || null),
+  'su-user': el => openSuperUser(el.dataset.code || null),
+  'su-role': el => pickSuperRole(el.dataset.v),
   revert: el => openRevert(el.dataset.id),
   'del-marked': () => deleteIds([...S.sel]),
   'manual-again': () => saveManual(true),
@@ -3017,8 +3363,8 @@ const ACT = {
     if (old) old.outerHTML = callBtn(el.dataset.tel);
   },
   'ph-need': () => toast('Avval qaysi raqamga qoʻngʻiroq qilishni tanlang.', 'no'),
-  'stk-in': el => openStockEdit(el.dataset.i, 'add'),
-  'stk-edit': el => openStockEdit(el.dataset.i, 'set'),
+  'stk-in': el => openStockEdit(el.dataset.i, 'add', el.dataset.z),
+  'stk-edit': el => openStockEdit(el.dataset.i, 'set', el.dataset.z),
   'stk-del': () => deleteProduct(),
   'import-go': () => runImport(),
 };
@@ -3031,10 +3377,7 @@ document.addEventListener('click', e => {
 let qTimer = null;
 document.addEventListener('input', e => {
   if (e.target.id === 'q') { S.q = e.target.value; S.limit = 200; clearTimeout(qTimer); qTimer = setTimeout(renderList, 160); }
-  /* Arxiv maydonlari har bosilganda saqlanadi: aks holda fondagi yangilanish yozilgan matnni oʻchirib yuboradi */
-  if (e.target.id === 'archiveQ') S.archiveQ = e.target.value;
-  if (e.target.id === 'archiveFrom') { S.archiveFrom = e.target.value; S.archiveDateCustom = true; }
-  if (e.target.id === 'archiveTo') { S.archiveTo = e.target.value; S.archiveDateCustom = true; }
+  if (e.target.id === 'cq') { S.co.q = e.target.value; clearTimeout(qTimer); qTimer = setTimeout(() => companyTick(false).catch(er => onErr(er)), 450); }
   if (e.target.id === 'mf-addr') updateRegHint();
   if (e.target.closest && e.target.closest('#manualForm')) { const er = $('#mf-err'); if (er && er.textContent) er.textContent = ''; }
 });
@@ -3065,6 +3408,9 @@ document.addEventListener('submit', e => {
   else if (e.target.id === 'stkForm') { e.preventDefault(); saveStock(); }
   else if (e.target.id === 'editForm') { e.preventDefault(); saveEdit(); }
   else if (e.target.id === 'revertForm') { e.preventDefault(); doRevert(); }
+  else if (e.target.id === 'cmForm') { e.preventDefault(); sendComment(e.target); }
+  else if (e.target.id === 'coUserForm') { e.preventDefault(); saveCoUser(e.target); }
+  else if (e.target.id === 'suForm') { e.preventDefault(); saveSuperUser(e.target); }
   else if (e.target.id === 'coForm') { e.preventDefault(); saveCompany(); }
 });
 document.addEventListener('keydown', e => {
@@ -3095,7 +3441,7 @@ if (S.sess) {
 }
 /* yarim tunda kecha tugagan buyurtmalar asosiy sahifadan Arxivga oʻtadi */
 let curDay = dayKey(Date.now());
-setInterval(() => { const d = dayKey(Date.now()); if (d !== curDay) { curDay = d; if (S.sess && S.sess.role === 'admin') render(); } }, 60000);
+setInterval(() => { const d = dayKey(Date.now()); if (d !== curDay) { curDay = d; if (S.sess && (S.sess.role === 'admin' || S.sess.role === 'super')) render(); } }, 60000);
 window.IZI = { S, api, isPast, liveOrders, idTokens, numUz, spellCode, normPhone, parseAmount, detectRegion, regionKeyOfName, regionKeyOf, regionOfText, zoneOfOrder, normCode, headerScore, FIELDS, planAuto, Companies, parseQty, itemLines, reportToday, itemsOf, shortMap, simShort };
 })();
 </script>
